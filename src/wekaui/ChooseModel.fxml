@@ -11,7 +11,7 @@
    <children>
         
       <!-- Header -->
-      <Label id="labelTitle" fx:id="labelTitle" maxWidth="1.7976931348623157E308" style="-fx-background-color: #9C004B;" text="Trainingsmodell" textFill="#444444">
+      <Label id="labelTitle" fx:id="labelTitle" maxWidth="1.7976931348623157E308" style="-fx-background-color: #9C004B;" text="Trainingsmodell wählen " textFill="#444444">
          <padding>
             <Insets bottom="20.0" left="10.0" right="10.0" top="10.0" />
          </padding>
@@ -39,7 +39,7 @@
       <!-- Open model -->
       <VBox>
          <children>
-            <Label id="labelOpenModel" fx:id="labelOpenModel" maxWidth="1.7976931348623157E308" style="-fx-background-color: #C65D8B; -fx-background-radius: 5 5 0 0;" text="zuletzt verwendet">
+            <Label id="labelOpenModel" fx:id="labelOpenModel" maxWidth="1.7976931348623157E308" style="-fx-background-color: #C65D8B; -fx-background-radius: 5 5 0 0;" text="Model öffnen">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>

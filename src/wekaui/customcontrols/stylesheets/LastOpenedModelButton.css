@@ -1,8 +1,8 @@
 .model-name {
-    
+    -fx-font-weight: bold;
 }
 
 .last-opened-date {
-    -fx-font-style: italic;
-    -fx-text-fill: blue;
+    -fx-text-fill: lightgray;
+    -fx-font: bold italic 13 "Arial";
 }

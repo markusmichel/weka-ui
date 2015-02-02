@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.media.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
@@ -17,12 +18,15 @@
    </children>
 </AnchorPane>-->
 
-
-<fx:root stylesheets="@stylesheets/LastOpenedModelButton.css" type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<fx:root stylesheets="@stylesheets/LastOpenedModelButton.css" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox prefHeight="217.0" prefWidth="497.0" stylesheets="@stylesheets/LastOpenedModelButton.css">
          <children>
-            <Label styleClass="last-opened-date" text="Label ergderdgvre" />
+            <Label styleClass="model-name" text="Model Dateiname" wrapText="true" />
+            <Label styleClass="last-opened-date" text="16.01.2015" wrapText="true">
+               <font>
+                  <Font name="System Italic" size="13.0" />
+               </font></Label>
          </children>
       </VBox>
    </children>
