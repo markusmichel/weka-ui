@@ -1,0 +1,8 @@
+.model-name {
+    
+}
+
+.last-opened-date {
+    -fx-font-style: italic;
+    -fx-text-fill: blue;
+}
