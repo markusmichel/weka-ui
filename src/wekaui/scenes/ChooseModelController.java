@@ -108,17 +108,21 @@ public class ChooseModelController implements Initializable {
     }
     
     /**
-     * Uses has selected a weka training model and wants to proceed.
+     * User has selected a weka training model and wants to proceed.
      * Go to next step (select unclassified data).
      * @param event
      */
     @FXML
     public void onNextClicked(MouseEvent event) {
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("ChooseUnclassifiedTexts.fxml"));
-            Scene scene = new Scene(root);
+        try {            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseUnclassifiedTexts.fxml"));
+            Scene scene = new Scene(loader.load());
             stage.setScene(scene);
+            
+            ChooseUnclassifiedTextsController ctrl = loader.getController();
+            //ctrl.setSession(session);
+
         } catch (IOException ex) {
             Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
         }

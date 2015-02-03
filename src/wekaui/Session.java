@@ -31,7 +31,7 @@ public class Session {
         this.model = model;
         
         for(OnModelChangeListener listener : modelChangeListeners) {
-            listener.hadle(model);
+            listener.handle(model);
         }
     }
     
@@ -54,6 +54,6 @@ public class Session {
     }
     
     public interface OnModelChangeListener {
-        public void hadle(File model);
+        public void handle(File model);
     }
 }
