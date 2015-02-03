@@ -2,6 +2,8 @@
 package wekaui;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -10,6 +12,8 @@ import java.io.File;
 public class Session {
     private File model;
     private String[] text;
+    
+    private List<OnModelChangeListener> modelChangeListeners = new ArrayList<OnModelChangeListener>();
 
     /**
      * @return the model
@@ -19,10 +23,20 @@ public class Session {
     }
 
     /**
+     * Set a weka training model file.
+     * Calls modelChangeListeners when set.
      * @param model the model to set
      */
     public void setModel(File model) {
         this.model = model;
+        
+        for(OnModelChangeListener listener : modelChangeListeners) {
+            listener.hadle(model);
+        }
+    }
+    
+    public void addModelChangeListener(OnModelChangeListener listener) {
+        modelChangeListeners.add(listener);
     }
 
     /**
@@ -37,5 +51,9 @@ public class Session {
      */
     public void setText(String[] text) {
         this.text = text;
+    }
+    
+    public interface OnModelChangeListener {
+        public void hadle(File model);
     }
 }

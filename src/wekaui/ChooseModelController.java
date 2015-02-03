@@ -1,20 +1,15 @@
 package wekaui;
 
 import java.io.File;
-import wekaui.customcontrols.LastOpenedModelButton;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -42,9 +37,16 @@ public class ChooseModelController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         initModelDropzone();
         
-        LastOpenedModelButton lm = new LastOpenedModelButton();
-        
         session = new Session();
+        
+        // Called when session model gets a weka training model file
+        session.addModelChangeListener((File model) -> {
+            // @todo: check if valid model file
+            nextButton.setVisible(true);
+            nextButton.setDisable(false);
+            
+            System.out.println("model file selected");
+        });
     }
 
     private void initModelDropzone() {        
@@ -58,6 +60,19 @@ public class ChooseModelController implements Initializable {
         
         dropzoneModel.setOnDragDropped((DragEvent event) -> {
             dropzoneModel.getStyleClass().remove("active");
+            
+            Dragboard db = event.getDragboard();
+                boolean success = false;
+                if (db.hasFiles()) {
+                    success = true;
+                    String filePath = null;
+                    for (File file:db.getFiles()) {
+                        filePath = file.getAbsolutePath();
+                        System.out.println(filePath);
+                    }
+                }
+                event.setDropCompleted(success);
+                event.consume();
         });
         
         /**
@@ -69,12 +84,13 @@ public class ChooseModelController implements Initializable {
             Window window = ((Node)event.getTarget()).getScene().getWindow();
             
             // @todo: extension of model file??
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Weka Model File", "*.model"));
+            //fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Weka Model File", "*.model"));
             File modelFile = fileChooser.showOpenDialog(window);
             
             // @todo: replace placeholder text withcurrent selected file
             if(modelFile != null) {
                 System.out.println("file: " + modelFile.getName());
+                session.setModel(modelFile);
             }
         });
     }
