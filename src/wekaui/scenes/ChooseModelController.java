@@ -6,14 +6,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -22,6 +20,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import wekaui.Session;
+import wekaui.customcontrols.NextButton;
 
 /**
  *
@@ -38,7 +37,7 @@ public class ChooseModelController implements Initializable {
     @FXML
     private Label labelOpenModel;
     @FXML
-    private Button nextButton;
+    private NextButton nextButton;
     
     private Session session;
     
@@ -111,10 +110,10 @@ public class ChooseModelController implements Initializable {
     /**
      * Uses has selected a weka training model and wants to proceed.
      * Go to next step (select unclassified data).
+     * @param event
      */
     @FXML
-    private void onNextClicked(ActionEvent event) {
-        System.out.println("next step");
+    public void onNextClicked(MouseEvent event) {
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         try {
             Parent root = FXMLLoader.load(getClass().getResource("ChooseUnclassifiedTexts.fxml"));
