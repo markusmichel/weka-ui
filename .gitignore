@@ -23,5 +23,5 @@ nb-configuration.xml
 #netbeans specific
 core
 nbproject/*
-!nbproject/project.properties
-!nbproject/project.xml
+build.xml
+manifest.mf
