@@ -109,7 +109,7 @@ public class ChooseModelController implements Initializable {
     }
     
     /**
-     * Uses has selected a weka training model and wants to proceed.
+     * User has selected a weka training model and wants to proceed.
      * Go to next step (select unclassified data).
      */
     @FXML
