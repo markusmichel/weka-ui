@@ -19,3 +19,11 @@
     -fx-border-color: blue;
     -fx-text-fill: blue;
 }
+
+.next-button {
+    -fx-graphic: url('next-button.png');
+    -fx-background-image: url('next-button.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-padding: 200;
+}
