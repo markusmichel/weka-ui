@@ -1,4 +1,4 @@
-package wekaui;
+package wekaui.scenes;
 
 import java.io.File;
 import java.net.URL;
@@ -13,6 +13,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
+import wekaui.Session;
 
 /**
  *
