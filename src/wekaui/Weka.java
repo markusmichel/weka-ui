@@ -13,9 +13,9 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author markus
+ * @author Freakalot
  */
-public class WekaUi extends Application {
+public class Weka extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
