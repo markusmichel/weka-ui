@@ -1,18 +1,25 @@
 package wekaui.scenes;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import wekaui.Session;
 
@@ -108,6 +115,14 @@ public class ChooseModelController implements Initializable {
     @FXML
     private void onNextClicked(ActionEvent event) {
         System.out.println("next step");
+        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("ChooseUnclassifiedTexts.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+        } catch (IOException ex) {
+            Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }
