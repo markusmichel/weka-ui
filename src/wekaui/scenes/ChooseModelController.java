@@ -3,6 +3,7 @@ package wekaui.scenes;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -98,6 +99,15 @@ public class ChooseModelController implements Initializable {
                 session.setModel(modelFile);
             }
         });
+    }
+    
+    /**
+     * Uses has selected a weka training model and wants to proceed.
+     * Go to next step (select unclassified data).
+     */
+    @FXML
+    private void onNextClicked(ActionEvent event) {
+        System.out.println("next step");
     }
     
 }

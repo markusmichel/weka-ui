@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wekaui.ChooseModelController">
+<StackPane minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wekaui.scenes.ChooseModelController">
    <children>
       
       <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="369.0" prefWidth="547.0" stylesheets="@stylesheets/main.css">
@@ -61,7 +61,7 @@
       </VBox>
       
       <!-- Button for goint to next step. Only visible when the user has choosen a trining model. Hidden at start -->
-      <Button fx:id="nextButton" alignment="CENTER_RIGHT" disable="true" mnemonicParsing="false" text="Button" visible="false" StackPane.alignment="CENTER_RIGHT">
+      <Button fx:id="nextButton" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onNextClicked" text="weiter" StackPane.alignment="CENTER_RIGHT">
          <StackPane.margin>
             <Insets right="10.0" />
          </StackPane.margin>

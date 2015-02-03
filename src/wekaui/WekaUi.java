@@ -19,7 +19,7 @@ public class WekaUi extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("ChooseModel.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("scenes/ChooseModel.fxml"));
         
         Scene scene = new Scene(root);
         
