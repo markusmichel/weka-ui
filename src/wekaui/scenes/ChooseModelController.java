@@ -42,11 +42,15 @@ public class ChooseModelController implements Initializable {
         
         // Called when session model gets a weka training model file
         session.addModelChangeListener((File model) -> {
-            // @todo: check if valid model file
-            nextButton.setVisible(true);
-            nextButton.setDisable(false);
             
-            System.out.println("model file selected");
+            if(model != null) {
+                // @todo: check if valid model file
+                nextButton.setVisible(true);
+                nextButton.setDisable(false);
+
+                System.out.println("model file selected");
+            }
+            
         });
     }
 
