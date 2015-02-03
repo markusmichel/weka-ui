@@ -5,9 +5,6 @@
  */
 package wekaui.customcontrols;
 
-import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
