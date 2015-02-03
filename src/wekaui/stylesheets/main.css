@@ -1,3 +1,9 @@
+#labelTitle {
+    -fx-background-color:  #9C004B;
+    -fx-text-fill: white;
+    -fx-padding: 20 10 30 10;
+}
+
 .light-border {
     -fx-border-color: lightgrey;
     -fx-border-width: 1;
