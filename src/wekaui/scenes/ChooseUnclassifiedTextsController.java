@@ -7,7 +7,9 @@ package wekaui.scenes;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 
 /**
  * FXML Controller class
@@ -15,6 +17,8 @@ import javafx.fxml.Initializable;
  * @author markus
  */
 public class ChooseUnclassifiedTextsController implements Initializable {
+    @FXML
+    private Label labelTexts;
 
     /**
      * Initializes the controller class.

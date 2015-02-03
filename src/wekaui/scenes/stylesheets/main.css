@@ -4,6 +4,12 @@
     -fx-padding: 20 10 30 10;
 }
 
+.subheader {
+    -fx-background-color: #C65D8B;
+    -fx-background-radius: 5 5 0 0;
+    -fx-padding: 10 10 10 10;
+}
+
 .light-border {
     -fx-border-color: lightgrey;
     -fx-border-width: 1;
@@ -12,8 +18,4 @@
 .light-border.active {
     -fx-border-color: blue;
     -fx-text-fill: blue;
-}
-
-.indented {
-    margin: 10 0 10 10;
 }
