@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Session {
     private File model;
-    private File unlabeledData;
+    private List<File> unlabeledData;
     
     private List<OnModelChangeListener> modelChangeListeners = new ArrayList<OnModelChangeListener>();
 
@@ -42,14 +42,14 @@ public class Session {
     /**
      * @return the text
      */
-    public File getUnlabeledData() {
+    public List<File> getUnlabeledData() {
         return unlabeledData;
     }
 
     /**
      * @param text the text to set
      */
-    public void setUnlabeledData(File data) {
+    public void setUnlabeledData(List<File> data) {
         this.unlabeledData = data;
     }
     

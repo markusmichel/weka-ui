@@ -53,9 +53,9 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     @FXML
     private Label dropzoneLabel;
     @FXML
-    private ListView<String> dropzoneListView;
+    private ListView<File> dropzoneListView;
     
-    private static final ObservableList<String> dataList = 
+    private static final ObservableList<File> dataList = 
             FXCollections.observableArrayList();
     
     private Session session;    
@@ -101,12 +101,15 @@ public class ChooseUnclassifiedTextsController implements Initializable {
                     if(dropzoneListView.getItems().size() == 0){
                         dropzoneLabel.setVisible(false);
                     }
-                    dataList.add(file.getAbsolutePath());                                        
+                    dataList.add(file);                                        
                 }
+                session.setUnlabeledData(dataList);
                 success = true;
             }
             event.setDropCompleted(success);
             event.consume();
+            
+            System.out.println(dataList);
         });
         
         /**
@@ -117,16 +120,15 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Unklassifizierte Daten öffnen");
             Window window = ((Node)event.getTarget()).getScene().getWindow();
-            // @todo: extension of model file??
-            //fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Weka Model File", "*.model"));
+            
             File dataFile = fileChooser.showOpenDialog(window);
-            // @todo: replace placeholder text withcurrent selected file
+            
             if(dataFile != null) {                
                 if(dropzoneListView.getItems().size() == 0){
                     dropzoneLabel.setVisible(false);
                 }
-                dataList.add(dataFile.getAbsolutePath());                
-                //session.setText(dataList);
+                dataList.add(dataFile);                
+                session.setUnlabeledData(dataList);
             }
         });
     }
