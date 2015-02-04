@@ -6,6 +6,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,13 +15,19 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Callback;
+import wekaui.LastUsedModel;
 import wekaui.Session;
+import wekaui.customcontrols.LastUsedModelsListViewCell;
 import wekaui.customcontrols.NextButton;
 
 /**
@@ -40,25 +48,14 @@ public class ChooseModelController implements Initializable {
     private NextButton nextButton;
     
     private Session session;
+    @FXML
+    private ListView<LastUsedModel> lastUsedModelsList;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initModelDropzone();
-        
-        session = new Session();
-        
-        // Called when session model gets a weka training model file
-        session.addModelChangeListener((File model) -> {
-            
-            if(model != null) {
-                // @todo: check if valid model file
-                nextButton.setVisible(true);
-                nextButton.setDisable(false);
-
-                System.out.println("model file selected");
-            }
-            
-        });
+        initSession();
+        initLastUsedModelsList();
     }
 
     private void initModelDropzone() {        
@@ -126,6 +123,30 @@ public class ChooseModelController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void initSession() {
+        session = new Session();
+        
+        // Called when session model gets a weka training model file
+        session.addModelChangeListener((File model) -> {
+            
+            if(model != null) {
+                // @todo: check if valid model file
+                nextButton.setVisible(true);
+                nextButton.setDisable(false);
+            }
+            
+        });
+    }
+
+    private void initLastUsedModelsList() {
+        ObservableList<LastUsedModel> items = FXCollections.observableArrayList (
+            new LastUsedModel(),
+            new LastUsedModel()
+        );
+        lastUsedModelsList.setItems(items);
+        lastUsedModelsList.setCellFactory((ListView<LastUsedModel> param) -> new LastUsedModelsListViewCell());
     }
     
 }
