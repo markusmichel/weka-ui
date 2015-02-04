@@ -51,7 +51,8 @@
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
             </VBox>
-            <Button fx:id="prevButton" mnemonicParsing="false" onAction="#onPrevClicked" text="zurück" />
+            <Button fx:id="prevButton" alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#onPrevClicked" text="zurück" />
+            <Button fx:id="nextButton" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onNextClicked" text="weiter" />
          </children>
       </VBox>
    </children>

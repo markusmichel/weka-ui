@@ -26,10 +26,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+
+import wekaui.Session;
 
 /**
  * FXML Controller class
@@ -44,6 +47,8 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     @FXML
     private Button prevButton;
     @FXML
+    private Button nextButton;
+    @FXML
     private Pane dropzoneArea;
     @FXML
     private Label dropzoneLabel;
@@ -53,6 +58,8 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     private static final ObservableList<String> dataList = 
             FXCollections.observableArrayList();
     
+    private Session session;    
+    
     /**
      * Initializes the controller class.
      */
@@ -60,62 +67,68 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         initModelDropzone();
         
+        session = new Session();
+        
         dropzoneListView.setItems(dataList);
     }    
     
     private void initModelDropzone() {        
-        dropzoneArea.setOnDragEntered((DragEvent event) -> {
-            dropzoneArea.getStyleClass().add("active");
+        dropzoneArea.setOnDragEntered((DragEvent event) -> {                        
+            dropzoneLabel.getStyleClass().add("active");
+        });
+                
+        dropzoneArea.setOnDragExited((DragEvent event) -> {            
+            dropzoneLabel.getStyleClass().remove("active");
+        });
+                
+        dropzoneArea.setOnDragOver((DragEvent event) -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasFiles()) {
+                event.acceptTransferModes(TransferMode.LINK);
+            }
+            event.consume();
         });
         
-        dropzoneArea.setOnDragExited((DragEvent event) -> {
-            dropzoneArea.getStyleClass().remove("active");
-        });
-        
-        dropzoneArea.setOnDragDropped((DragEvent event) -> {
-            dropzoneArea.getStyleClass().remove("active");
+        dropzoneArea.setOnDragDropped((DragEvent event) -> {            
+            dropzoneLabel.getStyleClass().remove("active");            
             
             Dragboard db = event.getDragboard();
-                boolean success = false;
-                if (db.hasFiles()) {
-                    success = true;
-                    String filePath = null;
-                    for (File file:db.getFiles()) {
-                        filePath = file.getAbsolutePath();
-                        System.out.println(filePath);
+            boolean success = false;
+            if (db.hasFiles()) {                                        
+                event.acceptTransferModes(TransferMode.LINK);
+                String filePath = null;
+                for (File file:db.getFiles()) {                    
+                    if(dropzoneListView.getItems().size() == 0){
+                        dropzoneLabel.setVisible(false);
                     }
+                    dataList.add(file.getAbsolutePath());                                        
                 }
-                event.setDropCompleted(success);
-                event.consume();
+                success = true;
+            }
+            event.setDropCompleted(success);
+            event.consume();
         });
         
         /**
-         * Show file chooser if user clicks on the dropzone instead of dragging a file into it
-         */
+        * Show file chooser if user clicks on the dropzone instead of dragging a file into it
+        */
         dropzoneArea.setOnMouseClicked((MouseEvent event) -> {
             System.out.println("area clicked");
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Unklassifizierte Daten öffnen");
             Window window = ((Node)event.getTarget()).getScene().getWindow();
-            
             // @todo: extension of model file??
             //fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Weka Model File", "*.model"));
             File dataFile = fileChooser.showOpenDialog(window);
-            
             // @todo: replace placeholder text withcurrent selected file
-            if(dataFile != null) {
-                System.out.println("file: " + dataFile.getName());
-                //dropzoneLabel.setText(dataFile.getAbsolutePath());
+            if(dataFile != null) {                
                 if(dropzoneListView.getItems().size() == 0){
                     dropzoneLabel.setVisible(false);
-                }                
+                }
                 dataList.add(dataFile.getAbsolutePath());                
-                System.out.println(dropzoneListView.getItems());
-                
-                //session.setModel(modelFile);
+                //session.setText(dataList);
             }
         });
-        
     }
 
     @FXML
@@ -130,5 +143,22 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    @FXML
+    private void onNextClicked(ActionEvent event) {
+        System.out.println("next step");
+        /*
+        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(".fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+        } catch (IOException ex) {
+            Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                */
+    }
+
+
     
 }
