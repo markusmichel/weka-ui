@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import wekaui.Session;
 import wekaui.customcontrols.NextButton;
+import wekaui.logic.Trainer;
 
 /**
  *
@@ -46,6 +47,16 @@ public class ChooseModelController implements Initializable {
         initModelDropzone();
         
         session = new Session();
+        
+        //Test train data; For development
+        try {
+            Trainer trainer = new Trainer(session);
+            System.out.println(trainer.classifyData().toString());
+        } catch (Exception ex) {
+            Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
         
         // Called when session model gets a weka training model file
         session.addModelChangeListener((File model) -> {
