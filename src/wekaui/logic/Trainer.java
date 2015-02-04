@@ -45,7 +45,7 @@ public class Trainer {
             session.setModel(new File(modelPath));
         }
         if (session.getUnlabeledData() == null) {
-            session.setUnlabeledData(new File(testdataPath));
+            //session.setUnlabeledData(new File(testdataPath));
         }
 
         model = (Classifier) weka.core.SerializationHelper.read(session.getModel().getAbsolutePath());
@@ -55,7 +55,7 @@ public class Trainer {
 
         Instances unlabeled = new Instances(
                 new BufferedReader(
-                        new FileReader(session.getUnlabeledData().getAbsolutePath())));
+                        new FileReader(session.getUnlabeledData().get(0).getAbsolutePath())));
 
         unlabeled.setClassIndex(unlabeled.numAttributes() - 1);
         Instances labeled = new Instances(unlabeled);
