@@ -29,6 +29,7 @@ import wekaui.LastUsedModel;
 import wekaui.Session;
 import wekaui.customcontrols.LastUsedModelsListViewCell;
 import wekaui.customcontrols.NextButton;
+import wekaui.logic.Trainer;
 
 /**
  *
@@ -56,6 +57,15 @@ public class ChooseModelController implements Initializable {
         initModelDropzone();
         initSession();
         initLastUsedModelsList();
+        
+        //Test train data; For development
+        try {
+            Trainer trainer = new Trainer(session);
+            System.out.println(trainer.classifyData().toString());
+        } catch (Exception ex) {
+            Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     private void initModelDropzone() {        
