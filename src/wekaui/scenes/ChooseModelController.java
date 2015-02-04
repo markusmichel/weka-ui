@@ -6,15 +6,21 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.SelectionModel;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
@@ -22,6 +28,7 @@ import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Callback;
 import weka.core.Instance;
 import weka.core.Instances;
 import javafx.util.Callback;
@@ -176,8 +183,14 @@ public class ChooseModelController implements Initializable {
     private void initLastUsedModelsList() {
         ObservableList<LastUsedModel> items = FXCollections.observableArrayList (
             new LastUsedModel(),
+            new LastUsedModel(),
+            new LastUsedModel(),
+            new LastUsedModel(),
+            new LastUsedModel(),
             new LastUsedModel()
         );
+        
+        lastUsedModelsList.setFocusTraversable(false);
         lastUsedModelsList.setItems(items);
         lastUsedModelsList.setCellFactory((ListView<LastUsedModel> param) -> new LastUsedModelsListViewCell());
     }

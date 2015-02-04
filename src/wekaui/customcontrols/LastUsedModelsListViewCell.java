@@ -20,10 +20,16 @@ public class LastUsedModelsListViewCell extends ListCell<LastUsedModel> {
     protected void updateItem(LastUsedModel item, boolean empty) {
         super.updateItem(item, empty);
         
-        if(item != null) {
+        if (empty || item == null) {
+            setText(null);
+            setGraphic(null);
+        } else {
             LastUsedModelsListViewCellController ctrl = new LastUsedModelsListViewCellController();
             VBox content = ctrl.createCell(item);
             setGraphic(content);
+            
+            setFocused(false);
+            setPressed(false);
         }
     }
 }
