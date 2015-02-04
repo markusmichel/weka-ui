@@ -19,6 +19,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import weka.core.Instance;
+import weka.core.Instances;
 import wekaui.Session;
 import wekaui.customcontrols.NextButton;
 import wekaui.logic.Trainer;
@@ -51,7 +53,12 @@ public class ChooseModelController implements Initializable {
         //Test train data; For development
         try {
             Trainer trainer = new Trainer(session);
-            System.out.println(trainer.classifyData().toString());
+            Instances classifiedData = trainer.classifyData();
+            for (int i = 0; i < classifiedData.numInstances(); i++) {
+                Instance instance = classifiedData.instance(i);
+                System.out.println(instance.toString());
+                System.out.println(instance.classAttribute().value((int)instance.classValue()));
+            }
         } catch (Exception ex) {
             Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
         }

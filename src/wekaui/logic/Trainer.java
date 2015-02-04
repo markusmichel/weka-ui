@@ -52,7 +52,10 @@ public class Trainer {
 
         // label instances
         for (int i = 0; i < unlabeled.numInstances(); i++) {
+            
           double clsLabel = model.classifyInstance(unlabeled.instance(i));
+          //System.out.println(clsLabel + " -> " + unlabeled.classAttribute().value((int) clsLabel));
+          //System.out.println(model.distributionForInstance(unlabeled.instance(i)));
           labeled.instance(i).setClassValue(clsLabel);
         }
 
