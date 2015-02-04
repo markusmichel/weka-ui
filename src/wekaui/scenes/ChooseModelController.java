@@ -12,12 +12,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
@@ -25,13 +22,9 @@ import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-<<<<<<< HEAD
 import weka.core.Instance;
 import weka.core.Instances;
-=======
-import javafx.util.Callback;
 import wekaui.LastUsedModel;
->>>>>>> cd62e2570d57678f4501ffd2bd28321da0a827b1
 import wekaui.Session;
 import wekaui.customcontrols.LastUsedModelsListViewCell;
 import wekaui.customcontrols.NextButton;
