@@ -25,13 +25,10 @@ import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-<<<<<<< HEAD
 import weka.core.Instance;
 import weka.core.Instances;
-=======
 import javafx.util.Callback;
 import wekaui.LastUsedModel;
->>>>>>> cd62e2570d57678f4501ffd2bd28321da0a827b1
 import wekaui.Session;
 import wekaui.customcontrols.LastUsedModelsListViewCell;
 import wekaui.customcontrols.NextButton;
@@ -67,12 +64,22 @@ public class ChooseModelController implements Initializable {
         //Test train data; For development
         try {
             Trainer trainer = new Trainer(session);
+            
+            //Instances classifiedData = trainer.createDataset("txt_sentoken");
+//            classifiedData = trainer.classifyDataFoo(classifiedData);
+//            for (int i = 0; i < classifiedData.numInstances(); i++) {
+//                Instance instance = classifiedData.instance(i);
+//                System.out.println(instance.toString());
+//                System.out.println(instance.classAttribute().value((int)instance.classValue()));
+//            }
+            /*
             Instances classifiedData = trainer.classifyData();
             for (int i = 0; i < classifiedData.numInstances(); i++) {
                 Instance instance = classifiedData.instance(i);
                 System.out.println(instance.toString());
                 System.out.println(instance.classAttribute().value((int)instance.classValue()));
             }
+                        */
         } catch (Exception ex) {
             Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
         }
