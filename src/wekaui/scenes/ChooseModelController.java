@@ -21,6 +21,7 @@ import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -75,6 +76,14 @@ public class ChooseModelController implements Initializable {
         
         dropzoneModel.setOnDragExited((DragEvent event) -> {
             dropzoneModel.getStyleClass().remove("active");
+        });
+        
+        dropzoneModel.setOnDragOver((DragEvent event) -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasFiles()) {
+                event.acceptTransferModes(TransferMode.LINK);
+            }
+            event.consume();
         });
         
         dropzoneModel.setOnDragDropped((DragEvent event) -> {
