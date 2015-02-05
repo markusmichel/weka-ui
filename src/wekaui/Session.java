@@ -13,7 +13,7 @@ public class Session {
     private File model;
     private List<File> unlabeledData;
     
-    private List<OnModelChangeListener> modelChangeListeners = new ArrayList<OnModelChangeListener>();
+    private final List<OnModelChangeListener> modelChangeListeners = new ArrayList<>();
 
     /**
      * @return the model
