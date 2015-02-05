@@ -97,6 +97,7 @@ public class ChooseModelController implements Initializable {
     }
     
     public void setSession(Session session) {
+        this.session = null;
         this.session = session;
     }
 
