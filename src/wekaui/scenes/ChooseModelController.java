@@ -180,7 +180,7 @@ public class ChooseModelController implements Initializable {
             stage.setScene(scene);
             
             ChooseUnclassifiedTextsController ctrl = loader.getController();
-            //ctrl.setSession(session);
+            ctrl.setSession(session);
 
         } catch (IOException ex) {
             Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);

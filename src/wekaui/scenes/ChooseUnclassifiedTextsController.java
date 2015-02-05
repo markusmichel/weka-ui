@@ -252,5 +252,9 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         }
             
     }
+
+    public void setSession(Session session) {
+        this.session = session;
+    }
    
 }
