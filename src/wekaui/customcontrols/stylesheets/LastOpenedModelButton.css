@@ -1,8 +1,16 @@
-.model-name {
-    -fx-font-weight: bold;
+.last-opened-model-button {
+    -fx-background-color: lightblue;
 }
 
-.last-opened-date {
-    -fx-text-fill: lightgray;
-    -fx-font: bold italic 13 "Arial";
+.last-opened-model-button:hover {
+    -fx-background-color: blue;
+    -fx-cursor: hand;
+}
+
+.last-opened-model-button:focused {
+    -fx-background-color: red;
+}
+
+.last-opened-model-button:pressed {
+    -fx-background-color: green;
 }

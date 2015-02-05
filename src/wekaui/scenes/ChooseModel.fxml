@@ -25,7 +25,13 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <ListView fx:id="lastUsedModelsList" prefHeight="168.0" prefWidth="527.0" />
+                  <FlowPane fx:id="lastUsedModelsContainer" prefHeight="200.0" prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <opaqueInsets>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </opaqueInsets></FlowPane>
                </children>
                
                 <VBox.margin>

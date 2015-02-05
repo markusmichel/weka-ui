@@ -6,8 +6,15 @@
 package wekaui.customcontrols;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import wekaui.LastUsedModel;
 
 /**
  * FXML Controller class
@@ -16,7 +23,13 @@ import javafx.scene.layout.VBox;
  */
 public class LastOpenedModelButton extends VBox  {
 
-    public LastOpenedModelButton() {
+    private List<LastOpenedModelButtonClickListener> listeners = new ArrayList<LastOpenedModelButtonClickListener>();
+    private LastUsedModel model;
+    
+    @FXML
+    VBox container;
+    
+    public LastOpenedModelButton(LastUsedModel model) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LastOpenedModelButton.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -26,6 +39,31 @@ public class LastOpenedModelButton extends VBox  {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+        
+        this.model = model;
+        initialize();
+    }
+    
+    public void addOnClickListener(LastOpenedModelButtonClickListener listener) {
+        listeners.add(listener);
+    }
+
+    private void initialize() {
+        container.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
+            
+            // Only proceed if user clicked primary(left) mouse button
+            if(event.getButton().equals(MouseButton.PRIMARY)) {
+                for(LastOpenedModelButtonClickListener listener : listeners) {
+                    listener.handle(model);
+                }
+            }
+            
+            event.consume();
+        });
+    }
+    
+    public interface LastOpenedModelButtonClickListener {
+        public void handle(LastUsedModel model);
     }
     
 }

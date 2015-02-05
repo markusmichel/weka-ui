@@ -10,7 +10,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,8 +22,10 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -34,7 +35,7 @@ import weka.core.Instances;
 import javafx.util.Callback;
 import wekaui.LastUsedModel;
 import wekaui.Session;
-import wekaui.customcontrols.LastUsedModelsListViewCell;
+import wekaui.customcontrols.LastOpenedModelButton;
 import wekaui.customcontrols.NextButton;
 import wekaui.logic.Trainer;
 
@@ -56,14 +57,15 @@ public class ChooseModelController implements Initializable {
     private NextButton nextButton;
     
     private Session session;
-    @FXML
     private ListView<LastUsedModel> lastUsedModelsList;
+    @FXML
+    private FlowPane lastUsedModelsContainer;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initModelDropzone();
         initSession();
-        initLastUsedModelsList();
+        initLastUsedModels();
         
         //Test train data; For development
         try {
@@ -88,6 +90,20 @@ public class ChooseModelController implements Initializable {
             Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+
+    private void initLastUsedModels() {
+        lastUsedModelsContainer.setVgap(5);
+        lastUsedModelsContainer.setHgap(5);
+        
+        for(int i=0; i<20; i++) {
+            LastOpenedModelButton button = new LastOpenedModelButton(null);
+            lastUsedModelsContainer.getChildren().add(button);
+            
+            button.addOnClickListener((LastUsedModel model) -> {
+                session.setModel(model.getFile());
+            });
+        }
     }
 
     private void initModelDropzone() {        
@@ -179,20 +195,4 @@ public class ChooseModelController implements Initializable {
             
         });
     }
-
-    private void initLastUsedModelsList() {
-        ObservableList<LastUsedModel> items = FXCollections.observableArrayList (
-            new LastUsedModel(),
-            new LastUsedModel(),
-            new LastUsedModel(),
-            new LastUsedModel(),
-            new LastUsedModel(),
-            new LastUsedModel()
-        );
-        
-        lastUsedModelsList.setFocusTraversable(false);
-        lastUsedModelsList.setItems(items);
-        lastUsedModelsList.setCellFactory((ListView<LastUsedModel> param) -> new LastUsedModelsListViewCell());
-    }
-    
 }
