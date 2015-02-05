@@ -75,10 +75,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initDataDropzone();
-        
-        session = new Session();
-        
+        initDataDropzone();        
         initListView();
     }    
     
@@ -179,9 +176,12 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         System.out.println("prev step");
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("ChooseModel.fxml"));
-            Scene scene = new Scene(root);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseModel.fxml"));
+            Scene scene = new Scene(loader.load());
             stage.setScene(scene);
+            
+            ChooseModelController ctrl = loader.getController();
+            ctrl.setSession(session);            
         } catch (IOException ex) {
             Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -254,8 +254,19 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         
     }
 
-    public void setSession(Session session) {
+    public void setSession(Session session) {        
         this.session = session;
+        
+        if(this.session.getUnlabeledData() != null){
+                        
+            if(this.session.getUnlabeledData().isEmpty()){
+                dropzoneLabel.setVisible(true);
+                changeDataButtonsVisibility(false);
+            }else{
+                dropzoneLabel.setVisible(false);
+                changeDataButtonsVisibility(true);
+            }
+        }
     }
-   
+    
 }
