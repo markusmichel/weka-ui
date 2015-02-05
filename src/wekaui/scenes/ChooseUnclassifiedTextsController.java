@@ -248,9 +248,10 @@ public class ChooseUnclassifiedTextsController implements Initializable {
 
     private void checkIfDatalistIsEmpty() {
         if(dataList.isEmpty()){
-            dropzoneLabel.setVisible(true);
+            dropzoneLabel.setVisible(true); 
+            changeDataButtonsVisibility(false);
         }
-            
+        
     }
 
     public void setSession(Session session) {
