@@ -139,17 +139,22 @@ public class ChooseModelController implements Initializable {
             dropzoneModel.getStyleClass().remove("active");
             
             Dragboard db = event.getDragboard();
-                boolean success = false;
-                if (db.hasFiles()) {
-                    success = true;
-                    String filePath = null;
-                    for (File file:db.getFiles()) {
-                        filePath = file.getAbsolutePath();
-                        System.out.println(filePath);
-                    }
+            boolean success = false;
+            File modelFile = null;
+            
+            if (db.hasFiles() && db.getFiles().size() == 1) {
+                success = true;
+                for (File file: db.getFiles()) {
+                    modelFile = file;
                 }
-                event.setDropCompleted(success);
-                event.consume();
+            } else {
+                System.err.println("only one file supported");
+            }
+            
+            event.setDropCompleted(success);
+            event.consume();
+            
+            session.setModel(modelFile);
         });
         
         /**
@@ -166,7 +171,6 @@ public class ChooseModelController implements Initializable {
             
             // @todo: replace placeholder text withcurrent selected file
             if(modelFile != null) {
-                System.out.println("file: " + modelFile.getName());
                 session.setModel(modelFile);
             }
         });
