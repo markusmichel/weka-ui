@@ -63,8 +63,8 @@ public class ChooseModelController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initModelDropzone();
         initSession();
+        initModelDropzone();
         initLastUsedModels();
         
         //Test train data; For development
@@ -97,7 +97,8 @@ public class ChooseModelController implements Initializable {
         lastUsedModelsContainer.setHgap(5);
         
         for(int i=0; i<20; i++) {
-            LastOpenedModelButton button = new LastOpenedModelButton(null);
+            LastUsedModel lastUsedModel = new LastUsedModel();
+            LastOpenedModelButton button = new LastOpenedModelButton(lastUsedModel);
             lastUsedModelsContainer.getChildren().add(button);
             
             button.addOnClickListener((LastUsedModel model) -> {
