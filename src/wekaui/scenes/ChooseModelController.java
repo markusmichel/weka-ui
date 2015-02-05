@@ -93,6 +93,10 @@ public class ChooseModelController implements Initializable {
         }
         
     }
+    
+    public void setSession(Session session) {
+        this.session = session;
+    }
 
     private void initLastUsedModels() {
         lastUsedModelsContainer.setVgap(5);
