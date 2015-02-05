@@ -57,7 +57,7 @@ public class ChooseModelController implements Initializable {
     private NextButton nextButton;
     
     private Session session;
-    private ListView<LastUsedModel> lastUsedModelsList;
+    
     @FXML
     private FlowPane lastUsedModelsContainer;
     
@@ -67,9 +67,11 @@ public class ChooseModelController implements Initializable {
         initModelDropzone();
         initLastUsedModels();
         
+        //nextButton.show();
+        
         //Test train data; For development
         try {
-            Trainer trainer = new Trainer(session);
+            // Trainer trainer = new Trainer(session);
             
             //Instances classifiedData = trainer.createDataset("txt_sentoken");
 //            classifiedData = trainer.classifyDataFoo(classifiedData);
@@ -168,6 +170,9 @@ public class ChooseModelController implements Initializable {
      */
     @FXML
     public void onNextClicked(MouseEvent event) {
+        // Only proceed if button is visible
+        if(nextButton.isHidden()) return;
+        
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         try {            
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseUnclassifiedTexts.fxml"));
@@ -187,13 +192,14 @@ public class ChooseModelController implements Initializable {
         
         // Called when session model gets a weka training model file
         session.addModelChangeListener((File model) -> {
-            
-            if(model != null) {
+            if(model != null && model.exists()) {
+                System.out.println("model file exists");
                 // @todo: check if valid model file
-                nextButton.setVisible(true);
-                nextButton.setDisable(false);
+                nextButton.show();
+            } else {
+                System.out.println("model file does not exist");
+                nextButton.hide();
             }
-            
         });
     }
 }

@@ -5,6 +5,7 @@
  */
 package wekaui.customcontrols;
 
+import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -14,25 +15,55 @@ import javafx.scene.input.MouseEvent;
  * @author markus
  */
 public class NextButton extends ImageView {
+    private final Image HIDDEN_IMAGE;
     private final Image NORMAL_IMAGE;
     private final Image HOVERED_IMAGE;
     private final Image PRESSED_IMAGE;
     
+    private Image currentImage = null;
     
     public NextButton() {
+        HIDDEN_IMAGE = null;
         NORMAL_IMAGE = new Image(getClass().getResourceAsStream("next-button.png"));
         HOVERED_IMAGE = new Image(getClass().getResourceAsStream("next-button-hover.png"));
         PRESSED_IMAGE = new Image(getClass().getResourceAsStream("next-button.png"));
         
-        setImage(NORMAL_IMAGE);
+        applyImage(HIDDEN_IMAGE);
         
+        // Hover
+        // Show hover image if button is not hidden
         addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {
-            setImage(HOVERED_IMAGE);
+            if(isShown()) {
+                setCursor(Cursor.HAND);
+                applyImage(HOVERED_IMAGE);
+            }
         });
         
+        // Hover out
+        // Show normal image if button is not hidden
         addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
-            setImage(NORMAL_IMAGE);
+            if(isShown()) applyImage(NORMAL_IMAGE);
         });
     }
     
+    private void applyImage(Image image) {
+        currentImage = image;
+        setImage(currentImage);
+    }
+    
+    public void show() {
+        applyImage(NORMAL_IMAGE);
+    }
+    
+    public void hide() {
+        applyImage(HIDDEN_IMAGE);
+    }
+    
+    public boolean isShown() {
+        return currentImage != HIDDEN_IMAGE;
+    }
+    
+    public boolean isHidden() {
+        return currentImage == HIDDEN_IMAGE;
+    }
 }
