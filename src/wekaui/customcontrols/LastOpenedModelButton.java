@@ -8,7 +8,6 @@ package wekaui.customcontrols;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.MouseButton;
@@ -23,8 +22,8 @@ import wekaui.LastUsedModel;
  */
 public class LastOpenedModelButton extends VBox  {
 
-    private List<LastOpenedModelButtonClickListener> listeners = new ArrayList<LastOpenedModelButtonClickListener>();
-    private LastUsedModel model;
+    private List<LastOpenedModelButtonClickListener> listeners = new ArrayList<>();
+    private final LastUsedModel model;
     
     @FXML
     VBox container;

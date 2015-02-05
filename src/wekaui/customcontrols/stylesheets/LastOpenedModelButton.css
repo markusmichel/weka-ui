@@ -1,5 +1,6 @@
 .last-opened-model-button {
     -fx-background-color: lightblue;
+    -fx-padding: 5;
 }
 
 .last-opened-model-button:hover {
@@ -13,4 +14,8 @@
 
 .last-opened-model-button:pressed {
     -fx-background-color: green;
+}
+
+.last-opened-model-button.active {
+    -fx-background-color: yellow;
 }

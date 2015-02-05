@@ -9,24 +9,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!--<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="wekaui.customcontrols.LastOpenedModelButtonController">
-    <stylesheets>
-        <URL value="@lastopenedmodelbutton.css" />
-    </stylesheets>
+<fx:root stylesheets="@stylesheets/LastOpenedModelButton.css" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" styleClass="last-opened-model-button">
    <children>
-      <Button layoutX="210.0" layoutY="130.0" mnemonicParsing="false" text="Button" />
-   </children>
-</AnchorPane>-->
-
-<fx:root stylesheets="@stylesheets/LastOpenedModelButton.css" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <VBox stylesheets="@stylesheets/LastOpenedModelButton.css" styleClass="last-opened-model-button" fx:id="container">
+      <VBox fx:id="container" stylesheets="@stylesheets/LastOpenedModelButton.css">
          <children>
             <Label styleClass="model-name" text="Model Dateiname" wrapText="true" />
             <Label styleClass="last-opened-date" text="16.01.2015" wrapText="true">
                <font>
                   <Font name="System Italic" size="13.0" />
-               </font></Label>
+               </font>
+            </Label>
          </children>
       </VBox>
    </children>

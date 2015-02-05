@@ -58,6 +58,8 @@ public class ChooseModelController implements Initializable {
     
     private Session session;
     
+    private LastOpenedModelButton selectedModelButton;
+    
     @FXML
     private FlowPane lastUsedModelsContainer;
     
@@ -109,6 +111,9 @@ public class ChooseModelController implements Initializable {
             
             button.addOnClickListener((LastUsedModel model) -> {
                 session.setModel(model.getFile());
+                button.getStyleClass().add("active");
+                if(selectedModelButton != null) selectedModelButton.getStyleClass().remove("active");
+                selectedModelButton = button;
             });
         }
     }
