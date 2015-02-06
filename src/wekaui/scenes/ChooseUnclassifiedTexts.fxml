@@ -28,7 +28,7 @@
                   <Insets left="10.0" right="10.0" top="-10.0" />
                </VBox.margin>
             </VBox>
-            <VBox fx:id="dropzoneArea">
+            <VBox>
                <children>
                   <StackPane>
                      <children>
@@ -37,15 +37,19 @@
                               <Insets />
                            </VBox.margin>
                         </Label>
-                        <Button fx:id="addButton" alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#onAddClicked" text="add" visible="false" StackPane.alignment="CENTER_RIGHT">
-                           <StackPane.margin>
-                              <Insets right="50.0" />
-                           </StackPane.margin>
-                        </Button>
-                        <Button fx:id="clearButton" alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#onClearClicked" text="clear" visible="false" StackPane.alignment="CENTER_RIGHT" />
+                        <wekaui.customcontrols.AddUncheckedDataButton fx:id="addButton" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#onAddClicked" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">                            
+                            <StackPane.margin>
+                                <Insets right="130.0" />
+                            </StackPane.margin>                            
+                        </wekaui.customcontrols.AddUncheckedDataButton>                        
+                        <wekaui.customcontrols.ClearUncheckedDataButton fx:id="clearButton" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#onClearClicked" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">                            
+                            <StackPane.margin>
+                                <Insets right="90.0" />
+                            </StackPane.margin>                            
+                        </wekaui.customcontrols.ClearUncheckedDataButton>                        
                      </children>
                   </StackPane>
-                  <StackPane>
+                  <StackPane fx:id="dropzoneArea">
                      <children>
                         <ListView fx:id="dropzoneListView" prefHeight="119.0" prefWidth="542.0" />
                         <Label id="dropzoneData" fx:id="dropzoneLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="144.0" prefWidth="542.0" styleClass="light-border" text="Datei(en) hier reinziehen oder klicken zum Öffnen" textAlignment="CENTER">
@@ -62,7 +66,10 @@
             </VBox>
          </children>
       </VBox>
-      <Button fx:id="prevButton" alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#onPrevClicked" text="zurück" StackPane.alignment="BOTTOM_LEFT" />
-      <Button fx:id="nextButton" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onNextClicked" text="weiter" visible="false" StackPane.alignment="BOTTOM_RIGHT" />
+            
+      <!-- Button for goint to next step. Only visible when the user has choosen a trining model. Hidden at start -->      
+      <wekaui.customcontrols.NextButton fx:id="nextButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onNextClicked" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT" />
+      <wekaui.customcontrols.PrevButton fx:id="prevButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onPrevClicked" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_LEFT" />      
+      
    </children>
 </StackPane>

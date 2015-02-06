@@ -40,6 +40,10 @@ import javafx.stage.Window;
 import javafx.util.Callback;
 
 import wekaui.Session;
+import wekaui.customcontrols.AddUncheckedDataButton;
+import wekaui.customcontrols.ClearUncheckedDataButton;
+import wekaui.customcontrols.NextButton;
+import wekaui.customcontrols.PrevButton;
 import wekaui.scenes.result.ResultMainController;
 
 /**
@@ -53,9 +57,9 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     @FXML
     private Label labelOpenData;    
     @FXML
-    private Button prevButton;
+    private PrevButton prevButton;
     @FXML
-    private Button nextButton;
+    private NextButton nextButton;
     @FXML
     private Pane dropzoneArea;
     @FXML
@@ -63,9 +67,9 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     @FXML
     private ListView<File> dropzoneListView;
     @FXML
-    private Button clearButton;
+    private ClearUncheckedDataButton clearButton;
     @FXML
-    private Button addButton;
+    private AddUncheckedDataButton addButton;
     
     private static final ObservableList<File> dataList = 
             FXCollections.observableArrayList();
@@ -78,7 +82,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initDataDropzone();        
-        initListView();
+        initListView();        
     }    
     
     private void initListView(){        
@@ -90,9 +94,9 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             public void onChanged(Change c){                
                 System.out.println("LIST CHANGED");
                 if(dataList.size() != 0){
-                    nextButton.setVisible(true);
+                    nextButton.show();
                 }else{
-                    nextButton.setVisible(false);
+                    nextButton.hide();
                 }                
             }
         });
@@ -185,61 +189,15 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             startChooseFileDialog(event);            
         });
     }
-
-    @FXML
-    private void onPrevClicked(ActionEvent event) {                
-        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseModel.fxml"));
-            Scene scene = new Scene(loader.load());
-            stage.setScene(scene);
-            
-            ChooseModelController ctrl = loader.getController();
-            ctrl.setSession(session);            
-        } catch (IOException ex) {
-            Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    @FXML
-    private void onNextClicked(ActionEvent event) {
-        // Only proceed if button is visible
-        if(!nextButton.isVisible()) return;        
-        
-        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wekaui/scenes/result/ResultMain.fxml"));
-            Scene scene = new Scene(loader.load());
-            stage.setScene(scene);
-            
-            ResultMainController ctrl = loader.getController();
-            ctrl.setSession(session);    
-        } catch (IOException ex) {
-            Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
-    
-    /**
-     * Clears the dataList and the UnlabeledData from the Session
-     * @param event 
-     */
-    @FXML
-    private void onClearClicked(ActionEvent event) {
-        dataList.clear();        
-        session.setUnlabeledData(dataList);
-        dropzoneLabel.setVisible(true);
-        changeDataButtonsVisibility(false);        
-    }
-
-    @FXML
-    private void onAddClicked(ActionEvent event) {
-        startChooseFileDialog(event);
-    }
     
     private void changeDataButtonsVisibility(boolean visibility){
-        addButton.setVisible(visibility);
-        clearButton.setVisible(visibility);
+        if(visibility){
+            addButton.show();
+            clearButton.show();
+        }else{
+            addButton.hide();
+            clearButton.hide();
+        }
     }
 
     private void startChooseFileDialog(Event event) {
@@ -281,11 +239,61 @@ public class ChooseUnclassifiedTextsController implements Initializable {
                 dropzoneLabel.setVisible(true);
                 changeDataButtonsVisibility(false);
             }else{
-                nextButton.setVisible(true);
+                nextButton.show();
                 dropzoneLabel.setVisible(false);
                 changeDataButtonsVisibility(true);
             }
         }
+    }
+
+    @FXML
+    private void onNextClicked(MouseEvent event) {        
+         // Only proceed if button is visible
+        if(nextButton.isHidden()) return;        
+        
+        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wekaui/scenes/result/ResultMain.fxml"));
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+            
+            ResultMainController ctrl = loader.getController();
+            ctrl.setSession(session);    
+        } catch (IOException ex) {
+            Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }
+
+    @FXML
+    private void onPrevClicked(MouseEvent event) {
+        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseModel.fxml"));
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+            
+            ChooseModelController ctrl = loader.getController();
+            ctrl.setSession(session);            
+        } catch (IOException ex) {
+            Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void onAddClicked(MouseEvent event) {
+        startChooseFileDialog(event);
+    }
+    
+    /**
+     * Clears the dataList and the UnlabeledData from the Session
+     * @param event 
+     */
+    @FXML
+    private void onClearClicked(MouseEvent event) {
+        dataList.clear();        
+        session.setUnlabeledData(dataList);
+        dropzoneLabel.setVisible(true);
+        changeDataButtonsVisibility(false);            
     }
     
 }
