@@ -33,6 +33,7 @@ import javafx.util.Callback;
 import weka.core.Instance;
 import weka.core.Instances;
 import javafx.util.Callback;
+import org.apache.commons.io.FilenameUtils;
 import wekaui.LastUsedModel;
 import wekaui.Session;
 import wekaui.customcontrols.LastOpenedModelButton;
@@ -139,6 +140,11 @@ public class ChooseModelController implements Initializable {
             event.consume();
         });
         
+        /**
+         * User has moved one or more items over the dropzone and dropped it.
+         * Check if the files are valid .model files and assert that there are 
+         * not more than one file dropped.
+         */
         dropzoneModel.setOnDragDropped((DragEvent event) -> {
             dropzoneModel.getStyleClass().remove("active");
             
@@ -146,18 +152,36 @@ public class ChooseModelController implements Initializable {
             boolean success = false;
             File modelFile = null;
             
+            // Save first file to modelFile
             if (db.hasFiles() && db.getFiles().size() == 1) {
                 success = true;
                 for (File file: db.getFiles()) {
                     modelFile = file;
                 }
             } else {
+                // @todo: provide visual feedback
                 System.err.println("only one file supported");
+            }
+            
+            // Assert only model files are selected
+            if(
+                    modelFile != null 
+                    && FilenameUtils.getExtension(modelFile.getName()).toLowerCase().equals("model")
+                    && !modelFile.isDirectory()
+                    ) {
+                
+                
+                
+            } else {
+                // No valid model file selected
+                // @todo: provide visual feedback
+                System.err.println("only .model files are supported");
             }
             
             event.setDropCompleted(success);
             event.consume();
             
+            // @todo: always set model file - even if invalid?
             session.setModel(modelFile);
         });
         
