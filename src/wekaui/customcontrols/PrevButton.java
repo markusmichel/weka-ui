@@ -17,6 +17,7 @@ public class PrevButton extends AbstractPrevNextButton {
         NORMAL_IMAGE = new Image(getClass().getResourceAsStream("prev-button.png"));
         HOVERED_IMAGE = new Image(getClass().getResourceAsStream("prev-button-hover.png"));
         PRESSED_IMAGE = new Image(getClass().getResourceAsStream("prev-button.png"));
+        show();
     }
     
 }
