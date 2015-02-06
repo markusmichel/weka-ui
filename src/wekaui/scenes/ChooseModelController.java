@@ -60,6 +60,8 @@ public class ChooseModelController implements Initializable {
     
     private LastOpenedModelButton selectedModelButton;
     
+    private Session.OnModelChangeListener onModelChangeListener;
+    
     @FXML
     private FlowPane lastUsedModelsContainer;
     
@@ -99,6 +101,7 @@ public class ChooseModelController implements Initializable {
     public void setSession(Session session) {
         this.session = null;
         this.session = session;
+        initSession(session);
     }
 
     private void initLastUsedModels() {
@@ -195,6 +198,9 @@ public class ChooseModelController implements Initializable {
             
             ChooseUnclassifiedTextsController ctrl = loader.getController();
             ctrl.setSession(session);
+            
+            // remove old onModelChangeListener to prevent zombie objects
+            session.removeModelChangeListener(onModelChangeListener);
 
         } catch (IOException ex) {
             Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
@@ -203,9 +209,16 @@ public class ChooseModelController implements Initializable {
 
     private void initSession() {
         session = new Session();
+        initSession(session);
+    }
+    
+    private void initSession(Session session) {
+        if(onModelChangeListener != null) {
+            // remove old onModelChangeListener to prevent zombie objects
+            session.removeModelChangeListener(onModelChangeListener);
+        }
         
-        // Called when session model gets a weka training model file
-        session.addModelChangeListener((File model) -> {
+        onModelChangeListener = (File model) -> {
             if(model != null && model.exists()) {
                 System.out.println("model file exists");
                 // @todo: check if valid model file
@@ -214,6 +227,9 @@ public class ChooseModelController implements Initializable {
                 System.out.println("model file does not exist");
                 nextButton.hide();
             }
-        });
+        };
+        
+        // Called when session model gets a weka training model file
+        session.addModelChangeListener(onModelChangeListener);
     }
 }

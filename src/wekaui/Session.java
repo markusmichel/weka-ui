@@ -38,6 +38,10 @@ public class Session {
     public void addModelChangeListener(OnModelChangeListener listener) {
         modelChangeListeners.add(listener);
     }
+    
+    public void removeModelChangeListener(OnModelChangeListener listener) {
+        modelChangeListeners.remove(listener);
+    }
 
     /**
      * @return the text
