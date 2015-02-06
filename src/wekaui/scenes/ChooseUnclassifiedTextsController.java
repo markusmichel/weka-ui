@@ -15,16 +15,12 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -37,7 +33,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.util.Callback;
 
 import wekaui.Session;
 import wekaui.customcontrols.AddUncheckedDataButton;
@@ -53,11 +48,13 @@ import wekaui.scenes.result.ResultMainController;
  */
 public class ChooseUnclassifiedTextsController implements Initializable {
     @FXML
-    private Label labelTexts;
-    @FXML
     private Label labelOpenData;    
     @FXML
     private PrevButton prevButton;
+    @FXML
+    private Label modelInfoLabel;
+    @FXML
+    private Label modelInfoText;
     @FXML
     private NextButton nextButton;
     @FXML
@@ -75,6 +72,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             FXCollections.observableArrayList();
     
     private Session session; 
+   
     
     /**
      * Initializes the controller class.
