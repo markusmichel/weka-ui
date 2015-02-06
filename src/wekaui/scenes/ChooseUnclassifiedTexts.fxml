@@ -63,6 +63,6 @@
          </children>
       </VBox>
       <Button fx:id="prevButton" alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#onPrevClicked" text="zurück" StackPane.alignment="BOTTOM_LEFT" />
-      <Button fx:id="nextButton" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onNextClicked" text="weiter" StackPane.alignment="BOTTOM_RIGHT" />
+      <Button fx:id="nextButton" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onNextClicked" text="weiter" visible="false" StackPane.alignment="BOTTOM_RIGHT" />
    </children>
 </StackPane>

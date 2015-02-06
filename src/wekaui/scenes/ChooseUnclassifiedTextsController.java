@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -39,6 +40,7 @@ import javafx.stage.Window;
 import javafx.util.Callback;
 
 import wekaui.Session;
+import wekaui.scenes.result.ResultMainController;
 
 /**
  * FXML Controller class
@@ -79,8 +81,21 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         initListView();
     }    
     
-    private void initListView(){
+    private void initListView(){        
         dropzoneListView.setItems(dataList);
+        
+        // add change listener to dataList to show next button
+        dataList.addListener(new ListChangeListener(){            
+            @Override
+            public void onChanged(Change c){                
+                System.out.println("LIST CHANGED");
+                if(dataList.size() != 0){
+                    nextButton.setVisible(true);
+                }else{
+                    nextButton.setVisible(false);
+                }                
+            }
+        });
         
         dropzoneListView.setCellFactory((ListView<File> list) -> {
             
@@ -172,8 +187,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     }
 
     @FXML
-    private void onPrevClicked(ActionEvent event) {        
-        System.out.println("prev step");
+    private void onPrevClicked(ActionEvent event) {                
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseModel.fxml"));
@@ -183,23 +197,27 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             ChooseModelController ctrl = loader.getController();
             ctrl.setSession(session);            
         } catch (IOException ex) {
-            Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     @FXML
     private void onNextClicked(ActionEvent event) {
-        System.out.println("next step");
-        /*
+        // Only proceed if button is visible
+        if(!nextButton.isVisible()) return;        
+        
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         try {
-            Parent root = FXMLLoader.load(getClass().getResource(".fxml"));
-            Scene scene = new Scene(root);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wekaui/scenes/result/ResultMain.fxml"));
+            Scene scene = new Scene(loader.load());
             stage.setScene(scene);
+            
+            ResultMainController ctrl = loader.getController();
+            ctrl.setSession(session);    
         } catch (IOException ex) {
-            Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
         }
-                */
+        
     }
     
     /**
@@ -263,6 +281,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
                 dropzoneLabel.setVisible(true);
                 changeDataButtonsVisibility(false);
             }else{
+                nextButton.setVisible(true);
                 dropzoneLabel.setVisible(false);
                 changeDataButtonsVisibility(true);
             }
