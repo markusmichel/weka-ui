@@ -1,6 +1,5 @@
 package wekaui.scenes;
 
-import com.esotericsoftware.yamlbeans.YamlWriter;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
@@ -88,16 +87,6 @@ public class ChooseModelController implements Initializable {
         initModelDropzone();
         initLastUsedModels();
         
-        // Fetch last used models from xml file
-        try {
-            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream ("models.xml")));
-             lastUsedModels = (List<LastUsedModel>) decoder.readObject ();
-            decoder.close ();
-        } catch (FileNotFoundException ex) {
-            //Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
-            lastUsedModels = new LinkedList<>();
-        }
-        
         //nextButton.show();
         
         //Test train data; For development
@@ -141,8 +130,17 @@ public class ChooseModelController implements Initializable {
         lastUsedModelsContainer.setVgap(5);
         lastUsedModelsContainer.setHgap(5);
         
-        for(int i=0; i<20; i++) {
-            LastUsedModel lastUsedModel = new LastUsedModel();
+        // Fetch last used models from xml file
+        try {
+            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream ("models.xml")));
+             lastUsedModels = (List<LastUsedModel>) decoder.readObject ();
+            decoder.close ();
+        } catch (FileNotFoundException ex) {
+            //Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
+            lastUsedModels = new LinkedList<>();
+        }
+        
+        for(LastUsedModel lastUsedModel : lastUsedModels) {
             LastOpenedModelButton button = new LastOpenedModelButton(lastUsedModel);
             lastUsedModelsContainer.getChildren().add(button);
             
@@ -152,7 +150,8 @@ public class ChooseModelController implements Initializable {
                 if(selectedModelButton != null) selectedModelButton.getStyleClass().remove("active");
                 selectedModelButton = button;
             });
-        }
+        }   
+        
     }
 
     private void initModelDropzone() {        

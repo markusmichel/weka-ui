@@ -5,7 +5,6 @@
  */
 package wekaui;
 
-import com.esotericsoftware.yamlbeans.YamlWriter;
 import java.io.FileWriter;
 import java.util.Enumeration;
 import java.util.LinkedList;
