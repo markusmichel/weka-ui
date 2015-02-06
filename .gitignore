@@ -25,3 +25,5 @@ core
 nbproject/*
 build.xml
 manifest.mf
+
+!extlibs/*.jar
