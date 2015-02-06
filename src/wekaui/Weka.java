@@ -5,6 +5,13 @@
  */
 package wekaui;
 
+import com.esotericsoftware.yamlbeans.YamlWriter;
+import java.io.FileWriter;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,9 +26,13 @@ public class Weka extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("scenes/ChooseModel.fxml"));
+        Locale locale = new Locale("de", "DE");
         
-        Scene scene = new Scene(root);
+        //Parent root = FXMLLoader.load(getClass().getResource("scenes/ChooseModel.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("scenes/ChooseModel.fxml"));
+        //fxmlLoader.setResources(ResourceBundle.getBundle("bundle", locale));
+        
+        Scene scene = new Scene(fxmlLoader.load());
         
         stage.setScene(scene);
         stage.show();

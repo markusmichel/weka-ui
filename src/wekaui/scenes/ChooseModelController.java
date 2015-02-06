@@ -1,8 +1,20 @@
 package wekaui.scenes;
 
+import com.esotericsoftware.yamlbeans.YamlWriter;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,10 +68,14 @@ public class ChooseModelController implements Initializable {
     private Label labelOpenModel;
     @FXML
     private NextButton nextButton;
+    @FXML
+    private Label labelCurrentSelectedModelFile;
     
     private Session session;
     
     private LastOpenedModelButton selectedModelButton;
+    private LastUsedModel currentSelectedModel;
+    private List<LastUsedModel> lastUsedModels;
     
     private Session.OnModelChangeListener onModelChangeListener;
     
@@ -71,6 +87,16 @@ public class ChooseModelController implements Initializable {
         initSession();
         initModelDropzone();
         initLastUsedModels();
+        
+        // Fetch last used models from xml file
+        try {
+            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream ("models.xml")));
+             lastUsedModels = (List<LastUsedModel>) decoder.readObject ();
+            decoder.close ();
+        } catch (FileNotFoundException ex) {
+            //Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
+            lastUsedModels = new LinkedList<>();
+        }
         
         //nextButton.show();
         
@@ -221,7 +247,15 @@ public class ChooseModelController implements Initializable {
         if(nextButton.isHidden()) return;
         
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        try {            
+        try {
+            // Add current model to last used models list and persist it to xml file
+            lastUsedModels.add(currentSelectedModel);
+            XMLEncoder encoder;
+            encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("models.xml")));
+            encoder.writeObject(lastUsedModels);
+            encoder.close ();
+            
+            
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseUnclassifiedTexts.fxml"));
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
@@ -253,9 +287,12 @@ public class ChooseModelController implements Initializable {
                 System.out.println("model file exists");
                 // @todo: check if valid model file
                 nextButton.show();
+                currentSelectedModel = new LastUsedModel(model, new Date());
+                labelCurrentSelectedModelFile.setText(model.getName());
             } else {
                 System.out.println("model file does not exist");
                 nextButton.hide();
+                labelCurrentSelectedModelFile.setText("Kein Datenmodell ausgewählt");
             }
         };
         

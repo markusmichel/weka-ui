@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * @author markus
  */
-public class LastUsedModel {
+public class LastUsedModel {    
     private File file;
     private Date lastOpened;
     

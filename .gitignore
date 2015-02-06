@@ -27,3 +27,4 @@ build.xml
 manifest.mf
 
 !extlibs/*.jar
+models.xml
