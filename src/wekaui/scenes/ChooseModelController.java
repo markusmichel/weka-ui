@@ -102,6 +102,12 @@ public class ChooseModelController implements Initializable {
     public void setSession(Session session) {
         this.session = null;
         this.session = session;
+        
+        // show the nextButton if a model is given
+        //@TODO add more logic?! Highlight selected model?!
+        if(this.session.getModel() != null)
+            nextButton.show();
+        
         initSession(session);
     }
 
