@@ -5,8 +5,17 @@
  */
 package wekaui;
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -21,6 +30,29 @@ public class LastUsedModel {
     public LastUsedModel(File file, Date lastOpened) {
         this.file = file;
         this.lastOpened = lastOpened;
+    }
+    
+    public static void saveLastUsedModels(List<LastUsedModel> models) throws FileNotFoundException {
+        XMLEncoder encoder;
+        encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("models.xml")));
+        encoder.writeObject(models);
+        encoder.close ();
+    }
+    
+    public static List<LastUsedModel> getLastUsedModels() {
+        List<LastUsedModel> lastUsedModels;
+                
+        // Fetch last used models from xml file
+        try {
+            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream ("models.xml")));
+             lastUsedModels = (List<LastUsedModel>) decoder.readObject ();
+            decoder.close ();
+        } catch (FileNotFoundException ex) {
+            //Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
+            lastUsedModels = new LinkedList<>();
+        }
+        
+        return lastUsedModels;
     }
 
     @Override

@@ -118,15 +118,7 @@ public class ChooseModelController implements Initializable {
         lastUsedModelsContainer.setVgap(5);
         lastUsedModelsContainer.setHgap(5);
         
-        // Fetch last used models from xml file
-        try {
-            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream ("models.xml")));
-             lastUsedModels = (List<LastUsedModel>) decoder.readObject ();
-            decoder.close ();
-        } catch (FileNotFoundException ex) {
-            //Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
-            lastUsedModels = new LinkedList<>();
-        }
+        lastUsedModels = LastUsedModel.getLastUsedModels();
         
         for(LastUsedModel lastUsedModel : lastUsedModels) {
             LastOpenedModelButton button = new LastOpenedModelButton(lastUsedModel);
@@ -234,17 +226,15 @@ public class ChooseModelController implements Initializable {
         if(nextButton.isHidden()) return;
         
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        
+        // Add current model to last used models list and persist it to xml file
+        lastUsedModels.add(currentSelectedModel);            
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseUnclassifiedTexts.fxml"));
+        Scene scene;
+        
         try {
-            // Add current model to last used models list and persist it to xml file
-            lastUsedModels.add(currentSelectedModel);
-            XMLEncoder encoder;
-            encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("models.xml")));
-            encoder.writeObject(lastUsedModels);
-            encoder.close ();
-            
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseUnclassifiedTexts.fxml"));
-            Scene scene = new Scene(loader.load());
+            scene = new Scene(loader.load());
             stage.setScene(scene);
             
             ChooseUnclassifiedTextsController ctrl = loader.getController();
@@ -252,10 +242,13 @@ public class ChooseModelController implements Initializable {
             
             // remove old onModelChangeListener to prevent zombie objects
             session.removeModelChangeListener(onModelChangeListener);
-
+            
+            LastUsedModel.saveLastUsedModels(lastUsedModels);
+            
         } catch (IOException ex) {
             Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     private void initSession() {
