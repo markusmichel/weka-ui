@@ -11,11 +11,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
+import wekaui.LastUsedModel;
 import wekaui.Session;
 
 /**
@@ -35,12 +37,12 @@ public class Trainer {
         this.session = session;   
         
         //for development
-        session.setModel(new File(modelPath));
+        session.setModel(new LastUsedModel(new File(modelPath), new Date()));
         List<File> unlabeledData = new ArrayList<File>();
         unlabeledData.add(new File(testdataPath));
         session.setUnlabeledData(unlabeledData);
         
-        model = (Classifier) weka.core.SerializationHelper.read(session.getModel().getAbsolutePath());
+        model = (Classifier) weka.core.SerializationHelper.read(session.getModel().getFile().getAbsolutePath());
     }
 
     public List<MyInstance> classifyData() throws Exception {

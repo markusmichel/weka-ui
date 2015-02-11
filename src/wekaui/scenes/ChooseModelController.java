@@ -129,7 +129,7 @@ public class ChooseModelController implements Initializable {
             lastUsedModelsContainer.getChildren().add(button);
             
             button.addOnClickListener((LastUsedModel model) -> {
-                session.setModel(model.getFile());
+                session.setModel(model);
                 button.getStyleClass().add("active");
                 if(selectedModelButton != null) selectedModelButton.getStyleClass().remove("active");
                 selectedModelButton = button;
@@ -204,7 +204,8 @@ public class ChooseModelController implements Initializable {
             event.consume();
             
             // @todo: always set model file - even if invalid?
-            session.setModel(modelFile);
+            // @todo: check if dropped model was already opened / is in the list of last used models
+            session.setModel(new LastUsedModel(modelFile, new Date()));
         });
         
         /**
@@ -221,7 +222,7 @@ public class ChooseModelController implements Initializable {
             
             // @todo: replace placeholder text withcurrent selected file
             if(modelFile != null) {
-                session.setModel(modelFile);
+                session.setModel(new LastUsedModel(modelFile, new Date()));
             }
         });
     }
@@ -273,13 +274,13 @@ public class ChooseModelController implements Initializable {
             session.removeModelChangeListener(onModelChangeListener);
         }
         
-        onModelChangeListener = (File model) -> {
-            if(model != null && model.exists()) {
+        onModelChangeListener = (LastUsedModel model) -> {
+            if(model != null && model.getFile().exists()) {
                 System.out.println("model file exists");
                 // @todo: check if valid model file
                 nextButton.show();
-                currentSelectedModel = new LastUsedModel(model, new Date());
-                labelCurrentSelectedModelFile.setText(model.getName());
+                currentSelectedModel = model;
+                labelCurrentSelectedModelFile.setText(model.getFile().getName());
             } else {
                 System.out.println("model file does not exist");
                 nextButton.hide();

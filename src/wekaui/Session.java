@@ -10,15 +10,24 @@ import java.util.List;
  * @author Markus Michel
  */
 public class Session {
-    private File model;
+    private LastUsedModel model;
     private List<File> unlabeledData;
+    private File arffFile;
+
+    public File getArffFile() {
+        return arffFile;
+    }
+
+    public void setArffFile(File arffFile) {
+        this.arffFile = arffFile;
+    }
     
     private final List<OnModelChangeListener> modelChangeListeners = new ArrayList<>();
 
     /**
      * @return the model
      */
-    public File getModel() {
+    public LastUsedModel getModel() {
         return model;
     }
 
@@ -27,7 +36,7 @@ public class Session {
      * Calls modelChangeListeners when set.
      * @param model the model to set
      */
-    public void setModel(File model) {
+    public void setModel(LastUsedModel model) {
         this.model = model;
         
         for(OnModelChangeListener listener : modelChangeListeners) {
@@ -58,6 +67,6 @@ public class Session {
     }
     
     public interface OnModelChangeListener {
-        public void handle(File model);
+        public void handle(LastUsedModel model);
     }
 }
