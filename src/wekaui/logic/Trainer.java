@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import weka.classifiers.Classifier;
+import weka.classifiers.Evaluation;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 import wekaui.Session;
@@ -42,7 +43,8 @@ public class Trainer {
         model = (Classifier) weka.core.SerializationHelper.read(session.getModel().getAbsolutePath());
     }
 
-    public Instances classifyData() throws Exception {
+    public List<MyInstance> classifyData() throws Exception {
+        List<MyInstance> myInstances = new ArrayList<>();
 
         Instances unlabeled = new Instances(
             new BufferedReader(
@@ -58,8 +60,11 @@ public class Trainer {
         for (int i = 0; i < unlabeled.numInstances(); i++) {
           double clsLabel = model.classifyInstance(unlabeled.instance(i));
           labeled.instance(i).setClassValue(clsLabel);
+          
+          myInstances.add(new MyInstance(labeled.instance(i), model.distributionForInstance(labeled.instance(i))));
         }
 
-        return labeled;
-    }        
+        return myInstances;
+    }
+    
 }

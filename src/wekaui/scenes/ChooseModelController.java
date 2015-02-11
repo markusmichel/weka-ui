@@ -51,6 +51,7 @@ import wekaui.Session;
 import wekaui.customcontrols.InfoDialog;
 import wekaui.customcontrols.LastOpenedModelButton;
 import wekaui.customcontrols.NextButton;
+import wekaui.logic.MyInstance;
 import wekaui.logic.Trainer;
 
 /**
@@ -95,27 +96,14 @@ public class ChooseModelController implements Initializable {
         
         //Test train data; For development
         try {
-            // Trainer trainer = new Trainer(session);
+            Trainer trainer = new Trainer(session);
             
-            //Instances classifiedData = trainer.createDataset("txt_sentoken");
-//            classifiedData = trainer.classifyDataFoo(classifiedData);
-//            for (int i = 0; i < classifiedData.numInstances(); i++) {
-//                Instance instance = classifiedData.instance(i);
-//                System.out.println(instance.toString());
-//                System.out.println(instance.classAttribute().value((int)instance.classValue()));
-//            }
-            /*
-            Instances classifiedData = trainer.classifyData();
-            for (int i = 0; i < classifiedData.numInstances(); i++) {
-                Instance instance = classifiedData.instance(i);
-                System.out.println(instance.toString());
-                System.out.println(instance.classAttribute().value((int)instance.classValue()));
-            }
-                        */
+            List<MyInstance> labeledData = trainer.classifyData();
+            for (MyInstance labeled : labeledData) labeled.printInfo();       
+                                             
         } catch (Exception ex) {
             Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        }        
     }
     
     public void setSession(Session session) {
@@ -134,15 +122,7 @@ public class ChooseModelController implements Initializable {
         lastUsedModelsContainer.setVgap(5);
         lastUsedModelsContainer.setHgap(5);
         
-        // Fetch last used models from xml file
-        try {
-            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream ("models.xml")));
-             lastUsedModels = (List<LastUsedModel>) decoder.readObject ();
-            decoder.close ();
-        } catch (FileNotFoundException ex) {
-            //Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
-            lastUsedModels = new LinkedList<>();
-        }
+        lastUsedModels = LastUsedModel.getLastUsedModels();
         
         for(LastUsedModel lastUsedModel : lastUsedModels) {
             LastOpenedModelButton button = new LastOpenedModelButton(lastUsedModel);
@@ -257,17 +237,15 @@ public class ChooseModelController implements Initializable {
         if(nextButton.isHidden()) return;
         
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        
+        // Add current model to last used models list and persist it to xml file
+        lastUsedModels.add(currentSelectedModel);            
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseUnclassifiedTexts.fxml"));
+        Scene scene;
+        
         try {
-            // Add current model to last used models list and persist it to xml file
-            lastUsedModels.add(currentSelectedModel);
-            XMLEncoder encoder;
-            encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("models.xml")));
-            encoder.writeObject(lastUsedModels);
-            encoder.close ();
-            
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseUnclassifiedTexts.fxml"));
-            Scene scene = new Scene(loader.load());
+            scene = new Scene(loader.load());
             stage.setScene(scene);
             
             ChooseUnclassifiedTextsController ctrl = loader.getController();
@@ -275,10 +253,13 @@ public class ChooseModelController implements Initializable {
             
             // remove old onModelChangeListener to prevent zombie objects
             session.removeModelChangeListener(onModelChangeListener);
-
+            
+            LastUsedModel.saveLastUsedModels(lastUsedModels);
+            
         } catch (IOException ex) {
             Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     private void initSession() {
