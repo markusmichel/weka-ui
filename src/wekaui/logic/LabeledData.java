@@ -28,4 +28,16 @@ public class LabeledData {
         return probabilities;
     }
     
+    public void printInfo() {
+        System.out.println("-----------------------------------------");
+        System.out.println(getInstance().toString());
+        for (int i = 0; i < getInstance().numAttributes(); i++) {
+            System.out.println(getInstance().attribute(i).toString());
+        }                                    
+        System.out.println("result: " + getInstance().classAttribute().value((int)getInstance().classValue()));
+        for (int i = 0; i < getProbabilities().length; i++) {
+             System.out.println(getProbabilities()[i] + " " + getInstance().classAttribute().value(i));
+        }
+    }
+    
 }

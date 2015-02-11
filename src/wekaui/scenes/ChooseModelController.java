@@ -96,11 +96,7 @@ public class ChooseModelController implements Initializable {
             
             List<LabeledData> labeledData = trainer.classifyData();
             for (LabeledData labeled : labeledData) {
-                  System.out.println(labeled.getInstance().toString());
-                  System.out.println("result: " + labeled.getInstance().classAttribute().value((int)labeled.getInstance().classValue()));
-                  for (int i = 0; i < labeled.getProbabilities().length; i++) {
-                       System.out.println(labeled.getProbabilities()[i] + " " + labeled.getInstance().classAttribute().value(i));
-                  }
+                  labeled.printInfo();
                 }            
                                              
         } catch (Exception ex) {
