@@ -37,6 +37,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -47,6 +48,7 @@ import javafx.util.Callback;
 import org.apache.commons.io.FilenameUtils;
 import wekaui.LastUsedModel;
 import wekaui.Session;
+import wekaui.customcontrols.InfoDialog;
 import wekaui.customcontrols.LastOpenedModelButton;
 import wekaui.customcontrols.NextButton;
 import wekaui.logic.Trainer;
@@ -80,6 +82,8 @@ public class ChooseModelController implements Initializable {
     
     @FXML
     private FlowPane lastUsedModelsContainer;
+    @FXML
+    private StackPane container;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -207,6 +211,13 @@ public class ChooseModelController implements Initializable {
                 // No valid model file selected
                 // @todo: provide visual feedback
                 System.err.println("only .model files are supported");
+                
+                InfoDialog info = new InfoDialog("Wrong fileformat");
+                container.getChildren().add(info);
+                
+                info.addOnClickListener((MouseEvent e ) -> {                    
+                    container.getChildren().remove(info);
+                });
             }
             
             event.setDropCompleted(success);
