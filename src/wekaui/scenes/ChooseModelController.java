@@ -49,7 +49,7 @@ import wekaui.LastUsedModel;
 import wekaui.Session;
 import wekaui.customcontrols.LastOpenedModelButton;
 import wekaui.customcontrols.NextButton;
-import wekaui.logic.LabeledData;
+import wekaui.logic.MyInstance;
 import wekaui.logic.Trainer;
 
 /**
@@ -94,15 +94,12 @@ public class ChooseModelController implements Initializable {
         try {
             Trainer trainer = new Trainer(session);
             
-            List<LabeledData> labeledData = trainer.classifyData();
-            for (LabeledData labeled : labeledData) {
-                  labeled.printInfo();
-                }            
+            List<MyInstance> labeledData = trainer.classifyData();
+            for (MyInstance labeled : labeledData) labeled.printInfo();       
                                              
         } catch (Exception ex) {
             Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        }        
     }
     
     public void setSession(Session session) {

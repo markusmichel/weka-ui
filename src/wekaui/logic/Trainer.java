@@ -43,8 +43,8 @@ public class Trainer {
         model = (Classifier) weka.core.SerializationHelper.read(session.getModel().getAbsolutePath());
     }
 
-    public List<LabeledData> classifyData() throws Exception {
-        List<LabeledData> labeledData = new ArrayList<>();
+    public List<MyInstance> classifyData() throws Exception {
+        List<MyInstance> myInstances = new ArrayList<>();
 
         Instances unlabeled = new Instances(
             new BufferedReader(
@@ -61,10 +61,10 @@ public class Trainer {
           double clsLabel = model.classifyInstance(unlabeled.instance(i));
           labeled.instance(i).setClassValue(clsLabel);
           
-          labeledData.add(new LabeledData(labeled.instance(i), model.distributionForInstance(labeled.instance(i))));
+          myInstances.add(new MyInstance(labeled.instance(i), model.distributionForInstance(labeled.instance(i))));
         }
 
-        return labeledData;
+        return myInstances;
     }
     
 }

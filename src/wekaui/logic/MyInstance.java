@@ -11,11 +11,11 @@ import weka.core.Instance;
  *
  * @author Noodlewood
  */
-public class LabeledData {
+public class MyInstance {
     private Instance instance;
     private double[] probabilities;
     
-    public LabeledData(Instance instance, double[] probabilities) {
+    public MyInstance(Instance instance, double[] probabilities) {
         this.instance = instance;
         this.probabilities = probabilities;
     }
@@ -38,6 +38,5 @@ public class LabeledData {
         for (int i = 0; i < getProbabilities().length; i++) {
              System.out.println(getProbabilities()[i] + " " + getInstance().classAttribute().value(i));
         }
-    }
-    
+    }    
 }
