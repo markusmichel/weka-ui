@@ -21,8 +21,11 @@ import java.util.List;
  *
  * @author markus
  */
-public class LastUsedModel {    
+public class LastUsedModel {
+    /** Location of the model file */
     private File file;
+    
+    /** When was the model last used in the tool */
     private Date lastOpened;
     
     public LastUsedModel() {}
@@ -32,6 +35,12 @@ public class LastUsedModel {
         this.lastOpened = lastOpened;
     }
     
+    /**
+     * Stores a list of LastUsedModel objects to a XML file
+     * in the same directory as the running JAR file.
+     * @param models List of models to serialize.
+     * @throws FileNotFoundException 
+     */
     public static void saveLastUsedModels(List<LastUsedModel> models) throws FileNotFoundException {
         XMLEncoder encoder;
         encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("models.xml")));
@@ -39,6 +48,12 @@ public class LastUsedModel {
         encoder.close ();
     }
     
+    /**
+     * Returns a list of LastUsedModels objects.
+     * The list is restored from a "models.xml" file in the JAR directory.
+     * If the File is not present, an empty list will be returned.
+     * @return 
+     */
     public static List<LastUsedModel> getLastUsedModels() {
         List<LastUsedModel> lastUsedModels;
                 
