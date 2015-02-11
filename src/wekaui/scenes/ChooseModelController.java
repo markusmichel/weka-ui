@@ -49,6 +49,7 @@ import wekaui.LastUsedModel;
 import wekaui.Session;
 import wekaui.customcontrols.LastOpenedModelButton;
 import wekaui.customcontrols.NextButton;
+import wekaui.logic.LabeledData;
 import wekaui.logic.Trainer;
 
 /**
@@ -91,23 +92,17 @@ public class ChooseModelController implements Initializable {
         
         //Test train data; For development
         try {
-            // Trainer trainer = new Trainer(session);
+            Trainer trainer = new Trainer(session);
             
-            //Instances classifiedData = trainer.createDataset("txt_sentoken");
-//            classifiedData = trainer.classifyDataFoo(classifiedData);
-//            for (int i = 0; i < classifiedData.numInstances(); i++) {
-//                Instance instance = classifiedData.instance(i);
-//                System.out.println(instance.toString());
-//                System.out.println(instance.classAttribute().value((int)instance.classValue()));
-//            }
-            /*
-            Instances classifiedData = trainer.classifyData();
-            for (int i = 0; i < classifiedData.numInstances(); i++) {
-                Instance instance = classifiedData.instance(i);
-                System.out.println(instance.toString());
-                System.out.println(instance.classAttribute().value((int)instance.classValue()));
-            }
-                        */
+            List<LabeledData> labeledData = trainer.classifyData();
+            for (LabeledData labeled : labeledData) {
+                  System.out.println(labeled.getInstance().toString());
+                  System.out.println("result: " + labeled.getInstance().classAttribute().value((int)labeled.getInstance().classValue()));
+                  for (int i = 0; i < labeled.getProbabilities().length; i++) {
+                       System.out.println(labeled.getProbabilities()[i] + " " + labeled.getInstance().classAttribute().value(i));
+                  }
+                }            
+                                             
         } catch (Exception ex) {
             Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
         }
