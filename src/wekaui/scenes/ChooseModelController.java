@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -82,7 +83,7 @@ public class ChooseModelController implements Initializable {
     
     private Session.OnModelChangeListener onModelChangeListener;
     
-    public static final String[] ALLOWERD_FILE_TYPES = {".model"};
+    public static final String[] ALLOWERD_FILE_TYPES = {"model"};
     
     @FXML
     private FlowPane lastUsedModelsContainer;
@@ -158,7 +159,7 @@ public class ChooseModelController implements Initializable {
         if (
                 db.hasFiles() && 
                 db.getFiles().size() == 1 && 
-                FilenameUtils.getExtension(db.getFiles().get(0).getName()).toLowerCase().equals("model") &&
+                Arrays.asList(ALLOWERD_FILE_TYPES).contains(FilenameUtils.getExtension(db.getFiles().get(0).getName()).toLowerCase()) &&
                 !db.getFiles().get(0).isDirectory()
                 ) {
             return true;
