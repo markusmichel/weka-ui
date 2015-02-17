@@ -275,7 +275,7 @@ public class ChooseModelController implements Initializable {
         }
         
         onModelChangeListener = (LastUsedModel model) -> {
-            if(model != null && model.getFile().exists()) {
+            if(model != null && model.getFile()!= null && model.getFile().exists()) {
                 System.out.println("model file exists");
                 // @todo: check if valid model file
                 nextButton.show();
