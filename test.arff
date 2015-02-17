@@ -1,8 +1,0 @@
-@relation _Users_manuelburghardt_Desktop_review_polarity_txt_sentoken
-
-@attribute text string
-@attribute @@class@@ {neg,pos}
-
-@data
-'This movie is good . Hey everyone , come and see how good this movie is . My favorite movie ever . Its Will Ferrel up to his usual shenanigans . I laughed the entire way through this movie , so much that I had to see it a second time to catch all of the jokes . The reason I like it so much , is that its such an easy movie to quote . If you like low level humor that can be crude at times , this one is for you . Do not expect a super plot or a twist , its a comedy . You will laugh so hard you will get that feeling that you cannot breath . The movie features comedy all stars like Will Ferrel , Paul Rudd , Steve Carell , and David Coechner who team up together and make a perfect comedy team in this classic comedy .',? 
-'Don\'t Waste Your Time I don\'t know how other user comments can say that Will Ferrill is a genius . A genius at what ? This movie ? This was one of the stupidest movies I have ever seen . Funny ? There are some funny moments in it , but not many . The intentional jokes are pushed too hard and come off limp . I don\'t know how a person\'s arm being cut off , a dog being kicked off a bridge , a woman ( played by the poor Christina Applegate ) being called a dirty bitch , can be funny . They could have done many funny things with this movie about an anchorman , but they failed to do so . So my advice to everyone is to not waste your time and wait until it comes to a free library near you .',?

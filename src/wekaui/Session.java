@@ -10,15 +10,16 @@ import java.util.List;
  * @author Markus Michel
  */
 public class Session {
+    
     private LastUsedModel model;
     private List<File> unlabeledData;
-    private File arffFile;
+    private ArffFile arffFile;
 
-    public File getArffFile() {
+    public ArffFile getArffFile() {
         return arffFile;
     }
 
-    public void setArffFile(File arffFile) {
+    public void setArffFile(ArffFile arffFile) {
         this.arffFile = arffFile;
     }
     
