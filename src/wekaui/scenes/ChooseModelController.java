@@ -82,6 +82,8 @@ public class ChooseModelController implements Initializable {
     
     private Session.OnModelChangeListener onModelChangeListener;
     
+    public static final String[] ALLOWERD_FILE_TYPES = {".model"};
+    
     @FXML
     private FlowPane lastUsedModelsContainer;
     @FXML
@@ -96,6 +98,7 @@ public class ChooseModelController implements Initializable {
         //nextButton.show();
         
         //Test train data; For development
+        /*
         try {
             Trainer trainer = new Trainer(session);
             
@@ -104,7 +107,8 @@ public class ChooseModelController implements Initializable {
                                              
         } catch (Exception ex) {
             Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        } 
+        */
     }
     
     public void setSession(Session session) {
@@ -138,14 +142,45 @@ public class ChooseModelController implements Initializable {
         }   
         
     }
+    
+    /**
+     * Check if a dragboard contains a valid weka model file.
+     * @param db DrabBoard to check for valid weka model file.
+     * @return true, if the dragboard contains a valid model file.<br>
+     * false:<br>
+     * <ul>
+     *  <li>if the file extension is not in the ALLOWED_FILE_TYPES list</li>
+     *  <li>There are more than one file in the DragBoard</li>
+     *  <li>The file is a folder (even if the folder has e.g. ".model" extension"</li>
+     * </ul
+     */
+    private boolean dragBoardIsValid(Dragboard db) {
+        if (
+                db.hasFiles() && 
+                db.getFiles().size() == 1 && 
+                FilenameUtils.getExtension(db.getFiles().get(0).getName()).toLowerCase().equals("model") &&
+                !db.getFiles().get(0).isDirectory()
+                ) {
+            return true;
+        }
+        
+        return false;
+    }
 
     private void initModelDropzone() {        
         dropzoneModel.setOnDragEntered((DragEvent event) -> {
-            dropzoneModel.getStyleClass().add("active");
+            Dragboard db = event.getDragboard();
+            if (dragBoardIsValid(db)) {
+                dropzoneModel.getStyleClass().add("active");
+            } else {
+                dropzoneModel.getStyleClass().add("error");
+            }
+            event.consume();
         });
         
+        // Remove active and error states on mouse out.
         dropzoneModel.setOnDragExited((DragEvent event) -> {
-            dropzoneModel.getStyleClass().remove("active");
+            dropzoneModel.getStyleClass().removeAll("active", "error");
         });
         
         dropzoneModel.setOnDragOver((DragEvent event) -> {
@@ -168,30 +203,18 @@ public class ChooseModelController implements Initializable {
             boolean success = false;
             File modelFile = null;
             
-            // Save first file to modelFile
-            if (db.hasFiles() && db.getFiles().size() == 1) {
-                success = true;
-                for (File file: db.getFiles()) {
-                    modelFile = file;
-                }
-            } else {
-                // @todo: provide visual feedback
-                System.err.println("only one file supported");
-            }
             
-            // Assert only model files are selected
-            if(
-                    modelFile != null 
-                    && FilenameUtils.getExtension(modelFile.getName()).toLowerCase().equals("model")
-                    && !modelFile.isDirectory()
-                    ) {
-                
-                
-                
+            if(selectedModelButton != null) selectedModelButton.getStyleClass().remove("active");
+            
+            // Save first file to modelFile
+            if (dragBoardIsValid(db)) {
+                modelFile = db.getFiles().get(0);
             } else {
                 // No valid model file selected
-                // @todo: provide visual feedback
                 System.err.println("only .model files are supported");
+                
+                nextButton.hide();
+                
                 
                 InfoDialog info = new InfoDialog("Wrong fileformat");
                 container.getChildren().add(info);

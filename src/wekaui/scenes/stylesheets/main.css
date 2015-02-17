@@ -20,6 +20,11 @@
     -fx-text-fill: blue;
 }
 
+.light-border.error {
+    -fx-border-color: red;
+    -fx-text-fill: red;
+}
+
 .next-button {
     -fx-graphic: url('next-button.png');
     -fx-background-image: url('next-button.png');
