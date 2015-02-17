@@ -10,13 +10,23 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import javax.xml.soap.Node;
 
 /**
@@ -31,9 +41,15 @@ public class InfoDialog extends VBox {
     @FXML
     VBox container;
     
+    StackPane parent;
+    double removeDuration = 2;
+    // @TODO get dynamic property
+    // problem: value is only known after the node is shown
+    double nodeHeight = 38;
+    
     private List<InfoDialogClickListener> listeners = new ArrayList<>();
     
-    public InfoDialog(String textToSet){
+    public InfoDialog(String textToSet, StackPane parent, String type){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("InfoDialog.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -44,7 +60,18 @@ public class InfoDialog extends VBox {
             throw new RuntimeException(exception);
         }    
         
-        initialize(textToSet);
+        switch(type){
+            case "warning": container.getStyleClass().add("info-dialog-warning");
+                break;
+            case "info": container.getStyleClass().add("info-dialog-info");
+                break;
+            default: break;
+        }
+        
+        this.parent = parent;       
+        
+        initialize(textToSet, this.parent);        
+        startRemoveCounter();        
     }
     
     public void addOnClickListener(InfoDialogClickListener listener) {
@@ -52,26 +79,81 @@ public class InfoDialog extends VBox {
     }
     
     /**
-     * Initializes the events.
-     */    
-    public void initialize(String textToSet) {
-        // TODO
-        // setup the layout
-        
+     * Initializes the events and sets up the parameters.
+     * @param textToSet The information text of the InfoDialog
+     * @param parent The parent to which the InfoDialog is added
+     */
+    public void initialize(String textToSet, StackPane parent) {     
         infoText.setText(textToSet);
+        parent.getChildren().add(this);
+        
+        StackPane.setMargin(this, new Insets( -nodeHeight, 0, 0, 0));        
+        addInfoDialogAnimation();
         
         container.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
             
             // Only proceed if user clicked primary(left) mouse button
             if(event.getButton().equals(MouseButton.PRIMARY)) {
                 for(InfoDialogClickListener listener : listeners) {
-                    listener.handle(event);
+                    listener.handle(event);                    
                 }
-            }
-            
+            }            
             event.consume();
         });
     }  
+    
+    
+    /**
+     * Starts the counter. When it ends the remove Animation is triggered.
+     */
+    private void startRemoveCounter(){        
+        Timeline timeline = new Timeline(new KeyFrame(
+            Duration.seconds(removeDuration),
+            timerEnd -> removeInfoDialogAnimation()));
+        
+        timeline.play();
+    }   
+    
+    /**
+     * Removes the InfoDialog with an animation.
+     */
+    private void removeInfoDialogAnimation(){
+        final TranslateTransition trans
+            = new TranslateTransition(Duration.millis(500), container);   
+        
+        trans.setToY(-container.getHeight());
+        
+        VBox that = this;        
+        trans.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {                
+                parent.getChildren().remove(that);                
+            }
+        });
+        
+        trans.play();        
+    }
+    
+    /**
+     * Adds the InfoDialog with an animation.
+     */
+    private void addInfoDialogAnimation(){
+        final TranslateTransition trans
+            = new TranslateTransition(Duration.millis(500), container);      
+                      
+        trans.setToY(nodeHeight);
+        
+        VBox that = this;        
+        trans.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("ADDED");
+                System.out.println("HAAA" + container.getHeight());
+            }
+        });
+        
+        trans.play();        
+    }    
     
     public interface InfoDialogClickListener {
         public void handle(MouseEvent event);

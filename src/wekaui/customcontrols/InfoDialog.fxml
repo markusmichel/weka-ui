@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -7,19 +8,22 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root alignment="CENTER" stylesheets="@stylesheets/InfoDialog.css" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="TOP_CENTER" stylesheets="@stylesheets/InfoDialog.css" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-        <VBox fx:id="container" alignment="CENTER" blendMode="SRC_ATOP" maxHeight="57.0" maxWidth="200.0" styleClass="info-dialog">
+        <VBox fx:id="container" alignment="TOP_CENTER" blendMode="SRC_ATOP" maxHeight="57.0" maxWidth="200.0">
             <children>
                <Label fx:id="infoText" alignment="CENTER" contentDisplay="CENTER">
                <effect>
                   <Blend />
                </effect></Label>
-               <Label alignment="CENTER" text="Bitte Klicken zum Schließen" />
+               <Label alignment="CENTER" text="Click to close" />
             </children>
          </VBox>
    </children>
    <cursor>
-      <Cursor fx:constant="HAND" />
+      <Cursor fx:constant="DEFAULT" />
    </cursor>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </fx:root>

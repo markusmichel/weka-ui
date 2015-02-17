@@ -214,14 +214,11 @@ public class ChooseModelController implements Initializable {
                 // No valid model file selected
                 System.err.println("only .model files are supported");
                 
-                nextButton.hide();
+                nextButton.hide();               
                 
-                
-                InfoDialog info = new InfoDialog("Wrong fileformat");
-                container.getChildren().add(info);
-                
-                info.addOnClickListener((MouseEvent e ) -> {                    
-                    container.getChildren().remove(info);
+                InfoDialog info = new InfoDialog("Wrong fileformat", container, "warning");
+                info.addOnClickListener((MouseEvent e) -> {
+                    container.getChildren().remove(info);                    
                 });
             }
             

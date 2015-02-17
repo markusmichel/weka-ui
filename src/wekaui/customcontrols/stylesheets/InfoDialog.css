@@ -8,9 +8,18 @@ and open the template in the editor.
     Author     : FreshXL
 */
 
-.info-dialog{
+.info-dialog-warning{
     -fx-border-color: white;
     -fx-border-width: 2;    
-    -fx-background-color: orange;
-    
+    -fx-background-color: orange;    
+    -fx-border-radius: 10;    
+    -fx-background-radius: 10;
+}
+
+.info-dialog-info{
+    -fx-border-color: white;
+    -fx-border-width: 2;    
+    -fx-background-color: greenyellow;    
+    -fx-border-radius: 10;    
+    -fx-background-radius: 10;
 }
