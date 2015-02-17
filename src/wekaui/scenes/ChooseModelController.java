@@ -46,6 +46,7 @@ import weka.core.Instance;
 import weka.core.Instances;
 import javafx.util.Callback;
 import org.apache.commons.io.FilenameUtils;
+import wekaui.ArffFile;
 import wekaui.LastUsedModel;
 import wekaui.Session;
 import wekaui.customcontrols.InfoDialog;
@@ -254,7 +255,9 @@ public class ChooseModelController implements Initializable {
             
             // remove old onModelChangeListener to prevent zombie objects
             session.removeModelChangeListener(onModelChangeListener);
-            
+            LastUsedModel model = lastUsedModels.get(0);
+            ArffFile arff = new ArffFile(new File("test.arff"));
+            model.setEmptyArffFile(arff.getFile());
             LastUsedModel.saveLastUsedModels(lastUsedModels);
             
         } catch (IOException ex) {

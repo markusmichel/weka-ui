@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
@@ -17,6 +16,10 @@ import weka.core.Instances;
  */
 public class ArffFile {
     private File file;
+    
+    public ArffFile(File f) {
+        file = f;
+    }
 
     public File getFile() {
         return file;

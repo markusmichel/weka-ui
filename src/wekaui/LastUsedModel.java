@@ -5,6 +5,7 @@
  */
 package wekaui;
 
+import com.thoughtworks.xstream.XStream;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
@@ -16,6 +17,9 @@ import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -27,6 +31,8 @@ public class LastUsedModel {
     
     /** When was the model last used in the tool */
     private Date lastOpened;
+    
+    private File emptyArffFile;
     
     public LastUsedModel() {}
     
@@ -42,10 +48,13 @@ public class LastUsedModel {
      * @throws FileNotFoundException 
      */
     public static void saveLastUsedModels(List<LastUsedModel> models) throws FileNotFoundException {
-        XMLEncoder encoder;
-        encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("models.xml")));
-        encoder.writeObject(models);
-        encoder.close ();
+        XStream stream = new XStream();
+        try {
+            String xml = stream.toXML(models);
+            FileUtils.writeStringToFile(new File("models.xml"), xml);
+        } catch (Exception ex) {
+            Logger.getLogger(LastUsedModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /**
@@ -56,14 +65,11 @@ public class LastUsedModel {
      */
     public static List<LastUsedModel> getLastUsedModels() {
         List<LastUsedModel> lastUsedModels;
-                
-        // Fetch last used models from xml file
+        
         try {
-            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream ("models.xml")));
-             lastUsedModels = (List<LastUsedModel>) decoder.readObject ();
-            decoder.close ();
-        } catch (FileNotFoundException ex) {
-            //Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
+            XStream stream = new XStream();
+            lastUsedModels = (LinkedList<LastUsedModel>)stream.fromXML(new File("models.xml"));
+        } catch(Exception e) {
             lastUsedModels = new LinkedList<>();
         }
         
@@ -73,6 +79,14 @@ public class LastUsedModel {
     @Override
     public String toString() {
         return "Last opened model";
+    }
+    
+    public File getEmptyArffFile() {
+        return emptyArffFile;
+    }
+
+    public void setEmptyArffFile(File emptyArffFile) {
+        this.emptyArffFile = emptyArffFile;
     }
 
     public File getFile() {
