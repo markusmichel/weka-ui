@@ -17,6 +17,8 @@ import weka.core.Instances;
 public class ArffFile {
     private File file;
     
+    public ArffFile() {}
+    
     public ArffFile(File f) {
         file = f;
     }
