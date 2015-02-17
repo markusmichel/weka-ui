@@ -130,7 +130,7 @@ public class ArffFileTest {
             fail("invalid arff file doesn't exist on disk");
         }
         
-        File destFile = new File("test.arff");
+        File destFile = new File("tmp_test_file.arff");
         try {
             instance.saveEmptyArffFile(destFile);
         } catch (IOException ex) {
