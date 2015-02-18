@@ -1,11 +1,16 @@
 package wekaui;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.Stack;
 
 /**
- *
+ * Extends Stack.
+ * Overrides push method.
+ * Custom behaviour:
+ * <ul>
+ *  <li>Only adds new items if the model file location is different</li>
+ *  <li>If location is identical: move the model to first pace and update lastUsed date</li>
+ * </ul>
  * @author markus
  */
 public class LastUsedModelsList extends Stack<LastUsedModel> {
