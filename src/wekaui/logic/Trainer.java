@@ -29,8 +29,8 @@ public class Trainer {
     String modelPath = "train.model";
     String testdataPath = "test.arff";
     
-    public static MyInstances classifyData(Classifier model, MyInstances unlabeled) throws Exception {
-          //model = (Classifier) weka.core.SerializationHelper.read(session.getModel().getFile().getAbsolutePath());
+    public static MyInstances classifyData(LastUsedModel model, MyInstances unlabeled) throws Exception {
+          
         // set class attribute
         unlabeled.setClassIndex(unlabeled.numAttributes() - 1);
 
@@ -39,10 +39,10 @@ public class Trainer {
 
         // label instances
         for (int i = 0; i < unlabeled.numInstances(); i++) {
-          double clsLabel = model.classifyInstance(unlabeled.instance(i));
+          double clsLabel = model.getModel().classifyInstance(unlabeled.instance(i));
           labeled.instance(i).setClassValue(clsLabel);
           
-          unlabeled.addMyInstance(new MyInstance(labeled.instance(i), model.distributionForInstance(labeled.instance(i))));
+          unlabeled.addMyInstance(new MyInstance(labeled.instance(i), model.getModel().distributionForInstance(labeled.instance(i))));
         }       
         
         return unlabeled;

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
+import weka.classifiers.Classifier;
 
 /**
  *
@@ -22,6 +23,7 @@ import org.apache.commons.io.FileUtils;
 public class LastUsedModel {
     /** Location of the model file */
     private File file;
+    private Classifier model;
     
     /** When was the model last used in the tool */
     private Date lastOpened;
@@ -31,6 +33,11 @@ public class LastUsedModel {
     public LastUsedModel(File file, Date lastOpened) {
         this.file = file;
         this.lastOpened = lastOpened;
+        try {
+            this.model = (Classifier) weka.core.SerializationHelper.read(file.getAbsolutePath());
+        } catch (Exception ex) {
+            Logger.getLogger(LastUsedModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /**
@@ -84,6 +91,10 @@ public class LastUsedModel {
     public File getFile() {
         return file;
     }
+    
+    public Classifier getModel() {
+        return model;
+    }
 
     public void setFile(File file) {
         this.file = file;
@@ -96,4 +107,5 @@ public class LastUsedModel {
     public void setLastOpened(Date lastOpened) {
         this.lastOpened = lastOpened;
     }
+    
 }
