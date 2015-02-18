@@ -27,6 +27,7 @@ import javafx.stage.Window;
 import org.apache.commons.io.FilenameUtils;
 import wekaui.ArffFile;
 import wekaui.LastUsedModel;
+import wekaui.LastUsedModelsList;
 import wekaui.Session;
 import wekaui.customcontrols.InfoDialog;
 import wekaui.customcontrols.LastOpenedModelButton;
@@ -55,7 +56,7 @@ public class ChooseModelController implements Initializable {
     
     private LastOpenedModelButton selectedModelButton;
     private LastUsedModel currentSelectedModel;
-    private List<LastUsedModel> lastUsedModels;
+    private LastUsedModelsList lastUsedModels;
     
     private Session.OnModelChangeListener onModelChangeListener;
     
@@ -93,7 +94,9 @@ public class ChooseModelController implements Initializable {
         
         lastUsedModels = LastUsedModel.getLastUsedModels();
         
-        for(LastUsedModel lastUsedModel : lastUsedModels) {
+        LastUsedModel lastUsedModel;
+        for(int i = lastUsedModels.size() - 1; i >= 0; i--) {
+            lastUsedModel = lastUsedModels.get(i);
             LastOpenedModelButton button = new LastOpenedModelButton(lastUsedModel);
             lastUsedModelsContainer.getChildren().add(button);
             
@@ -225,7 +228,8 @@ public class ChooseModelController implements Initializable {
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         
         // Add current model to last used models list and persist it to xml file
-        lastUsedModels.add(currentSelectedModel);            
+        currentSelectedModel.setLastOpened(new Date());
+        lastUsedModels.push(currentSelectedModel);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseUnclassifiedTexts.fxml"));
         Scene scene;

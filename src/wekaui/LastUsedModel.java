@@ -40,11 +40,11 @@ public class LastUsedModel {
      * @param models List of models to serialize.
      * @throws FileNotFoundException 
      */
-    public static void saveLastUsedModels(List<LastUsedModel> models) throws FileNotFoundException {
+    public static void saveLastUsedModels(LastUsedModelsList models) throws FileNotFoundException {
         XStream stream = new XStream();
         try {
             String xml = stream.toXML(models);
-            FileUtils.writeStringToFile(new File("models.xml"), xml);
+            FileUtils.writeStringToFile(new File(LastUsedModelsList.MODELS_XML_FILE_NAME), xml);
         } catch (Exception ex) {
             Logger.getLogger(LastUsedModel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -56,14 +56,14 @@ public class LastUsedModel {
      * If the File is not present, an empty list will be returned.
      * @return 
      */
-    public static List<LastUsedModel> getLastUsedModels() {
-        List<LastUsedModel> lastUsedModels;
+    public static LastUsedModelsList getLastUsedModels() {
+        LastUsedModelsList lastUsedModels;
         
         try {
             XStream stream = new XStream();
-            lastUsedModels = (LinkedList<LastUsedModel>)stream.fromXML(new File("models.xml"));
+            lastUsedModels = (LastUsedModelsList)stream.fromXML(new File(LastUsedModelsList.MODELS_XML_FILE_NAME));
         } catch(Exception e) {
-            lastUsedModels = new LinkedList<>();
+            lastUsedModels = new LastUsedModelsList(LastUsedModelsList.MAX);
         }
         
         return lastUsedModels;
