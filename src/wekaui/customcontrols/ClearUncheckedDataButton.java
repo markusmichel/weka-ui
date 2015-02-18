@@ -19,7 +19,7 @@ public class ClearUncheckedDataButton extends AbstractPrevNextButton{
         HIDDEN_IMAGE = null;
         NORMAL_IMAGE = new Image(getClass().getResourceAsStream("clear-button.png"));
         HOVERED_IMAGE = new Image(getClass().getResourceAsStream("clear-button-hover.png"));
-        PRESSED_IMAGE = new Image(getClass().getResourceAsStream("clear-button2.png"));   
+        PRESSED_IMAGE = new Image(getClass().getResourceAsStream("clear-button.png"));   
         addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {
             if(isShown()) {
                 Tooltip t = new Tooltip("Add new data");
