@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -27,6 +28,10 @@ public class LastOpenedModelButton extends VBox  {
     
     @FXML
     VBox container;
+    @FXML
+    Label labelLastUsedModelTitle;
+    @FXML
+    Label labelLastUsedModelDate;
     
     public LastOpenedModelButton(LastUsedModel model) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LastOpenedModelButton.fxml"));
@@ -59,6 +64,9 @@ public class LastOpenedModelButton extends VBox  {
             
             event.consume();
         });
+        
+        labelLastUsedModelTitle.setText(model.getFile().getName());
+        labelLastUsedModelDate.setText(model.getLastOpened().toLocaleString());
     }
     
     public interface LastOpenedModelButtonClickListener {
