@@ -6,14 +6,8 @@
 package wekaui;
 
 import com.thoughtworks.xstream.XStream;
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,8 +27,6 @@ public class LastUsedModel {
     private Date lastOpened;
     
     private File emptyArffFile;
-    
-    public LastUsedModel() {}
     
     public LastUsedModel(File file, Date lastOpened) {
         this.file = file;
