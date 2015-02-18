@@ -7,6 +7,7 @@ package wekaui.logic;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import weka.classifiers.Classifier;
 import weka.core.Instances;
 import wekaui.LastUsedModel;
 
@@ -25,21 +26,27 @@ public class Trainer {
      * @param model
      * @param unlabeled
      */
-    public static void classifyData(LastUsedModel model, MyInstances unlabeled) throws ArffFileIncompatibleException {
-        unlabeled.setClassIndex(unlabeled.numAttributes() - 1);
-        Instances labeled = new Instances(unlabeled);
+    public static void classifyData(LastUsedModel lum, MyInstances unlabeled) throws ArffFileIncompatibleException {
+        try {
+            Classifier model = (Classifier) weka.core.SerializationHelper.read(lum.getFile().getAbsolutePath());
 
-        for (int i = 0; i < unlabeled.numInstances(); i++) {
-          double clsLabel;
-            try {
-                clsLabel = model.getModel().classifyInstance(unlabeled.instance(i));
-                labeled.instance(i).setClassValue(clsLabel);
-          
-                unlabeled.getMyInstances().add(new MyInstance(labeled.instance(i), model.getModel().distributionForInstance(labeled.instance(i))));
-            } catch (Exception ex) {
-                throw new ArffFileIncompatibleException();
-            }          
-        }       
+            unlabeled.setClassIndex(unlabeled.numAttributes() - 1);
+            Instances labeled = new Instances(unlabeled);
+
+            for (int i = 0; i < unlabeled.numInstances(); i++) {
+              double clsLabel;
+                try {
+                    clsLabel = model.classifyInstance(unlabeled.instance(i));
+                    labeled.instance(i).setClassValue(clsLabel);
+
+                    unlabeled.getMyInstances().add(new MyInstance(labeled.instance(i), model.distributionForInstance(labeled.instance(i))));
+                } catch (Exception ex) {
+                    throw new ArffFileIncompatibleException();
+                }          
+            }    
+        } catch (Exception ex) {
+            Logger.getLogger(LastUsedModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
 
     public static class ArffFileIncompatibleException extends Exception {
