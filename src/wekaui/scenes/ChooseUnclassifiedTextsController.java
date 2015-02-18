@@ -33,12 +33,14 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import wekaui.ArffFile;
 
 import wekaui.Session;
 import wekaui.customcontrols.AddUncheckedDataButton;
 import wekaui.customcontrols.ClearUncheckedDataButton;
 import wekaui.customcontrols.NextButton;
 import wekaui.customcontrols.PrevButton;
+import wekaui.logic.MyInstances;
 import wekaui.scenes.result.ResultMainController;
 
 /**
@@ -62,13 +64,13 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     @FXML
     private Label dropzoneLabel;
     @FXML
-    private ListView<File> dropzoneListView;
+    private ListView<MyInstances> dropzoneListView;
     @FXML
     private ClearUncheckedDataButton clearButton;
     @FXML
     private AddUncheckedDataButton addButton;
     
-    private static final ObservableList<File> dataList = 
+    private static final ObservableList<MyInstances> dataList = 
             FXCollections.observableArrayList();
     
     private Session session; 
@@ -99,17 +101,17 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             }
         });
         
-        dropzoneListView.setCellFactory((ListView<File> list) -> {
+        dropzoneListView.setCellFactory((ListView<MyInstances> list) -> {
             
-            final ListCell cell = new ListCell<File>(){
+            final ListCell cell = new ListCell<MyInstances>(){
                 @Override
-                public void updateItem(File item, boolean empty) {
+                public void updateItem(MyInstances item, boolean empty) {
                     super.updateItem(item, empty);
-                    setText(empty ? null : getString());                        
+                    setText(empty ? null : getString());                     
                 }
 
                 private String getString() {
-                    return getItem() == null ? "" : getItem().toString();
+                    return getItem() == null ? "" : getItem().getSource().toString();
                 }
             };
             
@@ -131,7 +133,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             
             cell.setOnMouseClicked((MouseEvent event) -> {
                 if(cell.getItem() != null){                    
-                    dataList.remove((File)cell.getItem());
+                    dataList.remove((MyInstances)cell.getItem());
                     deleteTip.hide();
                     checkIfDatalistIsEmpty();
                 }
@@ -166,11 +168,18 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             if (db.hasFiles()) {                                        
                 event.acceptTransferModes(TransferMode.LINK);
                 String filePath = null;
+                ArffFile arff;
                 for (File file:db.getFiles()) {                    
                     if(dropzoneListView.getItems().size() == 0){
                         dropzoneLabel.setVisible(false);
                     }
-                    dataList.add(file);                                        
+                    arff = new ArffFile(file.getPath());
+                    try {                   
+                        dataList.add(arff.getInstances());
+                    } catch (ArffFile.ArffFileInvalidException ex) {
+                        Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
+                        // @todo: show error message
+                    }
                 }
                 session.setUnlabeledData(dataList);
                 changeDataButtonsVisibility(true);
@@ -211,8 +220,15 @@ public class ChooseUnclassifiedTextsController implements Initializable {
                     dropzoneLabel.setVisible(false);
                 }
                 
-                for(File file:dataFile){
-                    dataList.add(file);
+                ArffFile arff;
+                for(File file: dataFile) {
+                    arff = new ArffFile(file.getPath());
+                    try {
+                        dataList.add(arff.getInstances());
+                    } catch (ArffFile.ArffFileInvalidException ex) {
+                        Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
+                        // @todo: show error message
+                    }
                 }
                 
                 session.setUnlabeledData(dataList);
