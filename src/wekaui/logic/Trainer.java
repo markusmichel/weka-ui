@@ -19,6 +19,12 @@ public class Trainer {
     String modelPath = "train.model";
     String testdataPath = "test.arff";
     
+    /**
+     * Classifies unlabeled instances and calculates class probabilites
+     * labeled instances are saved  MyInstances Class
+     * @param model
+     * @param unlabeled
+     */
     public static void classifyData(LastUsedModel model, MyInstances unlabeled) throws ArffFileIncompatibleException {
         unlabeled.setClassIndex(unlabeled.numAttributes() - 1);
         Instances labeled = new Instances(unlabeled);
