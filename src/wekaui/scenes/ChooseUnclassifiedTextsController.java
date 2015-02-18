@@ -178,8 +178,8 @@ public class ChooseUnclassifiedTextsController implements Initializable {
                     arff = new ArffFile(file.getPath());
                     try {            
                         instances = arff.getInstances();
-                        dataList.add(instances);
                         Trainer.classifyData(session.getModel(), instances);
+                        dataList.add(instances);
                     } catch (ArffFile.ArffFileInvalidException | Trainer.ArffFileIncompatibleException ex) {
                         // @todo: show error message
                         System.err.println("invalid arff file");
@@ -230,8 +230,8 @@ public class ChooseUnclassifiedTextsController implements Initializable {
                     arff = new ArffFile(file.getPath());
                     try {
                         instances = arff.getInstances();
-                        dataList.add(instances);
                         Trainer.classifyData(session.getModel(), instances);
+                        dataList.add(instances);
                     } catch (ArffFile.ArffFileInvalidException | Trainer.ArffFileIncompatibleException ex) {
                         // @todo: show error message
                         System.err.println("invalid arff file");
