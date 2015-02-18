@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils;
+import weka.core.converters.ConverterUtils.DataSource;
 import wekaui.logic.MyInstances;
 
 /**
@@ -43,9 +44,8 @@ public class ArffFile extends File {
     public MyInstances getInstances() throws ArffFileInvalidException {
         MyInstances instances = null;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(this));
-            Instances data = new Instances(reader);
-            reader.close();
+            DataSource source = new DataSource(this.getAbsolutePath());
+            Instances data = source.getDataSet();
             instances = new MyInstances(data, this);
         } catch (Exception ex) {
             throw new ArffFileInvalidException();
