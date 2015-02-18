@@ -1,40 +1,22 @@
 package wekaui.scenes;
 
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.SelectionModel;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
@@ -42,10 +24,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.util.Callback;
-import weka.core.Instance;
-import weka.core.Instances;
-import javafx.util.Callback;
 import org.apache.commons.io.FilenameUtils;
 import wekaui.ArffFile;
 import wekaui.LastUsedModel;
@@ -53,8 +31,6 @@ import wekaui.Session;
 import wekaui.customcontrols.InfoDialog;
 import wekaui.customcontrols.LastOpenedModelButton;
 import wekaui.customcontrols.NextButton;
-import wekaui.logic.MyInstance;
-import wekaui.logic.Trainer;
 
 /**
  *
@@ -97,19 +73,6 @@ public class ChooseModelController implements Initializable {
         initLastUsedModels();
         
         //nextButton.show();
-        
-        //Test train data; For development
-        /*
-        try {
-            Trainer trainer = new Trainer(session);
-            
-            List<MyInstance> labeledData = trainer.classifyData();
-            for (MyInstance labeled : labeledData) labeled.printInfo();       
-                                             
-        } catch (Exception ex) {
-            Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        */
     }
     
     public void setSession(Session session) {

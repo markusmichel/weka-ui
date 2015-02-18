@@ -15,15 +15,11 @@ import wekaui.LastUsedModel;
  *
  * @author Freakalot
  */
-public class Trainer {
-    
-    String modelPath = "train.model";
-    String testdataPath = "test.arff";
-    
+public class Trainer {    
     /**
      * Classifies unlabeled instances and calculates class probabilites
      * labeled instances are saved  MyInstances Class
-     * @param model
+     * @param lum
      * @param unlabeled
      */
     public static void classifyData(LastUsedModel lum, MyInstances unlabeled) throws ArffFileIncompatibleException {
