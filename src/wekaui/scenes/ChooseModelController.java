@@ -277,8 +277,8 @@ public class ChooseModelController implements Initializable {
             // remove old onModelChangeListener to prevent zombie objects
             session.removeModelChangeListener(onModelChangeListener);
             LastUsedModel model = lastUsedModels.get(0);
-            ArffFile arff = new ArffFile(new File("test.arff"));
-            model.setEmptyArffFile(arff.getFile());
+            ArffFile arff = new ArffFile("test.arff");
+            model.setEmptyArffFile(arff);
             LastUsedModel.saveLastUsedModels(lastUsedModels);
             
         } catch (IOException ex) {

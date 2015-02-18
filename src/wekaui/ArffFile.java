@@ -5,26 +5,34 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import weka.core.Instances;
+import wekaui.logic.MyInstances;
 
 /**
  *
  * @author markus
  */
-public class ArffFile {
+public class ArffFile extends File {
     private File file;
-    
-    public ArffFile() {}
-    
-    public ArffFile(File f) {
-        file = f;
+
+    public ArffFile(String pathname) {
+        super(pathname);
     }
 
-    public File getFile() {
-        return file;
+    public ArffFile(String parent, String child) {
+        super(parent, child);
+    }
+
+    public ArffFile(File parent, String child) {
+        super(parent, child);
+    }
+
+    public ArffFile(URI uri) {
+        super(uri);
     }
 
     public void setFile(File file) {
@@ -33,9 +41,12 @@ public class ArffFile {
     
     public boolean isArffFileValid() {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(getFile()));
+            BufferedReader reader = new BufferedReader(new FileReader(this));
             Instances data = new Instances(reader);
             reader.close();
+            
+            MyInstances instances = new MyInstances(data, this);
+            
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ArffFile.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -59,7 +70,7 @@ public class ArffFile {
         StringBuilder builder = new StringBuilder();
         String line;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(getFile()));
+            BufferedReader reader = new BufferedReader(new FileReader(this));
             while((line = reader.readLine()) != null) {
                 if(line.startsWith("@")) {
                     builder.append(line);
