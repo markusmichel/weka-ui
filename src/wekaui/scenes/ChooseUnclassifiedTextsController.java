@@ -8,8 +8,12 @@ package wekaui.scenes;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -40,6 +44,8 @@ import wekaui.customcontrols.AddUncheckedDataButton;
 import wekaui.customcontrols.ClearUncheckedDataButton;
 import wekaui.customcontrols.NextButton;
 import wekaui.customcontrols.PrevButton;
+import wekaui.exceptions.ArffFileIncompatibleException;
+import wekaui.exceptions.FileAlreadyAddedException;
 import wekaui.logic.MyInstances;
 import wekaui.logic.Trainer;
 import wekaui.scenes.result.ResultMainController;
@@ -50,8 +56,9 @@ import wekaui.scenes.result.ResultMainController;
  * @author markus
  */
 public class ChooseUnclassifiedTextsController implements Initializable {
+
     @FXML
-    private Label labelOpenData;    
+    private Label labelOpenData;
     @FXML
     private PrevButton prevButton;
     @FXML
@@ -70,89 +77,92 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     private ClearUncheckedDataButton clearButton;
     @FXML
     private AddUncheckedDataButton addButton;
-    
-    private static final ObservableList<MyInstances> dataList = 
-            FXCollections.observableArrayList();
-    
-    private Session session; 
-   
-    
+
+    private static final ObservableList<MyInstances> dataList
+            = FXCollections.observableArrayList();
+
+    private Session session;
+
+    private Set<String> filepaths;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initDataDropzone();        
-        initListView();        
-    }    
-    
-    private void initListView(){        
+        filepaths = new HashSet<>();
+        initDataDropzone();
+        initListView();
+    }
+
+    private void initListView() {
         dropzoneListView.setItems(dataList);
-        
+
         // add change listener to dataList to show next button
-        dataList.addListener(new ListChangeListener(){            
+        dataList.addListener(new ListChangeListener() {
             @Override
-            public void onChanged(Change c){                
+            public void onChanged(Change c) {
                 System.out.println("LIST CHANGED");
-                if(dataList.size() != 0){
+                if (dataList.size() != 0) {
                     nextButton.show();
-                }else{
+                } else {
                     nextButton.hide();
-                }                
+                }
             }
         });
-        
+
         dropzoneListView.setCellFactory((ListView<MyInstances> list) -> {
-            
-            final ListCell cell = new ListCell<MyInstances>(){
+
+            final ListCell cell = new ListCell<MyInstances>() {
                 @Override
                 public void updateItem(MyInstances item, boolean empty) {
                     super.updateItem(item, empty);
-                    setText(empty ? null : getString());                     
+                    setText(empty ? null : getString());
                 }
 
                 private String getString() {
                     return getItem() == null ? "" : getItem().getSource().toString();
                 }
             };
-            
+
             Tooltip deleteTip = new Tooltip("Click to delete");
-            
+
             cell.setOnMouseEntered((MouseEvent event) -> {
-                if(cell.getItem() != null){
+                if (cell.getItem() != null) {
                     double x = event.getScreenX();
-                    double y = event.getScreenY();                    
+                    double y = event.getScreenY();
                     deleteTip.show(cell, x + 10, y + 5);
                 }
             });
-            
+
             cell.setOnMouseExited((MouseEvent event) -> {
-                if(cell.getItem() != null){
+                if (cell.getItem() != null) {
                     deleteTip.hide();
                 }
             });
-            
+
             cell.setOnMouseClicked((MouseEvent event) -> {
-                if(cell.getItem() != null){                    
-                    dataList.remove((MyInstances)cell.getItem());
+                if (cell.getItem() != null) {
+                    filepaths.remove(((MyInstances) cell.getItem()).getSource().getPath());
+                    dataList.remove((MyInstances) cell.getItem());
                     deleteTip.hide();
                     checkIfDatalistIsEmpty();
                 }
             });
             return cell;
         });
-        
+
     }
-    
-    private void initDataDropzone() {        
-        dropzoneArea.setOnDragEntered((DragEvent event) -> {                        
+
+    private void initDataDropzone() {
+        dropzoneArea.setOnDragEntered((DragEvent event) -> {
             dropzoneLabel.getStyleClass().add("active");
         });
-                
-        dropzoneArea.setOnDragExited((DragEvent event) -> {            
+
+        dropzoneArea.setOnDragExited((DragEvent event) -> {
             dropzoneLabel.getStyleClass().remove("active");
         });
-                
+
         dropzoneArea.setOnDragOver((DragEvent event) -> {
             Dragboard db = event.getDragboard();
             if (db.hasFiles()) {
@@ -160,31 +170,18 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             }
             event.consume();
         });
-        
-        dropzoneArea.setOnDragDropped((DragEvent event) -> {            
-            dropzoneLabel.getStyleClass().remove("active");            
-            
+
+        dropzoneArea.setOnDragDropped((DragEvent event) -> {
+            dropzoneLabel.getStyleClass().remove("active");
+
             Dragboard db = event.getDragboard();
             boolean success = false;
-            if (db.hasFiles()) {                                        
+            if (db.hasFiles()) {
                 event.acceptTransferModes(TransferMode.LINK);
                 String filePath = null;
-                ArffFile arff;
-                MyInstances instances;
-                for (File file:db.getFiles()) {                    
-                    if(dropzoneListView.getItems().size() == 0){
-                        dropzoneLabel.setVisible(false);
-                    }
-                    arff = new ArffFile(file.getPath());
-                    try {            
-                        instances = arff.getInstances();
-                        Trainer.classifyData(session.getModel(), instances);
-                        dataList.add(instances);
-                    } catch (ArffFile.ArffFileInvalidException | Trainer.ArffFileIncompatibleException ex) {
-                        // @todo: show error message
-                        System.err.println("invalid arff file");
-                    }
-                }
+
+                createInstancesFromFiles(db.getFiles());
+
                 session.setUnlabeledData(dataList);
                 changeDataButtonsVisibility(true);
                 success = true;
@@ -192,20 +189,21 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             event.setDropCompleted(success);
             event.consume();
         });
-        
+
         /**
-        * Show file chooser if user clicks on the dropzone instead of dragging a file into it
-        */
+         * Show file chooser if user clicks on the dropzone instead of dragging
+         * a file into it
+         */
         dropzoneArea.setOnMouseClicked((MouseEvent event) -> {
-            startChooseFileDialog(event);            
+            startChooseFileDialog(event);
         });
     }
-    
-    private void changeDataButtonsVisibility(boolean visibility){
-        if(visibility){
+
+    private void changeDataButtonsVisibility(boolean visibility) {
+        if (visibility) {
             addButton.show();
             clearButton.show();
-        }else{
+        } else {
             addButton.hide();
             clearButton.hide();
         }
@@ -213,53 +211,66 @@ public class ChooseUnclassifiedTextsController implements Initializable {
 
     private void startChooseFileDialog(Event event) {
         FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Unklassifizierte Daten öffnen");
-            
-            Window window = ((Node)event.getTarget()).getScene().getWindow();
-            
-            List<File> dataFile = fileChooser.showOpenMultipleDialog(window);
-            
-            if(dataFile != null) {                
-                if(dropzoneListView.getItems().size() == 0){
-                    dropzoneLabel.setVisible(false);
+        fileChooser.setTitle("Unklassifizierte Daten öffnen");
+
+        Window window = ((Node) event.getTarget()).getScene().getWindow();
+
+        List<File> dataFile = fileChooser.showOpenMultipleDialog(window);
+
+        if (dataFile != null) {
+
+            createInstancesFromFiles(dataFile);
+
+            session.setUnlabeledData(dataList);
+            changeDataButtonsVisibility(true);
+        }
+    }
+
+    private void createInstancesFromFiles(List<File> files) {
+        if (dropzoneListView.getItems().size() == 0) {
+            dropzoneLabel.setVisible(false);
+        }
+        
+        ArffFile arff;
+        MyInstances instances;
+        for (File file : files) {
+            if (filepaths.add(file.getPath())) {
+                arff = new ArffFile(file.getPath());
+                try {
+                    instances = arff.getInstances();
+                    Trainer.classifyData(session.getModel(), instances);
+                    dataList.add(instances);
+                } catch (ArffFile.ArffFileInvalidException | ArffFileIncompatibleException ex) {
+                    // @todo: show error message
+                    System.err.println("invalid arff file");
                 }
-                
-                ArffFile arff;
-                MyInstances instances;
-                for(File file: dataFile) {
-                    arff = new ArffFile(file.getPath());
-                    try {
-                        instances = arff.getInstances();
-                        Trainer.classifyData(session.getModel(), instances);
-                        dataList.add(instances);
-                    } catch (ArffFile.ArffFileInvalidException | Trainer.ArffFileIncompatibleException ex) {
-                        // @todo: show error message
-                        System.err.println("invalid arff file");
-                    }
+            } else {
+                try {
+                    throw new FileAlreadyAddedException();
+                } catch (FileAlreadyAddedException ex) {
+                    Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                session.setUnlabeledData(dataList);
-                changeDataButtonsVisibility(true);
             }
+        }
     }
 
     private void checkIfDatalistIsEmpty() {
-        if(dataList.isEmpty()){
-            dropzoneLabel.setVisible(true); 
+        if (dataList.isEmpty()) {
+            dropzoneLabel.setVisible(true);
             changeDataButtonsVisibility(false);
         }
-        
+
     }
 
-    public void setSession(Session session) {        
+    public void setSession(Session session) {
         this.session = session;
-        
-        if(this.session.getUnlabeledData() != null){
-                        
-            if(this.session.getUnlabeledData().isEmpty()){
+
+        if (this.session.getUnlabeledData() != null) {
+
+            if (this.session.getUnlabeledData().isEmpty()) {
                 dropzoneLabel.setVisible(true);
                 changeDataButtonsVisibility(false);
-            }else{
+            } else {
                 nextButton.show();
                 dropzoneLabel.setVisible(false);
                 changeDataButtonsVisibility(true);
@@ -268,33 +279,35 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     }
 
     @FXML
-    private void onNextClicked(MouseEvent event) {        
-         // Only proceed if button is visible
-        if(nextButton.isHidden()) return;        
-        
-        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+    private void onNextClicked(MouseEvent event) {
+        // Only proceed if button is visible
+        if (nextButton.isHidden()) {
+            return;
+        }
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/wekaui/scenes/result/ResultMain.fxml"));
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
-            
+
             ResultMainController ctrl = loader.getController();
-            ctrl.setSession(session);    
+            ctrl.setSession(session);
         } catch (IOException ex) {
             Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
     }
 
     @FXML
     private void onPrevClicked(MouseEvent event) {
-        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ChooseModel.fxml"));
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
-            
+
             ChooseModelController ctrl = loader.getController();
-            ctrl.setSession(session);            
+            ctrl.setSession(session);
         } catch (IOException ex) {
             Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -304,17 +317,19 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     private void onAddClicked(MouseEvent event) {
         startChooseFileDialog(event);
     }
-    
+
     /**
      * Clears the dataList and the UnlabeledData from the Session
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void onClearClicked(MouseEvent event) {
-        dataList.clear();        
+        dataList.clear();
+        filepaths.clear();
         session.setUnlabeledData(dataList);
         dropzoneLabel.setVisible(true);
-        changeDataButtonsVisibility(false);            
+        changeDataButtonsVisibility(false);
     }
-    
+
 }

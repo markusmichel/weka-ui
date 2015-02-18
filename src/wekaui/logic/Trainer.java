@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import weka.classifiers.Classifier;
 import weka.core.Instances;
 import wekaui.LastUsedModel;
+import wekaui.exceptions.ArffFileIncompatibleException;
 
 /**
  *
@@ -44,11 +45,4 @@ public class Trainer {
             Logger.getLogger(LastUsedModel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
-
-    public static class ArffFileIncompatibleException extends Exception {
-
-        public ArffFileIncompatibleException() {
-            System.out.println("Arff File incompatible!");
-        }
-    }
 }
