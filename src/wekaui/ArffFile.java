@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import weka.core.Instances;
+import weka.core.converters.ConverterUtils;
 import wekaui.logic.MyInstances;
 
 /**
@@ -39,23 +40,18 @@ public class ArffFile extends File {
         this.file = file;
     }
     
-    public boolean isArffFileValid() {
+    public MyInstances getInstances() throws ArffFileInvalidException {
+        MyInstances instances = null;
         try {
             BufferedReader reader = new BufferedReader(new FileReader(this));
             Instances data = new Instances(reader);
             reader.close();
-            
-            MyInstances instances = new MyInstances(data, this);
-            
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(ArffFile.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            // Throwed by new Instances
-            System.out.println("Arff file is invalid");
-            return false;
+            instances = new MyInstances(data, this);
+        } catch (Exception ex) {
+            throw new ArffFileInvalidException();
         }
-        System.out.println("arff file is valid");
-        return true;
+        
+        return instances;
     }
     
     /**
@@ -83,5 +79,11 @@ public class ArffFile extends File {
         }
         
         FileUtils.writeStringToFile(location, builder.toString());
+    }
+
+    public static class ArffFileInvalidException extends Exception {
+
+        public ArffFileInvalidException() {
+        }
     }
 }
