@@ -27,11 +27,7 @@ public class MyInstances extends Instances {
        
     public File getSource() {
         return this.source;
-    }        
-    
-    public void addMyInstance(MyInstance instance) {
-        instances.add(instance);
-    }
+    }           
     
     public List<MyInstance> getMyInstances() {
         return this.instances;
