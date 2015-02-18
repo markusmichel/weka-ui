@@ -234,7 +234,9 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         ArffFile arff;
         MyInstances instances;
         for (File file : files) {
-            if (filepaths.add(file.getPath())) {
+            
+            try {
+                if (!filepaths.add(file.getPath())) throw new FileAlreadyAddedException();
                 arff = new ArffFile(file.getPath());
                 try {
                     instances = arff.getInstances();
@@ -243,13 +245,9 @@ public class ChooseUnclassifiedTextsController implements Initializable {
                 } catch (ArffFile.ArffFileInvalidException | ArffFileIncompatibleException ex) {
                     // @todo: show error message
                     System.err.println("invalid arff file");
-                }
-            } else {
-                try {
-                    throw new FileAlreadyAddedException();
-                } catch (FileAlreadyAddedException ex) {
-                    Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }                
+            } catch (FileAlreadyAddedException ex) {
+                System.out.println("File already added!");
             }
         }
     }
