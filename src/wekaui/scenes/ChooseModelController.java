@@ -97,6 +97,13 @@ public class ChooseModelController implements Initializable {
         LastUsedModel lastUsedModel;
         for(int i = lastUsedModels.size() - 1; i >= 0; i--) {
             lastUsedModel = lastUsedModels.get(i);
+            
+            // Remove model if the model file does not exist anymore
+            if(!lastUsedModel.getFile().exists()) {
+                lastUsedModels.remove(i);
+                continue;
+            }
+            
             LastOpenedModelButton button = new LastOpenedModelButton(lastUsedModel);
             lastUsedModelsContainer.getChildren().add(button);
             
