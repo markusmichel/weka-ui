@@ -41,6 +41,7 @@ import wekaui.customcontrols.ClearUncheckedDataButton;
 import wekaui.customcontrols.NextButton;
 import wekaui.customcontrols.PrevButton;
 import wekaui.logic.MyInstances;
+import wekaui.logic.Trainer;
 import wekaui.scenes.result.ResultMainController;
 
 /**
@@ -169,14 +170,17 @@ public class ChooseUnclassifiedTextsController implements Initializable {
                 event.acceptTransferModes(TransferMode.LINK);
                 String filePath = null;
                 ArffFile arff;
+                MyInstances instances;
                 for (File file:db.getFiles()) {                    
                     if(dropzoneListView.getItems().size() == 0){
                         dropzoneLabel.setVisible(false);
                     }
                     arff = new ArffFile(file.getPath());
-                    try {                   
-                        dataList.add(arff.getInstances());
-                    } catch (ArffFile.ArffFileInvalidException ex) {
+                    try {            
+                        instances = arff.getInstances();
+                        dataList.add(instances);
+                        Trainer.classifyData(session.getModel(), instances);
+                    } catch (ArffFile.ArffFileInvalidException | Trainer.ArffFileIncompatibleException ex) {
                         Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
                         // @todo: show error message
                     }
@@ -221,11 +225,14 @@ public class ChooseUnclassifiedTextsController implements Initializable {
                 }
                 
                 ArffFile arff;
+                MyInstances instances;
                 for(File file: dataFile) {
                     arff = new ArffFile(file.getPath());
                     try {
-                        dataList.add(arff.getInstances());
-                    } catch (ArffFile.ArffFileInvalidException ex) {
+                        instances = arff.getInstances();
+                        dataList.add(instances);
+                        Trainer.classifyData(session.getModel(), instances);
+                    } catch (ArffFile.ArffFileInvalidException | Trainer.ArffFileIncompatibleException ex) {
                         Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
                         // @todo: show error message
                     }
