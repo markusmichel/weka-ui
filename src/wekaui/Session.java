@@ -4,6 +4,7 @@ package wekaui;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import weka.core.Instances;
 
 /**
  *
@@ -12,7 +13,7 @@ import java.util.List;
 public class Session {
     
     private LastUsedModel model;
-    private List<File> unlabeledData;
+    private List<Instances> unlabeledData;
     private ArffFile arffFile;
 
     public ArffFile getArffFile() {
@@ -56,14 +57,14 @@ public class Session {
     /**
      * @return the text
      */
-    public List<File> getUnlabeledData() {
+    public List<Instances> getUnlabeledData() {
         return unlabeledData;
     }
 
     /**
      * @param text the text to set
      */
-    public void setUnlabeledData(List<File> data) {
+    public void setUnlabeledData(List<Instances> data) {
         this.unlabeledData = data;
     }
     

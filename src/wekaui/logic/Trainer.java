@@ -26,32 +26,11 @@ import wekaui.Session;
  */
 public class Trainer {
     
-    private Session session;
-    
     String modelPath = "train.model";
     String testdataPath = "test.arff";
     
-    private Classifier model;
-
-    public Trainer(Session session) throws Exception {
-        this.session = session;   
-        
-        //for development
-        session.setModel(new LastUsedModel(new File(modelPath), new Date()));
-        List<File> unlabeledData = new ArrayList<File>();
-        unlabeledData.add(new File(testdataPath));
-        session.setUnlabeledData(unlabeledData);
-        
-        model = (Classifier) weka.core.SerializationHelper.read(session.getModel().getFile().getAbsolutePath());
-    }
-
-    public List<MyInstance> classifyData() throws Exception {
-        List<MyInstance> myInstances = new ArrayList<>();
-
-        Instances unlabeled = new Instances(
-            new BufferedReader(
-              new FileReader(session.getUnlabeledData().get(0).getAbsolutePath())));           
-
+    public static MyInstances classifyData(Classifier model, MyInstances unlabeled) throws Exception {
+          //model = (Classifier) weka.core.SerializationHelper.read(session.getModel().getFile().getAbsolutePath());
         // set class attribute
         unlabeled.setClassIndex(unlabeled.numAttributes() - 1);
 
@@ -63,10 +42,10 @@ public class Trainer {
           double clsLabel = model.classifyInstance(unlabeled.instance(i));
           labeled.instance(i).setClassValue(clsLabel);
           
-          myInstances.add(new MyInstance(labeled.instance(i), model.distributionForInstance(labeled.instance(i))));
-        }
-
-        return myInstances;
+          unlabeled.addMyInstance(new MyInstance(labeled.instance(i), model.distributionForInstance(labeled.instance(i))));
+        }       
+        
+        return unlabeled;
     }
     
 }
