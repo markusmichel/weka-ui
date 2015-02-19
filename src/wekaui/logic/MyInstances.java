@@ -7,7 +7,9 @@ package wekaui.logic;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import weka.core.Instances;
 
@@ -32,32 +34,50 @@ public class MyInstances extends Instances {
     
     public List<MyInstance> getMyInstances() {
         return this.instances;
-    }    
+    }
     
     /**
      * Merges the MyInstances List to one file
      * @param dataToMerge List containing MyInstances
-     * @return 
+     * @return A list which contains the merged data
      */
-    static public LinkedHashMap<String, List<MyInstance>> getMergedData(List<MyInstances> dataToMerge){
-        LinkedHashMap<String, List<MyInstance>> list = new LinkedHashMap<String, List<MyInstance>> ();
+    static public List<MyInstance> getMergedData(List<MyInstances> dataToMerge){
+        List<MyInstance> list = new ArrayList<>();
         
         for(MyInstances instances: dataToMerge){
             List<MyInstance> i = instances.getMyInstances();
             for(MyInstance ins: i){
-                String classifiedClass = ins.getInstance().classAttribute().value((int)ins.getInstance().classValue());                
-                if(!list.containsKey(classifiedClass)){
-                    List<MyInstance> l = new ArrayList<>();
-                    l.add(ins);
-                    list.put(classifiedClass, l);
-                }else{
-                    List<MyInstance> l = list.get(classifiedClass);
-                    l.add(ins);
-                    list.put(classifiedClass, l);
-                }                
+                list.add(ins);
             }
-        }      
+        }
         
         return list;
     }
+    
+    /**
+     * Orders the MyInstance List according to their probability
+     * @param dataToOrder List containing MyInstance
+     * @return The list in descending order
+     */
+    static public List<MyInstance> getOrderedData(List<MyInstance> dataToOrder){
+        Collections.sort(dataToOrder, new Comparator<MyInstance>() {
+            @Override
+            public int compare(MyInstance ins1, MyInstance ins2) {
+                return Double.compare(ins2.maxProbability, ins1.maxProbability);
+            }
+        });
+        
+        return dataToOrder;
+    }
+    
+    /**
+     * Helper-Method to determine the max value of the probability array
+     * @param arr
+     * @return The max value of the array
+     */
+    static private double getMaxOfArray(double[] arr){           
+        Arrays.sort(arr);
+        return arr[arr.length - 1];
+    }
+    
 }

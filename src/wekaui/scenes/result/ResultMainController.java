@@ -54,7 +54,15 @@ public class ResultMainController implements Initializable {
     @FXML
     private GridPane gridPane;
     
-    private LinkedHashMap<String, List<MyInstance>> list;
+    /**
+     * Contains the data for the piechart structured by the classes
+     */
+    private LinkedHashMap<String, List<MyInstance>> pieChartHashList;
+    
+    /**
+     * List which contains the merged and ordered data
+     */
+    private List<MyInstance> mergedList;
     
     /**
      * Initializes the controller class.
@@ -105,7 +113,7 @@ public class ResultMainController implements Initializable {
                      }
                 //returns the associated data of the pie slice
                 private List<MyInstance> getPieData(String name) {
-                    return list.get(name);
+                    return pieChartHashList.get(name);
                 }
             });
         }
@@ -121,7 +129,7 @@ public class ResultMainController implements Initializable {
         this.session = s;        
         
         initializePieChart(this.session.getUnlabeledData());       
-               exportBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
+        exportBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
                 exportInstances(event, s);
         });
     }
@@ -134,10 +142,14 @@ public class ResultMainController implements Initializable {
     private ObservableList<PieChart.Data> preparePieChartData(List<MyInstances> classifiedData) {
         
         // merges the data
-        list = MyInstances.getMergedData(classifiedData);
+        mergedList = MyInstances.getMergedData(classifiedData);
+        // sort the data
+        mergedList = MyInstances.getOrderedData(mergedList);
+        
+        pieChartHashList = getFormattedPieChartData(mergedList);
         
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();        
-        Iterator it = list.entrySet().iterator();
+        Iterator it = pieChartHashList.entrySet().iterator();
         
         while(it.hasNext()){
             Map.Entry pair = (Map.Entry) it.next();
@@ -146,7 +158,26 @@ public class ResultMainController implements Initializable {
         }
         return pieChartData;        
     }
-
+    
+    private LinkedHashMap<String, List<MyInstance>> getFormattedPieChartData(List<MyInstance> list){
+        LinkedHashMap<String, List<MyInstance>> hashList = new LinkedHashMap<String, List<MyInstance>> ();
+        
+        for(MyInstance ins: list){
+            String classifiedClass = ins.getInstance().classAttribute().value((int)ins.getInstance().classValue());                
+            if(!hashList.containsKey(classifiedClass)){
+                List<MyInstance> l = new ArrayList<>();
+                l.add(ins);
+                hashList.put(classifiedClass, l);
+            }else{
+                List<MyInstance> l = hashList.get(classifiedClass);
+                l.add(ins);
+                hashList.put(classifiedClass, l);
+            }                
+        }       
+        
+        return hashList;
+    }
+    
     private void exportInstances(MouseEvent event, Session session) {    
         FileChooser fileChooser = new FileChooser();        
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("ARFF files (*.arff)", "*.arff");
