@@ -21,12 +21,15 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -117,10 +120,9 @@ public class ResultMainController implements Initializable {
     public void setSession(Session s){
         this.session = s;        
         
-        initializePieChart(this.session.getUnlabeledData());
-        
+        initializePieChart(this.session.getUnlabeledData());       
                exportBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
-                exportInstances(s);
+                exportInstances(event, s);
         });
     }
     
@@ -145,16 +147,28 @@ public class ResultMainController implements Initializable {
         return pieChartData;        
     }
 
-    private void exportInstances(Session session) {        
+    private void exportInstances(MouseEvent event, Session session) {    
+        FileChooser fileChooser = new FileChooser();        
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("ARFF files (*.arff)", "*.arff");
+        fileChooser.getExtensionFilters().add(extFilter);
+        Window window = ((Node)event.getTarget()).getScene().getWindow();
+        File file = fileChooser.showSaveDialog(window);
+
+        if(file != null){
+            safeArffFile(file);
+        }
+
+    }
+    
+    private void safeArffFile(File file) {
         Instances dataSet = session.getUnlabeledData().get(0);
         ArffSaver saver = new ArffSaver();
         saver.setInstances(dataSet);
         try {
-            saver.setFile(new File("./foo.arff"));
+            saver.setFile(file);
             saver.writeBatch();
         } catch (IOException ex) {
             Logger.getLogger(ResultMainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 }
