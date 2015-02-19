@@ -5,19 +5,22 @@
  */
 package wekaui.logic;
 
+import java.util.Arrays;
 import weka.core.Instance;
 
 /**
  *
  * @author Noodlewood
  */
-public class MyInstance {
+public class MyInstance{
     private Instance instance;
-    private double[] probabilities;
+    private double[] probabilities;    
+    public double maxProbability;
     
     public MyInstance(Instance instance, double[] probabilities) {
         this.instance = instance;
-        this.probabilities = probabilities;
+        this.probabilities = probabilities;        
+        this.maxProbability = getMaxOfProbability();
     }
     
     public Instance getInstance() {
@@ -39,4 +42,13 @@ public class MyInstance {
              System.out.println(getProbabilities()[i] + " " + getInstance().classAttribute().value(i));
         }
     }    
+    
+    /**
+     * Helper-Method to determine the max value of the probability array     
+     * @return The max value of the array
+     */
+    private double getMaxOfProbability(){               
+        Arrays.sort(probabilities);
+        return probabilities[probabilities.length - 1];
+    }
 }
