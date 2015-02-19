@@ -189,10 +189,7 @@ public class ChooseModelController implements Initializable {
                 
                 nextButton.hide();               
                 
-                InfoDialog info = new InfoDialog("Wrong fileformat", container, "warning");
-                info.addOnClickListener((MouseEvent e) -> {
-                    container.getChildren().remove(info);                    
-                });
+                InfoDialog info = new InfoDialog("Wrong fileformat", container, "warning");                
             }
             
             event.setDropCompleted(success);
