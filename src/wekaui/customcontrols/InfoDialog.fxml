@@ -12,18 +12,8 @@
    <children>
         <VBox fx:id="container" alignment="TOP_CENTER" blendMode="SRC_ATOP" maxHeight="57.0" maxWidth="200.0">
             <children>
-               <Label fx:id="infoText" alignment="CENTER" contentDisplay="CENTER">
-               <effect>
-                  <Blend />
-               </effect></Label>
-               <Label alignment="CENTER" text="Click to close" />
+               <Label fx:id="infoText" alignment="CENTER" contentDisplay="CENTER"/>
             </children>
          </VBox>
-   </children>
-   <cursor>
-      <Cursor fx:constant="DEFAULT" />
-   </cursor>
-   <opaqueInsets>
-      <Insets />
-   </opaqueInsets>
+   </children>  
 </fx:root>

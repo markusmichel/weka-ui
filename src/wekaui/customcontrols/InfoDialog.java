@@ -49,6 +49,12 @@ public class InfoDialog extends VBox {
     
     private List<InfoDialogClickListener> listeners = new ArrayList<>();
     
+    /**
+     * Constructor
+     * @param textToSet The text to show
+     * @param parent The parent to which the InfoDialog is added
+     * @param type Determines the type of the InfoDialog: warning or info
+     */
     public InfoDialog(String textToSet, StackPane parent, String type){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("InfoDialog.fxml"));
         fxmlLoader.setRoot(this);
@@ -141,16 +147,7 @@ public class InfoDialog extends VBox {
         final TranslateTransition trans
             = new TranslateTransition(Duration.millis(500), container);      
                       
-        trans.setToY(nodeHeight);
-        
-        VBox that = this;        
-        trans.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("ADDED");
-                System.out.println("HAAA" + container.getHeight());
-            }
-        });
+        trans.setToY(nodeHeight);        
         
         trans.play();        
     }    
