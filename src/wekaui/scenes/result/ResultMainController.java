@@ -5,12 +5,17 @@
  */
 package wekaui.scenes.result;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -22,6 +27,10 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import weka.core.Attribute;
+import weka.core.Instance;
+import weka.core.Instances;
+import weka.core.converters.ArffSaver;
 import wekaui.Session;
 import wekaui.logic.MyInstance;
 import wekaui.logic.MyInstances;
@@ -49,7 +58,7 @@ public class ResultMainController implements Initializable {
      */    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+ 
     }    
     
     /**
@@ -109,6 +118,10 @@ public class ResultMainController implements Initializable {
         this.session = s;        
         
         initializePieChart(this.session.getUnlabeledData());
+        
+               exportBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
+                exportInstances(s);
+        });
     }
     
     /**
@@ -130,6 +143,24 @@ public class ResultMainController implements Initializable {
             pieChartData.add(new PieChart.Data((String)pair.getKey(), value));
         }
         return pieChartData;        
+    }
+
+    private void exportInstances(Session session) {        
+        /*
+        Instances dataSet = session.getUnlabeledData().get(0);
+        
+//        dataSet.add(session.getUnlabeledData().get(0).getMyInstances().get(0).getInstance());
+        System.out.println(dataSet.attribute(0));
+        System.out.println(dataSet.toString());
+        ArffSaver saver = new ArffSaver();
+        saver.setInstances(dataSet);
+        try {
+            saver.setFile(new File("./foo.arff"));
+            saver.writeBatch();//saver.setDestination(new File("./data/test.arff"));   // **not** necessary in 3.5.4 and later
+        } catch (IOException ex) {
+            Logger.getLogger(ResultMainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                */
     }
     
 }
