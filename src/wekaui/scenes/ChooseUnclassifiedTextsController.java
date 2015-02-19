@@ -236,7 +236,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         for (File file : files) {
             
             try {
-                if (!filepaths.add(file.getPath())) throw new FileAlreadyAddedException();
+                if (!filepaths.add(file.getPath())) throw new FileAlreadyAddedException("File already added!");
                 arff = new ArffFile(file.getPath());
                 try {
                     instances = arff.getInstances();
