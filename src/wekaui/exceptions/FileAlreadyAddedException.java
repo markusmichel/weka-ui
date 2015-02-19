@@ -11,8 +11,8 @@ package wekaui.exceptions;
  */
 public class FileAlreadyAddedException extends Exception {
     
-    public FileAlreadyAddedException(String message) {
-        super(message);
+    public FileAlreadyAddedException() {
+        
     }
     
 }
