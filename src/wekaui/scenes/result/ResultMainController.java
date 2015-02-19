@@ -146,21 +146,15 @@ public class ResultMainController implements Initializable {
     }
 
     private void exportInstances(Session session) {        
-        /*
         Instances dataSet = session.getUnlabeledData().get(0);
-        
-//        dataSet.add(session.getUnlabeledData().get(0).getMyInstances().get(0).getInstance());
-        System.out.println(dataSet.attribute(0));
-        System.out.println(dataSet.toString());
         ArffSaver saver = new ArffSaver();
         saver.setInstances(dataSet);
         try {
             saver.setFile(new File("./foo.arff"));
-            saver.writeBatch();//saver.setDestination(new File("./data/test.arff"));   // **not** necessary in 3.5.4 and later
+            saver.writeBatch();
         } catch (IOException ex) {
             Logger.getLogger(ResultMainController.class.getName()).log(Level.SEVERE, null, ex);
         }
-                */
     }
     
 }

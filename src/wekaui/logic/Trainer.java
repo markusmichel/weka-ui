@@ -28,15 +28,13 @@ public class Trainer {
             Classifier model = (Classifier) weka.core.SerializationHelper.read(lum.getFile().getAbsolutePath());
 
             unlabeled.setClassIndex(unlabeled.numAttributes() - 1);
-            Instances labeled = new Instances(unlabeled);
 
             for (int i = 0; i < unlabeled.numInstances(); i++) {
               double clsLabel;
                 try {
                     clsLabel = model.classifyInstance(unlabeled.instance(i));
-                    labeled.instance(i).setClassValue(clsLabel);
-
-                    unlabeled.getMyInstances().add(new MyInstance(labeled.instance(i), model.distributionForInstance(labeled.instance(i))));
+                    unlabeled.instance(i).setClassValue(clsLabel);
+                    unlabeled.getMyInstances().add(new MyInstance(unlabeled.instance(i), model.distributionForInstance(unlabeled.instance(i))));
                 } catch (Exception ex) {
                     throw new ArffFileIncompatibleException();
                 }          
