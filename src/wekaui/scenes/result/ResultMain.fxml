@@ -55,6 +55,7 @@
                   <Insets bottom="50.0" left="35.0" />
                </GridPane.margin>
             </Label>
+            <TextFlow fx:id="detailTextContainer" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="3" />
          </children>
       </GridPane>
    </center>

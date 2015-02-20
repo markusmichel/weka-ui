@@ -23,14 +23,17 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import weka.core.Attribute;
@@ -74,6 +77,8 @@ public class ResultMainController implements Initializable {
     private double probabilityThreshold;
             
     private PieChart chart;
+    @FXML
+    private TextFlow detailTextContainer;
         
     /**
      * Initializes the controller class.
@@ -138,9 +143,19 @@ public class ResultMainController implements Initializable {
             data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED,
                 new EventHandler<MouseEvent>() {
                     @Override public void handle(MouseEvent e) {
+                        detailTextContainer.getChildren().clear();                        
                         List<MyInstance> l = getPieData(data.getName());
-                        System.out.println("PieData: " + data);
-                        System.out.println("LIST: " + l);                        
+                        
+                        for(MyInstance ins: l){                            
+                            Label text = new Label(ins.getInstance().toString());
+                            text.setMaxWidth(detailTextContainer.getWidth());
+                            text.setWrapText(true);
+                            detailTextContainer.getChildren().add(text);
+                            Label seperator = new Label("----------------------");
+                            detailTextContainer.getChildren().add(seperator);
+                        }
+                        
+                                    
                         //@TODO show clicked data
                      }
                 //returns the associated data of the pie slice
