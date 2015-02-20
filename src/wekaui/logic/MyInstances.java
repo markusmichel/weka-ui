@@ -55,7 +55,7 @@ public class MyInstances extends Instances {
     }
     
     /**
-     * Orders the MyInstance List according to their probability
+     * Orders the MyInstance List descending, according to their probability
      * @param dataToOrder List containing MyInstance
      * @return The list in descending order
      */
