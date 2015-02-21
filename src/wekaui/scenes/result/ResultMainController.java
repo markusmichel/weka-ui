@@ -24,12 +24,15 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -54,7 +57,7 @@ public class ResultMainController implements Initializable {
     private Session session;
     
     @FXML
-    private Button exportBtn;
+    private ImageView exportBtn;
     @FXML
     private BorderPane container;
     @FXML
@@ -87,6 +90,7 @@ public class ResultMainController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         intitializeThresholdSlider();
         mergedOrderedThresholdList = new ArrayList<>();
+        exportBtn.setCursor(Cursor.HAND);
     }    
     
     /**

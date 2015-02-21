@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -12,9 +13,6 @@
    <top>
       <Label id="labelTitle" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" text="Results" BorderPane.alignment="CENTER" />
    </top>
-   <bottom>
-      <Button fx:id="exportBtn" mnemonicParsing="false" text="Export" BorderPane.alignment="CENTER" />
-   </bottom>
    <center>
       <GridPane fx:id="gridPane" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -59,4 +57,14 @@
          </children>
       </GridPane>
    </center>
+   <bottom>
+      <ImageView fx:id="exportBtn" fitHeight="25.0" fitWidth="172.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../../customcontrols/export-button.png" />
+         </image>
+         <BorderPane.margin>
+            <Insets bottom="5.0" />
+         </BorderPane.margin>
+      </ImageView>
+   </bottom>
 </BorderPane>
