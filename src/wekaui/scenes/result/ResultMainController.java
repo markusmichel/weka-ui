@@ -20,12 +20,14 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -33,12 +35,14 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
+import javax.imageio.ImageIO;
 import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -82,6 +86,8 @@ public class ResultMainController implements Initializable {
     private PieChart chart;
     @FXML
     private TextFlow detailTextContainer;
+    @FXML
+    private ImageView exportChartBtn;
         
     /**
      * Initializes the controller class.
@@ -90,7 +96,7 @@ public class ResultMainController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         intitializeThresholdSlider();
         mergedOrderedThresholdList = new ArrayList<>();
-        exportBtn.setCursor(Cursor.HAND);
+        
     }    
     
     /**
@@ -104,8 +110,47 @@ public class ResultMainController implements Initializable {
         
         initializePieChart(mergedOrderedList);       
         
+        initializeExportDataBtn(s);
+        initializeExportChartButton(s);
+    }
+    
+    /**
+     * Initializes the export data button and adds event listener to it
+     * @param s The session object, which contains the data to export
+     */
+    public void initializeExportDataBtn(Session s){
+        exportBtn.setCursor(Cursor.HAND);
+        
         exportBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
                 exportInstances(event, s);
+        });
+        
+        exportBtn.addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {                
+                exportBtn.setImage(new Image(getClass().getResourceAsStream("resources/export-button-hover.png")));
+        });
+        
+        exportBtn.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
+                exportBtn.setImage(new Image(getClass().getResourceAsStream("resources/export-button.png")));
+        });
+    }
+    
+    /**
+     * Initializes the export chart button and adds event listener to it
+     * @param s The session object, which contains the data to export
+     */
+    public void initializeExportChartButton(Session s){
+        exportChartBtn.setCursor(Cursor.HAND);
+        
+        exportChartBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
+                exportChart(event);
+        });
+        
+        exportChartBtn.addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {                
+                exportChartBtn.setImage(new Image(getClass().getResourceAsStream("resources/export-chart-hover.png")));
+        });
+        
+        exportChartBtn.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
+                exportChartBtn.setImage(new Image(getClass().getResourceAsStream("resources/export-chart.png")));
         });
     }
     
@@ -295,5 +340,31 @@ public class ResultMainController implements Initializable {
         mergedOrderedList = MyInstances.getMergedData(classifiedData);
         // sort the data
         mergedOrderedList = MyInstances.getOrderedData(mergedOrderedList);
+    }
+    
+    /**
+     * Starts the FileChooser Dialog to save the pie chart as png
+     * @param event MouseEvent 
+     */    
+    private void exportChart(MouseEvent event) {
+        FileChooser fileChooser = new FileChooser();        
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png");
+        fileChooser.getExtensionFilters().add(extFilter);
+        Window window = ((Node)event.getTarget()).getScene().getWindow();
+        File file = fileChooser.showSaveDialog(window);
+
+        if(file != null){
+            safeChartAsFile(file);
+        }
+    }
+
+    private void safeChartAsFile(File file) {
+        WritableImage img = chart.snapshot(new SnapshotParameters(), null);
+        try{            
+            ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", file);
+        } catch (IOException e){
+            // TODO: handle exception here
+            Logger.getLogger(ResultMainController.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 }

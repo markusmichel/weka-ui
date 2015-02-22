@@ -58,13 +58,22 @@
       </GridPane>
    </center>
    <bottom>
-      <ImageView fx:id="exportBtn" fitHeight="25.0" fitWidth="172.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-         <image>
-            <Image url="@../../customcontrols/export-button.png" />
-         </image>
-         <BorderPane.margin>
-            <Insets bottom="5.0" />
-         </BorderPane.margin>
-      </ImageView>
+      <HBox>
+         <children>
+            <ImageView fx:id="exportBtn" fitHeight="25.0" fitWidth="172.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@resources/export-button.png" />
+               </image>
+               <BorderPane.margin>
+                  <Insets bottom="5.0" />
+               </BorderPane.margin>
+            </ImageView>
+            <ImageView fx:id="exportChartBtn" fitHeight="25.0" fitWidth="172.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@resources/export-chart.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
    </bottom>
 </BorderPane>
