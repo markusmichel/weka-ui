@@ -53,7 +53,11 @@
                   <Insets bottom="50.0" left="35.0" />
                </GridPane.margin>
             </Label>
-            <TextFlow fx:id="detailTextContainer" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="3" />
+            <ScrollPane fx:id="textScroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefViewportHeight="231.0" prefViewportWidth="182.0" vbarPolicy="ALWAYS" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="3">
+               <content>
+                  <TextFlow fx:id="detailTextContainer" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="3" />
+               </content>
+            </ScrollPane>
          </children>
       </GridPane>
    </center>

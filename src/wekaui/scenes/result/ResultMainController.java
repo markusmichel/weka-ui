@@ -22,6 +22,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -30,7 +31,9 @@ import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -39,6 +42,8 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -88,6 +93,8 @@ public class ResultMainController implements Initializable {
     private TextFlow detailTextContainer;
     @FXML
     private ImageView exportChartBtn;
+    @FXML
+    private ScrollPane textScroll;
         
     /**
      * Initializes the controller class.
@@ -196,16 +203,11 @@ public class ResultMainController implements Initializable {
                         List<MyInstance> l = getPieData(data.getName());
                         
                         for(MyInstance ins: l){                            
-                            Label text = new Label(ins.getInstance().toString());
-                            text.setMaxWidth(detailTextContainer.getWidth());
-                            text.setWrapText(true);
+                            Text text = new Text(ins.getInstance().toString());
                             detailTextContainer.getChildren().add(text);
-                            Label seperator = new Label("----------------------");
+                            Text seperator = new Text("\n----------------------\n");
                             detailTextContainer.getChildren().add(seperator);
                         }
-                        
-                                    
-                        //@TODO show clicked data
                      }
                 //returns the associated data of the pie slice
                 private List<MyInstance> getPieData(String name) {
@@ -357,7 +359,11 @@ public class ResultMainController implements Initializable {
             safeChartAsFile(file);
         }
     }
-
+    
+    /**
+     * Saves the piechart as png
+     * @param file The File which contains the save path
+     */
     private void safeChartAsFile(File file) {
         WritableImage img = chart.snapshot(new SnapshotParameters(), null);
         try{            
