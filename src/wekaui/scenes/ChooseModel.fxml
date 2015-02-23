@@ -15,12 +15,12 @@
          <children>
               
             <!-- Header -->
-            <Label id="labelTitle" fx:id="labelTitle" maxWidth="1.7976931348623157E308" styleClass="header" text="Trainingsmodell wählen " textFill="#444444" />
+            <Label id="labelTitle" fx:id="labelTitle" maxWidth="1.7976931348623157E308" styleClass="header" text="Choose trainingsmodel" textFill="#444444" />
       
             <!-- last opened model list -->
             <VBox>
                 <children>
-                  <Label id="labelLastUsed" fx:id="labelLastUsed" maxWidth="1.7976931348623157E308" styleClass="subheader" text="zuletzt verwendet">
+                  <Label id="labelLastUsed" fx:id="labelLastUsed" maxWidth="1.7976931348623157E308" styleClass="subheader" text="Last used models">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -43,7 +43,7 @@
             <!-- Open model -->
             <VBox>
                <children>
-                  <Label id="labelOpenModel" fx:id="labelOpenModel" maxWidth="1.7976931348623157E308" styleClass="subheader" text="Model öffnen">
+                  <Label id="labelOpenModel" fx:id="labelOpenModel" maxWidth="1.7976931348623157E308" styleClass="subheader" text="Open model">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
@@ -51,7 +51,7 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <Label id="dropzoneModel" fx:id="dropzoneModel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="144.0" prefWidth="542.0" styleClass="light-border" text="Datenmodell hier reinziehen oder klicken zum öffnen" textAlignment="CENTER">
+                  <Label id="dropzoneModel" fx:id="dropzoneModel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="144.0" prefWidth="542.0" styleClass="light-border" text="Drag and drop a model here or click to open dialog" textAlignment="CENTER">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
