@@ -22,17 +22,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.chart.PieChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
+import javafx.scene.chart.PieChart;;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
@@ -42,7 +37,6 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
@@ -62,15 +56,32 @@ import wekaui.logic.MyInstances;
  * @author FreshXL
  */
 public class ResultMainController implements Initializable {
-
+    
+    /**
+     * Session object which contains the whole data 
+     * like the model and the unclassified data.
+     */
     private Session session;
     
+    /**
+     * Imageview which used as a Button. 
+     * If it's clicked the data can be exported as a arrf file.
+     */
     @FXML
     private ImageView exportBtn;
+    /**
+     * BorderPane of the screen.
+     */
     @FXML
     private BorderPane container;
+    /**
+     * GridPane which contains the other FXML elements.
+     */
     @FXML
     private GridPane gridPane;
+    /**
+     * Slider to control the probability threshold of the data.
+     */
     @FXML
     private Slider thresholdSlider;
     
@@ -80,19 +91,37 @@ public class ResultMainController implements Initializable {
     private LinkedHashMap<String, List<MyInstance>> pieChartHashList;
     
     /**
-     * List which contains the merged and ordered data
+     * Source list which contains the whole merged and ordered data. 
+     * This list is populated intially with the data and is 
+     * later used to copy data in the threshold list.
      */
-    private List<MyInstance> mergedOrderedList;
+    private List<MyInstance> mergedOrderedSourceList;
     
+    /**
+     * List which contains only the data to show. 
+     * It initially gets all the data from mergeOrderedSourceList 
+     * and also if the threshold changes.     * 
+     */
     private List<MyInstance> mergedOrderedThresholdList;
-    
-    private double probabilityThreshold;
             
+    /**
+     * The PieChar which visualizes the data.
+     */
     private PieChart chart;
+    /**
+     * FXML Item which is used as a container to show the detail data.
+     */
     @FXML
     private TextFlow detailTextContainer;
+    /**
+     * Imageview which used as a Button. 
+     * If it's clicked the PieChart can be exported.
+     */
     @FXML
     private ImageView exportChartBtn;
+    /**
+     * Scrollpane for the detailTextContainer.
+     */
     @FXML
     private ScrollPane textScroll;
         
@@ -115,7 +144,7 @@ public class ResultMainController implements Initializable {
         
         prepareDataForPieChart(this.session.getUnlabeledData());
         
-        initializePieChart(mergedOrderedList);       
+        initializePieChart(mergedOrderedThresholdList);       
         
         initializeExportDataBtn(s);
         initializeExportChartButton(s);
@@ -292,7 +321,7 @@ public class ResultMainController implements Initializable {
         System.out.println("Slider value: " + (Double)new_val/100);
         
         mergedOrderedThresholdList.clear();
-        for(MyInstance ins: mergedOrderedList){
+        for(MyInstance ins: mergedOrderedSourceList){
             
             if(ins.maxProbability < ((Double)new_val/100)){
                 System.out.println("MaxProbability: " + ins.maxProbability);
@@ -307,7 +336,12 @@ public class ResultMainController implements Initializable {
         System.out.println("List size: " + mergedOrderedThresholdList.size());
         return mergedOrderedThresholdList;
     }
-        
+    
+    /**
+     * Starts the FileChooser Dialog to save the data.
+     * @param event MouseEvent
+     * @param session Session object
+     */    
     private void exportInstances(MouseEvent event, Session session) {    
         FileChooser fileChooser = new FileChooser();        
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("ARFF files (*.arff)", "*.arff");
@@ -318,9 +352,12 @@ public class ResultMainController implements Initializable {
         if(file != null){
             safeArffFile(file);
         }
-
     }
     
+    /**
+     * Saves the file in an arrf format.
+     * @param file File which contains the data to export.
+     */
     private void safeArffFile(File file) {
         Instances dataSet = session.getUnlabeledData().get(0);
         ArffSaver saver = new ArffSaver();
@@ -339,9 +376,14 @@ public class ResultMainController implements Initializable {
      */
     private void prepareDataForPieChart(List<MyInstances> classifiedData) {
         // merges the data
-        mergedOrderedList = MyInstances.getMergedData(classifiedData);
+        mergedOrderedSourceList = MyInstances.getMergedData(classifiedData);
         // sort the data
-        mergedOrderedList = MyInstances.getOrderedData(mergedOrderedList);
+        mergedOrderedSourceList = MyInstances.getOrderedData(mergedOrderedSourceList);
+        
+        // keep all the data in mergedOrderedList as a source
+        for(MyInstance ins: mergedOrderedSourceList){
+            mergedOrderedThresholdList.add(ins);
+        }
     }
     
     /**
