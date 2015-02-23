@@ -22,7 +22,7 @@ public class ClearUncheckedDataButton extends AbstractPrevNextButton{
         PRESSED_IMAGE = new Image(getClass().getResourceAsStream("clear-button.png"));   
         addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {
             if(isShown()) {
-                Tooltip t = new Tooltip("Add new data");
+                Tooltip t = new Tooltip("Clear data list");
                 Tooltip.install(this, t);
             }
         });
