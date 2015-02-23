@@ -94,15 +94,17 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         initDataDropzone();
         initListView();
     }
-
+    
+    /**
+     * Initializes the listview and adds event listener to the cells
+     */
     private void initListView() {
         dropzoneListView.setItems(dataList);
 
         // add change listener to dataList to show next button
         dataList.addListener(new ListChangeListener() {
             @Override
-            public void onChanged(Change c) {
-                System.out.println("LIST CHANGED");
+            public void onChanged(Change c) {                
                 if (dataList.size() != 0) {
                     nextButton.show();
                 } else {
@@ -153,7 +155,10 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         });
 
     }
-
+    
+    /**
+     * Initializes dropzone
+     */
     private void initDataDropzone() {
         dropzoneArea.setOnDragEntered((DragEvent event) -> {
             dropzoneLabel.getStyleClass().add("active");
@@ -198,7 +203,11 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             startChooseFileDialog(event);
         });
     }
-
+    
+    /**
+     * Changes the visibility of the add and clearbutton
+     * @param visibility Boolean variable to set the visibility.
+     */
     private void changeDataButtonsVisibility(boolean visibility) {
         if (visibility) {
             addButton.show();
@@ -208,10 +217,14 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             clearButton.hide();
         }
     }
-
+    
+    /**
+     * Starts the file dialog to open the unclassified data
+     * @param event Event
+     */
     private void startChooseFileDialog(Event event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Unklassifizierte Daten öffnen");
+        fileChooser.setTitle("Open unclassified data");
 
         Window window = ((Node) event.getTarget()).getScene().getWindow();
 
@@ -251,7 +264,10 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             }
         }
     }
-
+    
+    /**
+     * Checks if the data list is empty and sets the visibility of the buttons accordingly
+     */
     private void checkIfDatalistIsEmpty() {
         if (dataList.isEmpty()) {
             dropzoneLabel.setVisible(true);
@@ -259,7 +275,11 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         }
 
     }
-
+    
+    /**
+     * Sets the session
+     * @param session Session object which contains the data
+     */
     public void setSession(Session session) {
         this.session = session;
 
@@ -275,7 +295,12 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             }
         }
     }
-
+    
+    /**
+     * Is called when the next button is clicked. Loads the next screen to show
+     * and sets the session for it.
+     * @param event MouseEvent
+     */
     @FXML
     private void onNextClicked(MouseEvent event) {
         // Only proceed if button is visible
@@ -295,7 +320,12 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * Is called when the prev button is clicked. Loads the prev screen to show
+     * and sets the session for it.
+     * @param event MouseEvent
+     */
     @FXML
     private void onPrevClicked(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -310,7 +340,12 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * Is called when the add button is clicked. 
+     * Shows the file dialog to open new unclassified data.
+     * @param event MouseEvent
+     */
     @FXML
     private void onAddClicked(MouseEvent event) {
         startChooseFileDialog(event);
