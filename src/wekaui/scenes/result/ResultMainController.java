@@ -317,23 +317,18 @@ public class ResultMainController implements Initializable {
      * @param new_val The value from the slider
      * @return List of MyInstance according to the Threshold from the slider
      */
-    private List<MyInstance> getThresholdList(Number new_val) {
-        System.out.println("Slider value: " + (Double)new_val/100);
+    private List<MyInstance> getThresholdList(Number new_val) {        
         
         mergedOrderedThresholdList.clear();
         for(MyInstance ins: mergedOrderedSourceList){
             
-            if(ins.maxProbability < ((Double)new_val/100)){
-                System.out.println("MaxProbability: " + ins.maxProbability);
-                System.out.println("BREAK");
+            if(ins.maxProbability < ((Double)new_val/100)){                
                 break;
-            }else{
-                System.out.println("Instance added");
+            }else{                
                 mergedOrderedThresholdList.add(ins);
             }
         }
         
-        System.out.println("List size: " + mergedOrderedThresholdList.size());
         return mergedOrderedThresholdList;
     }
     
@@ -410,8 +405,7 @@ public class ResultMainController implements Initializable {
         WritableImage img = chart.snapshot(new SnapshotParameters(), null);
         try{            
             ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", file);
-        } catch (IOException e){
-            // TODO: handle exception here
+        } catch (IOException e){            
             Logger.getLogger(ResultMainController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
