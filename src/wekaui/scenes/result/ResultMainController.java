@@ -124,6 +124,8 @@ public class ResultMainController implements Initializable {
      */
     @FXML
     private ScrollPane textScroll;
+    @FXML
+    private TextFlow dataInfoText;
         
     /**
      * Initializes the controller class.
@@ -148,6 +150,8 @@ public class ResultMainController implements Initializable {
         
         initializeExportDataBtn(s);
         initializeExportChartButton(s);
+        
+        setInfoText();
     }
     
     /**
@@ -234,7 +238,7 @@ public class ResultMainController implements Initializable {
                         for(MyInstance ins: l){                            
                             Text text = new Text(ins.getInstance().toString());
                             detailTextContainer.getChildren().add(text);
-                            Text seperator = new Text("\n----------------------\n");
+                            Text seperator = new Text("\n\n----------------------\n\n");
                             detailTextContainer.getChildren().add(seperator);
                         }
                      }
@@ -308,6 +312,7 @@ public class ResultMainController implements Initializable {
                 Number old_val, Number new_val) {                    
                     mergedOrderedThresholdList = getThresholdList(new_val);
                     initializePieChart(mergedOrderedThresholdList);
+                    setInfoText();
             }
         });
     }
@@ -408,5 +413,42 @@ public class ResultMainController implements Initializable {
         } catch (IOException e){            
             Logger.getLogger(ResultMainController.class.getName()).log(Level.SEVERE, null, e);
         }
+    }
+
+    /**
+     * Sets the infotext for the user.
+     */
+    private void setInfoText() {        
+        dataInfoText.getChildren().clear();
+        
+        //set dataset amount text
+        Text amountText = new Text("Dataset amount: " + mergedOrderedThresholdList.size()+"\n\n");
+        dataInfoText.getChildren().add(amountText);
+        
+        // set average classify probabilty
+        double probSum = 0;
+        for(MyInstance ins: mergedOrderedThresholdList){
+            probSum += ins.maxProbability;
+        }
+        double avgProbability = (probSum / mergedOrderedThresholdList.size()) * 100;
+        avgProbability = Math.floor(avgProbability * 100)/100.0;
+        Text probAccuracyText = new Text("Average classify accuracy: " + avgProbability + "\n\n");
+        
+        dataInfoText.getChildren().add(probAccuracyText);
+        
+        // set the relative frequency text
+        Text relFreqText = new Text("Relative frequency: " + "\n\n");
+        dataInfoText.getChildren().add(relFreqText);       
+        
+        Iterator it = pieChartHashList.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry pair = (Map.Entry) it.next();
+            int value = ((List)pair.getValue()).size();
+            String dataClass = pair.getKey().toString();
+            double relFreq = ((double)value / (double)mergedOrderedThresholdList.size()) * 100;
+            relFreq = Math.floor(relFreq * 100)/100.0;
+            Text data = new Text("Class 1: " + dataClass + " --> " + relFreq + "\n");
+            dataInfoText.getChildren().add(data);
+        }        
     }
 }

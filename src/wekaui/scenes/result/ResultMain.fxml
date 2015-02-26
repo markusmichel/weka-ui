@@ -37,11 +37,6 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </Label>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hier könnten ihre Daten stehen" GridPane.rowIndex="1" GridPane.rowSpan="2">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </Text>
             <Label maxWidth="1.7976931348623157E308" styleClass="subheader" text="Data Details" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
@@ -58,6 +53,7 @@
                   <TextFlow fx:id="detailTextContainer" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="3" />
                </content>
             </ScrollPane>
+            <TextFlow fx:id="dataInfoText" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" GridPane.rowSpan="3" />
          </children>
       </GridPane>
    </center>
