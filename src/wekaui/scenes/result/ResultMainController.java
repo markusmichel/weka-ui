@@ -437,7 +437,7 @@ public class ResultMainController implements Initializable {
         dataInfoText.getChildren().add(probAccuracyText);
         
         // set the relative frequency text
-        Text relFreqText = new Text("Relative frequency: " + "\n\n");
+        Text relFreqText = new Text("Relative frequency: " + "\n");
         dataInfoText.getChildren().add(relFreqText);       
         
         Iterator it = pieChartHashList.entrySet().iterator();

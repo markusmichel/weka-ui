@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -81,9 +82,21 @@ public class ChooseModelController implements Initializable {
         this.session = session;
         
         // show the nextButton if a model is given
-        //@TODO add more logic?! Highlight selected model?!
-        if(this.session.getModel() != null)
+        //@TODO add more logic?! 
+        if(this.session.getModel() != null){
             nextButton.show();
+            
+            // highlight the according button
+            for (int i = 0; i < lastUsedModelsContainer.getChildren().size(); i++) {                    
+                LastOpenedModelButton last = (LastOpenedModelButton) lastUsedModelsContainer.getChildren().get(i);
+                if(last.getLastUsedModel().getFile().equals(session.getModel().getFile())){
+                    currentSelectedModel = last.getLastUsedModel();
+                    last.getStyleClass().add("active");
+                    if(selectedModelButton != null) selectedModelButton.getStyleClass().remove("active");
+                    selectedModelButton = last;
+                }
+            }       
+        }            
         
         initSession(session);
     }
@@ -175,8 +188,7 @@ public class ChooseModelController implements Initializable {
             
             Dragboard db = event.getDragboard();
             boolean success = false;
-            File modelFile = null;
-            
+            File modelFile = null;            
             
             if(selectedModelButton != null) selectedModelButton.getStyleClass().remove("active");
             
@@ -195,8 +207,7 @@ public class ChooseModelController implements Initializable {
             event.setDropCompleted(success);
             event.consume();
             
-            // @todo: always set model file - even if invalid?
-            // @todo: check if dropped model was already opened / is in the list of last used models
+            // @todo: always set model file - even if invalid?            
             session.setModel(new LastUsedModel(modelFile, new Date()));
         });
         
@@ -275,7 +286,18 @@ public class ChooseModelController implements Initializable {
                 // @todo: check if valid model file
                 nextButton.show();
                 currentSelectedModel = model;
-                labelCurrentSelectedModelFile.setText(model.getFile().getName());
+                //labelCurrentSelectedModelFile.setText(model.getFile().getName());
+                
+                // highlight the according button
+                for (int i = 0; i < lastUsedModelsContainer.getChildren().size(); i++) {                    
+                    LastOpenedModelButton last = (LastOpenedModelButton) lastUsedModelsContainer.getChildren().get(i);
+                    if(last.getLastUsedModel().getFile().equals(currentSelectedModel.getFile())){
+                        last.getStyleClass().add("active");
+                        if(selectedModelButton != null) selectedModelButton.getStyleClass().remove("active");
+                        selectedModelButton = last;
+                    }
+                }       
+                                
             } else {
                 System.out.println("model file does not exist");
                 nextButton.hide();

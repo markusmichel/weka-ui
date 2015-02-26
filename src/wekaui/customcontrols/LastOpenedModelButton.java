@@ -73,4 +73,12 @@ public class LastOpenedModelButton extends VBox  {
         public void handle(LastUsedModel model);
     }
     
+    /**
+     * Returns the associated LastUsedModel
+     * @return The associated LastUsedModel
+     */
+    public LastUsedModel getLastUsedModel(){
+        return model;
+    }
+    
 }

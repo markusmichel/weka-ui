@@ -41,7 +41,7 @@
                         </Label>
                         <wekaui.customcontrols.AddUncheckedDataButton fx:id="addButton" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#onAddClicked" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">                                                        
                             <StackPane.margin>
-                                <Insets right="90.0" />
+                                <Insets right="120.0" />
                             </StackPane.margin>                                                   
                         </wekaui.customcontrols.AddUncheckedDataButton>                        
                         <wekaui.customcontrols.ClearUncheckedDataButton fx:id="clearButton" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#onClearClicked" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">                                                        
