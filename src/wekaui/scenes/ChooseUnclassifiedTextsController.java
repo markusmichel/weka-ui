@@ -82,6 +82,8 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     private Session session;
 
     private Set<String> filepaths;
+    @FXML
+    private Label dataSetCountLabel;
 
     /**
      * Initializes the controller class.
@@ -105,8 +107,10 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             public void onChanged(Change c) {                
                 if (dataList.size() != 0) {
                     nextButton.show();
+                    setDataSetAmountLabel();
                 } else {
-                    nextButton.hide();
+                    nextButton.hide();      
+                    dataSetCountLabel.setText("Data set amount: 0");
                 }
             }
         });
@@ -152,6 +156,18 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             return cell;
         });
 
+    }
+    
+    /**
+     * Sets the DataSet Count Label according to single instance amount in dataList
+     */
+    private void setDataSetAmountLabel(){
+        int insAmount = 0;
+        for(MyInstances instances: dataList){
+            insAmount += instances.getMyInstances().size();
+        }                    
+                    
+        dataSetCountLabel.setText("Data set amount: "+ insAmount);
     }
     
     /**
@@ -271,7 +287,6 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             dropzoneLabel.setVisible(true);
             changeDataButtonsVisibility(false);
         }
-
     }
     
     /**
