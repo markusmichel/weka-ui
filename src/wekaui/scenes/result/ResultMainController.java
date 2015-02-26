@@ -437,8 +437,7 @@ public class ResultMainController implements Initializable {
         dataInfoText.getChildren().add(probAccuracyText);
         
         // set the relative frequency text
-        Text relFreqText = new Text("Relative frequency: " + "\n");
-        dataInfoText.getChildren().add(relFreqText);       
+        Text relFreqText = new Text("Relative frequency: " + "\n");       
         
         Iterator it = pieChartHashList.entrySet().iterator();
         while(it.hasNext()){
@@ -447,8 +446,8 @@ public class ResultMainController implements Initializable {
             String dataClass = pair.getKey().toString();
             double relFreq = ((double)value / (double)mergedOrderedThresholdList.size()) * 100;
             relFreq = Math.floor(relFreq * 100)/100.0;
-            Text data = new Text("Class 1: " + dataClass + " --> " + relFreq + "\n");
-            dataInfoText.getChildren().add(data);
-        }        
+            relFreqText.setText(relFreqText.getText() + "Class: " + dataClass + " --> " + relFreq + "\n");            
+        }   
+        dataInfoText.getChildren().add(relFreqText);
     }
 }
