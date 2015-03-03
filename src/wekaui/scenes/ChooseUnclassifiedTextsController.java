@@ -288,14 +288,15 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             try {
                 if (!filepaths.add(file.getPath())) throw new FileAlreadyAddedException();
                 arff = new ArffFile(file.getPath());
-                try {
+                try {                    
                     instances = arff.getInstances();
                     session.setOriginalDataset(instances);
                     Trainer.classifyData(session.getModel(), instances);
                     dataList.add(instances);
-                } catch (ArffFile.ArffFileInvalidException | ArffFileIncompatibleException ex) {
-                    // @todo: show error message
+                } catch (ArffFile.ArffFileInvalidException | ArffFileIncompatibleException ex) {                    
                     System.err.println("invalid arff file");
+                    if(filepaths.contains(file.getPath()))
+                        filepaths.remove(file.getPath());
                     InfoDialog info = new InfoDialog("Invalid .arff-file!", container, "warning");
                     checkIfDatalistIsEmptyAndSetVisibility();
                 }                
