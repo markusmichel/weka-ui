@@ -120,7 +120,7 @@ public class ChooseModelController implements Initializable {
             lastUsedModelsContainer.getChildren().add(button);
             
             button.addOnClickListener((LastUsedModel model) -> {
-                session.setModel(model);
+                session.setModel(model);                
                 button.getStyleClass().add("active");
                 if(selectedModelButton != null) selectedModelButton.getStyleClass().remove("active");
                 selectedModelButton = button;
@@ -285,7 +285,7 @@ public class ChooseModelController implements Initializable {
                 System.out.println("model file exists");
                 // @todo: check if valid model file
                 nextButton.show();
-                currentSelectedModel = model;                               
+                currentSelectedModel = model;
                 
                 // highlight the according button
                 boolean modelFound = false;
@@ -294,7 +294,7 @@ public class ChooseModelController implements Initializable {
                     if(last.getLastUsedModel().getFile().equals(currentSelectedModel.getFile())){
                         last.getStyleClass().add("active");
                         if(selectedModelButton != null){
-                            //selectedModelButton.getStyleClass().remove("active");
+                            selectedModelButton.getStyleClass().remove("active");
                         }
                         selectedModelButton = last;
                         modelFound = true;
@@ -310,6 +310,13 @@ public class ChooseModelController implements Initializable {
                     newButton.getStyleClass().add("active");
                     selectedModelButton = newButton;
                     lastUsedModelsContainer.getChildren().add(newButton);
+                    
+                    newButton.addOnClickListener((currentSelectedModel) -> {
+                        session.setModel(currentSelectedModel);                
+                        newButton.getStyleClass().add("active");
+                        if(selectedModelButton != null) selectedModelButton.getStyleClass().remove("active");
+                        selectedModelButton = newButton;
+                    });
                 }
                 
             } else {
