@@ -1,6 +1,7 @@
 package wekaui.scenes;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -192,7 +193,7 @@ public class ChooseModelController implements Initializable {
             
             // Save first file to modelFile
             if (dragBoardIsValid(db)) {
-                modelFile = db.getFiles().get(0);
+                modelFile = db.getFiles().get(0);                
             } else {
                 // No valid model file selected
                 System.err.println("only .model files are supported");
@@ -284,22 +285,36 @@ public class ChooseModelController implements Initializable {
                 System.out.println("model file exists");
                 // @todo: check if valid model file
                 nextButton.show();
-                currentSelectedModel = model;                
+                currentSelectedModel = model;                               
                 
                 // highlight the according button
+                boolean modelFound = false;
                 for (int i = 0; i < lastUsedModelsContainer.getChildren().size(); i++) {                    
                     LastOpenedModelButton last = (LastOpenedModelButton) lastUsedModelsContainer.getChildren().get(i);
                     if(last.getLastUsedModel().getFile().equals(currentSelectedModel.getFile())){
                         last.getStyleClass().add("active");
-                        if(selectedModelButton != null) selectedModelButton.getStyleClass().remove("active");
+                        if(selectedModelButton != null){
+                            //selectedModelButton.getStyleClass().remove("active");
+                        }
                         selectedModelButton = last;
+                        modelFound = true;
                     }
-                }       
-                                
+                }
+                
+                //if model is not yet in the container create new button and add it to the container
+                if(!modelFound){                    
+                    if(selectedModelButton != null){
+                            selectedModelButton.getStyleClass().remove("active");
+                    }
+                    LastOpenedModelButton newButton = new LastOpenedModelButton(currentSelectedModel); 
+                    newButton.getStyleClass().add("active");
+                    selectedModelButton = newButton;
+                    lastUsedModelsContainer.getChildren().add(newButton);
+                }
+                
             } else {
                 System.out.println("model file does not exist");
                 nextButton.hide();                
-                InfoDialog info = new InfoDialog("No model selected", container, "info");
             }
         };
         
