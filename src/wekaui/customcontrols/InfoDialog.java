@@ -6,11 +6,8 @@
 package wekaui.customcontrols;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
-import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
@@ -18,16 +15,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import javax.xml.soap.Node;
 
 /**
  * FXML Controller class
@@ -75,8 +69,8 @@ public class InfoDialog extends VBox {
         }
         
         this.parent = parent;       
-        
-        initialize(textToSet, this.parent);        
+        this.setPickOnBounds(false);
+        initializeInfoNode(textToSet, this.parent);        
         startRemoveCounter();        
     }
     
@@ -89,7 +83,7 @@ public class InfoDialog extends VBox {
      * @param textToSet The information text of the InfoDialog
      * @param parent The parent to which the InfoDialog is added
      */
-    public void initialize(String textToSet, StackPane parent) {     
+    private void initializeInfoNode(String textToSet, StackPane parent) {     
         infoText.setText(textToSet);
         parent.getChildren().add(this);
         
