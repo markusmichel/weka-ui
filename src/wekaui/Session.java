@@ -1,7 +1,5 @@
-
 package wekaui;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import weka.core.Instances;
@@ -16,6 +14,7 @@ public class Session {
     private LastUsedModel model;
     private List<MyInstances> unlabeledData;
     private ArffFile arffFile;
+    private Instances originalDataset;
 
     public ArffFile getArffFile() {
         return arffFile;
@@ -67,6 +66,18 @@ public class Session {
      */
     public void setUnlabeledData(List<MyInstances> data) {
         this.unlabeledData = data;
+    }
+    
+    /**
+     *
+     * @return the original Instances
+     */
+    public Instances getOriginalDataset() {
+        return originalDataset;
+    }
+    
+    public void setOriginalDataset(Instances originalDataset) {
+        this.originalDataset = originalDataset;
     }
     
     public interface OnModelChangeListener {

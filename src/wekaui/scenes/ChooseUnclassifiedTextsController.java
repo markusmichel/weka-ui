@@ -267,6 +267,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
                 arff = new ArffFile(file.getPath());
                 try {
                     instances = arff.getInstances();
+                    session.setOriginalDataset(instances);
                     Trainer.classifyData(session.getModel(), instances);
                     dataList.add(instances);
                 } catch (ArffFile.ArffFileInvalidException | ArffFileIncompatibleException ex) {

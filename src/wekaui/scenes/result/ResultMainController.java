@@ -27,7 +27,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.chart.PieChart;;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
@@ -310,7 +310,7 @@ public class ResultMainController implements Initializable {
         thresholdSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {                    
-                    mergedOrderedThresholdList = getThresholdList(new_val);
+                    mergedOrderedThresholdList = updateThresholdList(new_val);
                     initializePieChart(mergedOrderedThresholdList);
                     setInfoText();
             }
@@ -322,7 +322,7 @@ public class ResultMainController implements Initializable {
      * @param new_val The value from the slider
      * @return List of MyInstance according to the Threshold from the slider
      */
-    private List<MyInstance> getThresholdList(Number new_val) {        
+    private List<MyInstance> updateThresholdList(Number new_val) {        
         
         mergedOrderedThresholdList.clear();
         for(MyInstance ins: mergedOrderedSourceList){
@@ -335,6 +335,16 @@ public class ResultMainController implements Initializable {
         }
         
         return mergedOrderedThresholdList;
+    }
+    
+    private Instances getInstancesFromThresholdlist(Instances originalDataset) {
+        Instances newInstances = new Instances(originalDataset);
+        newInstances.delete();
+        for(MyInstance ins: mergedOrderedThresholdList) {
+            newInstances.add(ins.getInstance());
+        }
+        
+        return newInstances;
     }
     
     /**
@@ -359,7 +369,8 @@ public class ResultMainController implements Initializable {
      * @param file File which contains the data to export.
      */
     private void safeArffFile(File file) {
-        Instances dataSet = session.getUnlabeledData().get(0);
+        //Instances dataSet = session.getUnlabeledData().get(0);
+        Instances dataSet = getInstancesFromThresholdlist(session.getOriginalDataset());
         ArffSaver saver = new ArffSaver();
         saver.setInstances(dataSet);
         try {
