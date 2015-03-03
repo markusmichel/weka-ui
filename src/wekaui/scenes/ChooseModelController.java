@@ -59,7 +59,7 @@ public class ChooseModelController implements Initializable {
     
     private Session.OnModelChangeListener onModelChangeListener;
     
-    public static final String[] ALLOWERD_FILE_TYPES = {"model"};
+    public static final String[] ALLOWED_FILE_TYPES = {"model"};
     
     @FXML
     private FlowPane lastUsedModelsContainer;
@@ -143,7 +143,7 @@ public class ChooseModelController implements Initializable {
         if (
                 db.hasFiles() && 
                 db.getFiles().size() == 1 && 
-                Arrays.asList(ALLOWERD_FILE_TYPES).contains(FilenameUtils.getExtension(db.getFiles().get(0).getName()).toLowerCase()) &&
+                Arrays.asList(ALLOWED_FILE_TYPES).contains(FilenameUtils.getExtension(db.getFiles().get(0).getName()).toLowerCase()) &&
                 !db.getFiles().get(0).isDirectory()
                 ) {
             return true;
@@ -214,7 +214,7 @@ public class ChooseModelController implements Initializable {
          */
         dropzoneModel.setOnMouseClicked((MouseEvent event) -> {
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Datenmodell öffnen");
+            fileChooser.setTitle("Open model");
             Window window = ((Node)event.getTarget()).getScene().getWindow();
             
             // @todo: extension of model file??
@@ -284,8 +284,7 @@ public class ChooseModelController implements Initializable {
                 System.out.println("model file exists");
                 // @todo: check if valid model file
                 nextButton.show();
-                currentSelectedModel = model;
-                //labelCurrentSelectedModelFile.setText(model.getFile().getName());
+                currentSelectedModel = model;                
                 
                 // highlight the according button
                 for (int i = 0; i < lastUsedModelsContainer.getChildren().size(); i++) {                    
@@ -299,8 +298,8 @@ public class ChooseModelController implements Initializable {
                                 
             } else {
                 System.out.println("model file does not exist");
-                nextButton.hide();
-                labelCurrentSelectedModelFile.setText("Kein Datenmodell ausgewählt");
+                nextButton.hide();                
+                InfoDialog info = new InfoDialog("No model selected", container, "info");
             }
         };
         

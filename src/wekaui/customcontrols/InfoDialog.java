@@ -68,7 +68,7 @@ public class InfoDialog extends VBox {
             default: break;
         }
         
-        this.parent = parent;       
+        this.parent = parent;            
         this.setPickOnBounds(false);
         initializeInfoNode(textToSet, this.parent);        
         startRemoveCounter();        

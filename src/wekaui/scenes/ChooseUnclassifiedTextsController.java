@@ -23,6 +23,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -32,6 +33,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -40,6 +42,7 @@ import wekaui.ArffFile;
 import wekaui.Session;
 import wekaui.customcontrols.AddUncheckedDataButton;
 import wekaui.customcontrols.ClearUncheckedDataButton;
+import wekaui.customcontrols.InfoDialog;
 import wekaui.customcontrols.NextButton;
 import wekaui.customcontrols.PrevButton;
 import wekaui.exceptions.ArffFileIncompatibleException;
@@ -84,6 +87,14 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     private Set<String> filepaths;
     @FXML
     private Label dataSetCountLabel;
+    @FXML
+    private StackPane container;
+    @FXML
+    private Button importDataFromTxtBtn;
+    @FXML
+    private Button importDataFromCsvBtn;
+    @FXML
+    private Button createNewArffBtn;
 
     /**
      * Initializes the controller class.
@@ -116,8 +127,18 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         });
 
         dropzoneListView.setCellFactory((ListView<MyInstances> list) -> {
+            final ListCell cell = setupCellFactory();
+            return cell;            
+        });
 
-            final ListCell cell = new ListCell<MyInstances>() {
+    }
+    
+    /**
+     * Sets up the customized ListCell and adds EventListeners
+     * @return The customized ListCell
+     */
+    private ListCell setupCellFactory(){
+        final ListCell cell = new ListCell<MyInstances>() {
                 @Override
                 public void updateItem(MyInstances item, boolean empty) {
                     super.updateItem(item, empty);
@@ -150,12 +171,10 @@ public class ChooseUnclassifiedTextsController implements Initializable {
                     filepaths.remove(((MyInstances) cell.getItem()).getSource().getPath());
                     dataList.remove((MyInstances) cell.getItem());
                     deleteTip.hide();
-                    checkIfDatalistIsEmpty();
+                    checkIfDatalistIsEmptyAndSetVisibility();
                 }
             });
             return cell;
-        });
-
     }
     
     /**
@@ -202,7 +221,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
                 createInstancesFromFiles(db.getFiles());
 
                 session.setUnlabeledData(dataList);
-                changeDataButtonsVisibility(true);
+                checkIfDatalistIsEmptyAndSetVisibility();
                 success = true;
             }
             event.setDropCompleted(success);
@@ -253,6 +272,10 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         }
     }
 
+    /**
+     * Creates weka instances from files.
+     * @param files List containing all the files
+     */
     private void createInstancesFromFiles(List<File> files) {
         if (dropzoneListView.getItems().size() == 0) {
             dropzoneLabel.setVisible(false);
@@ -273,9 +296,12 @@ public class ChooseUnclassifiedTextsController implements Initializable {
                 } catch (ArffFile.ArffFileInvalidException | ArffFileIncompatibleException ex) {
                     // @todo: show error message
                     System.err.println("invalid arff file");
+                    InfoDialog info = new InfoDialog("Invalid .arff-file!", container, "warning");
+                    checkIfDatalistIsEmptyAndSetVisibility();
                 }                
             } catch (FileAlreadyAddedException ex) {
                 System.out.println("File already added!");
+                InfoDialog info = new InfoDialog("File already added!", container, "info");
             }
         }
     }
@@ -283,10 +309,13 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     /**
      * Checks if the data list is empty and sets the visibility of the buttons accordingly
      */
-    private void checkIfDatalistIsEmpty() {
+    private void checkIfDatalistIsEmptyAndSetVisibility() {
         if (dataList.isEmpty()) {
             dropzoneLabel.setVisible(true);
             changeDataButtonsVisibility(false);
+        }else{
+            dropzoneLabel.setVisible(false);
+            changeDataButtonsVisibility(true);
         }
     }
     
@@ -375,8 +404,8 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         dataList.clear();
         filepaths.clear();
         session.setUnlabeledData(dataList);
-        dropzoneLabel.setVisible(true);
-        changeDataButtonsVisibility(false);
+        
+        checkIfDatalistIsEmptyAndSetVisibility();        
     }
 
 }
