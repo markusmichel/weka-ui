@@ -5,11 +5,19 @@
  */
 package wekaui.scenes;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
@@ -17,6 +25,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +36,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -90,11 +101,11 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     @FXML
     private StackPane container;
     @FXML
-    private Button importDataFromTxtBtn;
+    private Button arrfFileContentTxtBtn;
     @FXML
-    private Button importDataFromCsvBtn;
+    private TextArea arffFileContentTxtArea;
     @FXML
-    private Button createNewArffBtn;
+    private TitledPane arffFileContentTitledPane;
 
     /**
      * Initializes the controller class.
@@ -414,6 +425,36 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         session.setUnlabeledData(dataList);
         
         checkIfDatalistIsEmptyAndSetVisibility();        
+    }
+
+    @FXML
+    private void onArffFileContentFileSaveClicked(ActionEvent event) throws IOException {
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d_MM_yyyy HH;mm;ss");
+        String dateToSave = dateFormat.format(new Date());
+        
+        String absolutePath = this.session.getModel().getFile().getAbsolutePath();
+        String filePath = absolutePath.substring(0,absolutePath.lastIndexOf(File.separator));        
+        String fileToSave = filePath + "/dataset_" + dateToSave + ".arff";
+        
+        BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave));
+        writer.write(this.session.getArffFile().getArffFileContent() + arffFileContentTxtArea.getText());
+        writer.flush();
+        writer.close();
+        
+        List<File> tmp = new ArrayList<>();
+        tmp.add(new File(fileToSave));                
+        createInstancesFromFiles(tmp);
+        
+        session.setUnlabeledData(dataList);
+        checkIfDatalistIsEmptyAndSetVisibility();
+        
+        resetArffFileContentTxtArea();        
+    }
+    
+    private void resetArffFileContentTxtArea(){
+        arffFileContentTxtArea.setText("");
+        arffFileContentTitledPane.setExpanded(false);        
     }
 
 }
