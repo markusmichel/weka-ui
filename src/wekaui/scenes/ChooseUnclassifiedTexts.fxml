@@ -23,7 +23,7 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="modelInfoText" alignment="CENTER" focusTraversable="false" text="Show model-infos here!" textAlignment="CENTER" />
+                  <Label fx:id="modelInfoText" alignment="CENTER" focusTraversable="false" text="Show model-infos here!" />
                   <Label fx:id="dataSetCountLabel" text="Data set amount: 0" />
                </children>
                <VBox.margin>

@@ -326,7 +326,14 @@ public class ChooseUnclassifiedTextsController implements Initializable {
      */
     public void setSession(Session session) {
         this.session = session;
-
+        
+        if(this.session.getArffFile() != null) {
+            modelInfoText.setText("Arff-File structure: \n"
+            + this.session.getArffFile().getArffFileContent() + "\n");            
+        }else{
+            modelInfoText.setText("No used arff-file found. \n");
+        }
+        
         if (this.session.getUnlabeledData() != null) {
 
             if (this.session.getUnlabeledData().isEmpty()) {

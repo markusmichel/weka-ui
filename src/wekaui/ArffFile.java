@@ -78,6 +78,27 @@ public class ArffFile extends File {
         
         FileUtils.writeStringToFile(location, builder.toString());
     }
+    
+    /**
+     * Returns the content of the Arff-File as a String
+     * @return String which contains the content.
+     */
+    public String getArffFileContent(){
+        String content = "";
+        
+        StringBuilder builder = new StringBuilder();
+        String line;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(this));            
+            while((line = reader.readLine()) != null) {                
+                content += line + "\n";                
+            }
+            reader.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ArffFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return content;
+    }
 
     public static class ArffFileInvalidException extends Exception {
 
