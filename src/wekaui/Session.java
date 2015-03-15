@@ -83,4 +83,15 @@ public class Session {
     public interface OnModelChangeListener {
         public void handle(LastUsedModel model);
     }
+    
+    /**
+     * Resets the whole session object.
+     */
+    public void resetSession(){
+        this.arffFile = null;
+        this.model = null;
+        this.modelChangeListeners.clear();
+        this.originalDataset = null;
+        this.unlabeledData.clear();
+    }
 }

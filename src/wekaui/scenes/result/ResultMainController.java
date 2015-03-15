@@ -21,13 +21,17 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
@@ -40,6 +44,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import javax.imageio.ImageIO;
 import weka.core.Attribute;
@@ -49,6 +54,8 @@ import weka.core.converters.ArffSaver;
 import wekaui.Session;
 import wekaui.logic.MyInstance;
 import wekaui.logic.MyInstances;
+import wekaui.scenes.ChooseModelController;
+import wekaui.scenes.ChooseUnclassifiedTextsController;
 
 /**
  * FXML Controller class
@@ -126,6 +133,8 @@ public class ResultMainController implements Initializable {
     private ScrollPane textScroll;
     @FXML
     private TextFlow dataInfoText;
+    @FXML
+    private Button restartButton;
         
     /**
      * Initializes the controller class.
@@ -460,5 +469,24 @@ public class ResultMainController implements Initializable {
             relFreqText.setText(relFreqText.getText() + "Class: " + dataClass + " --> " + relFreq + "\n");            
         }   
         dataInfoText.getChildren().add(relFreqText);
+    }
+
+    @FXML
+    private void onRestartButtonClicked(ActionEvent event) {
+        
+        session.resetSession();
+        
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wekaui/scenes/ChooseModel.fxml"));
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+
+            ChooseModelController ctrl = loader.getController();
+            ctrl.setSession(session);
+        } catch (IOException ex) {
+            Logger.getLogger(ChooseUnclassifiedTextsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 }
