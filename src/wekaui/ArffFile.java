@@ -1,13 +1,16 @@
 package wekaui;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 import wekaui.logic.MyInstances;
@@ -59,7 +62,7 @@ public class ArffFile extends File {
      * @param location Location of the new empty arff file.
      * @throws IOException If failed to write file on disk.
      */
-    public void saveEmptyArffFile(File location) throws IOException {
+    public void saveEmptyArffFile(File location, String modelName) throws IOException {
         
         StringBuilder builder = new StringBuilder();
         String line;
@@ -76,7 +79,16 @@ public class ArffFile extends File {
             Logger.getLogger(ArffFile.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        FileUtils.writeStringToFile(location, builder.toString());
+        //@TODO: alternative filepath?!
+        String modelNameWithOutExt = FilenameUtils.removeExtension(modelName);
+        File fileToSave = new File("empty_arff_file_for_" + modelNameWithOutExt + "_model.arff");
+        
+        BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave));
+        writer.write(builder.toString());
+        writer.flush();
+        writer.close();
+        
+        //FileUtils.writeStringToFile(fileToSave, builder.toString());
     }
     
     /**
