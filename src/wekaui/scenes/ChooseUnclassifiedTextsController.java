@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -338,7 +339,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     public void setSession(Session session) {
         this.session = session;
         
-        if(this.session.getArffFile() != null) {
+        if(this.session.getModel().getEmptyArffFile() != null) {
             modelInfoText.setText("Arff-File structure: \n"
             + this.session.getArffFile().getArffFileContent() + "\n");            
         }else{
@@ -374,7 +375,14 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/wekaui/scenes/result/ResultMain.fxml"));
             Scene scene = new Scene(loader.load());
-            stage.setScene(scene);
+            stage.setScene(scene);            
+            
+            if(session.getModel().getEmptyArffFile() == null) {
+                ArffFile arff = new ArffFile(filepaths.iterator().next());
+                arff.saveEmptyArffFile(arff, session.getModel().getFile().getName());
+                session.getModel().setEmptyArffFile(arff);
+                session.setArffFile(arff);
+            }            
 
             ResultMainController ctrl = loader.getController();
             ctrl.setSession(session);

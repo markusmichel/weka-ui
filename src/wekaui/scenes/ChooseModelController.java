@@ -252,19 +252,9 @@ public class ChooseModelController implements Initializable {
             scene = new Scene(loader.load());
             stage.setScene(scene);
             
-            
-            
             // remove old onModelChangeListener to prevent zombie objects
             session.removeModelChangeListener(onModelChangeListener);
-            LastUsedModel model = lastUsedModels.get(0);
-            // @todo: alter code?
-            ArffFile arff = new ArffFile("test.arff");
-            arff.saveEmptyArffFile(arff);
-            model.setEmptyArffFile(arff);
             LastUsedModel.saveLastUsedModels(lastUsedModels);
-            
-            //@TODO just for dev
-            session.setArffFile(arff);
             
             ChooseUnclassifiedTextsController ctrl = loader.getController();
             ctrl.setSession(session);
