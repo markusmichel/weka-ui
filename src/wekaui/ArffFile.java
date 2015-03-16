@@ -62,7 +62,7 @@ public class ArffFile extends File {
      * @param location Location of the new empty arff file.
      * @throws IOException If failed to write file on disk.
      */
-    public void saveEmptyArffFile(File location, String modelName) throws IOException {
+    public ArffFile saveEmptyArffFile(File location, String modelName) throws IOException {
         
         StringBuilder builder = new StringBuilder();
         String line;
@@ -81,13 +81,14 @@ public class ArffFile extends File {
         
         //@TODO: alternative filepath?!
         String modelNameWithOutExt = FilenameUtils.removeExtension(modelName);
-        File fileToSave = new File("empty_arff_file_for_" + modelNameWithOutExt + "_model.arff");
+        ArffFile fileToSave = new ArffFile("empty_arff_file_for_" + modelNameWithOutExt + "_model.arff");
         
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave));
         writer.write(builder.toString());
         writer.flush();
         writer.close();
         
+        return fileToSave;
         //FileUtils.writeStringToFile(fileToSave, builder.toString());
     }
     

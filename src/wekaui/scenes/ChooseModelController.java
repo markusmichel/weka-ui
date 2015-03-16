@@ -256,6 +256,8 @@ public class ChooseModelController implements Initializable {
             session.removeModelChangeListener(onModelChangeListener);
             LastUsedModel.saveLastUsedModels(lastUsedModels);
             
+            session.setLastUsedModelsList(lastUsedModels);
+            
             ChooseUnclassifiedTextsController ctrl = loader.getController();
             ctrl.setSession(session);
             

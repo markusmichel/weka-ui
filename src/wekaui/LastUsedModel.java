@@ -27,7 +27,7 @@ public class LastUsedModel {
     /** When was the model last used in the tool */
     private Date lastOpened;
     
-    private File emptyArffFile;
+    private ArffFile emptyArffFile;
     
     public LastUsedModel(File file, Date lastOpened) {
         this.file = file;
@@ -74,11 +74,11 @@ public class LastUsedModel {
         return "Last opened model";
     }
     
-    public File getEmptyArffFile() {
+    public ArffFile getEmptyArffFile() {
         return emptyArffFile;
     }
 
-    public void setEmptyArffFile(File emptyArffFile) {
+    public void setEmptyArffFile(ArffFile emptyArffFile) {
         this.emptyArffFile = emptyArffFile;
     }
 

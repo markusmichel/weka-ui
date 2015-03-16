@@ -84,6 +84,15 @@ public class Session {
         public void handle(LastUsedModel model);
     }
     
+    private LastUsedModelsList lum;
+    public void setLastUsedModelsList(LastUsedModelsList l){
+        this.lum = l;
+    }
+    
+    public LastUsedModelsList getLastUsedModelsList(){
+        return this.lum;
+    }
+    
     /**
      * Resets the whole session object.
      */

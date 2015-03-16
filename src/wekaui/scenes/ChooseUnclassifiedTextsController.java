@@ -50,6 +50,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import wekaui.ArffFile;
+import wekaui.LastUsedModel;
 
 import wekaui.Session;
 import wekaui.customcontrols.AddUncheckedDataButton;
@@ -341,7 +342,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         
         if(this.session.getModel().getEmptyArffFile() != null) {
             modelInfoText.setText("Arff-File structure: \n"
-            + this.session.getArffFile().getArffFileContent() + "\n");            
+            + this.session.getModel().getEmptyArffFile().getArffFileContent() + "\n");            
         }else{
             modelInfoText.setText("No used arff-file found. \n");
         }
@@ -379,9 +380,9 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             
             if(session.getModel().getEmptyArffFile() == null) {
                 ArffFile arff = new ArffFile(filepaths.iterator().next());
-                arff.saveEmptyArffFile(arff, session.getModel().getFile().getName());
-                session.getModel().setEmptyArffFile(arff);
-                session.setArffFile(arff);
+                ArffFile f = arff.saveEmptyArffFile(arff, session.getModel().getFile().getName());
+                session.getModel().setEmptyArffFile(f);                
+                LastUsedModel.saveLastUsedModels(session.getLastUsedModelsList());
             }            
 
             ResultMainController ctrl = loader.getController();
@@ -446,7 +447,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         String fileToSave = filePath + "/dataset_" + dateToSave + ".arff";
         
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave));
-        writer.write(this.session.getArffFile().getArffFileContent() + arffFileContentTxtArea.getText());
+        writer.write(this.session.getModel().getEmptyArffFile().getArffFileContent() + arffFileContentTxtArea.getText());
         writer.flush();
         writer.close();
         
@@ -457,6 +458,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         session.setUnlabeledData(dataList);
         checkIfDatalistIsEmptyAndSetVisibility();
         
+        //@TODO: what should be done if no valid data was added?!
         resetArffFileContentTxtArea();        
     }
     
