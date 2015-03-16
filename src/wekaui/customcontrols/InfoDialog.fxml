@@ -10,9 +10,9 @@
 
 <fx:root alignment="TOP_CENTER" stylesheets="@stylesheets/InfoDialog.css" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-        <VBox fx:id="container" alignment="TOP_CENTER" blendMode="SRC_ATOP" maxHeight="57.0" maxWidth="200.0">
+        <VBox fx:id="container" alignment="TOP_CENTER" blendMode="SRC_ATOP" maxHeight="100.0" maxWidth="200.0">
             <children>
-               <Label fx:id="infoText" alignment="CENTER" contentDisplay="CENTER"/>
+               <Label fx:id="infoText" alignment="CENTER" contentDisplay="CENTER" />
             </children>
          </VBox>
    </children>  

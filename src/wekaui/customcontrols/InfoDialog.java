@@ -25,6 +25,8 @@ import javafx.util.Duration;
 
 /**
  * FXML Controller class
+ * InfoDialog - Shows a short notification for the user. 
+ * Works only if parent is StackPane
  *
  * @author FreshXL
  */
