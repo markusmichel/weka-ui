@@ -134,7 +134,7 @@ public class ResultMainController implements Initializable {
     @FXML
     private TextFlow dataInfoText;
     @FXML
-    private Button restartButton;
+    private ImageView restartButton;
         
     /**
      * Initializes the controller class.
@@ -143,7 +143,7 @@ public class ResultMainController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         intitializeThresholdSlider();
         mergedOrderedThresholdList = new ArrayList<>();
-        
+        initializeRestartAppButton();
     }    
     
     /**
@@ -200,6 +200,27 @@ public class ResultMainController implements Initializable {
         
         exportChartBtn.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
                 exportChartBtn.setImage(new Image(getClass().getResourceAsStream("resources/export-chart.png")));
+        });
+    }
+    
+    /**
+     * Initializes the restart application button and adds event listener to it     
+     */
+    public void initializeRestartAppButton(){
+        restartButton.setCursor(Cursor.HAND);
+        
+        restartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {                
+                onRestartButtonClicked(event);
+        });
+        
+        restartButton.addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {                
+                restartButton.setImage(new Image(getClass().getResourceAsStream("resources/restart-button-hover.png")));
+                Tooltip t = new Tooltip("Restarts the application");
+                Tooltip.install(restartButton, t);
+        });
+        
+        restartButton.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
+                restartButton.setImage(new Image(getClass().getResourceAsStream("resources/restart-button.png")));
         });
     }
     
@@ -471,8 +492,7 @@ public class ResultMainController implements Initializable {
         dataInfoText.getChildren().add(relFreqText);
     }
 
-    @FXML
-    private void onRestartButtonClicked(ActionEvent event) {
+    private void onRestartButtonClicked(MouseEvent event) {
         
         session.resetSession();
         

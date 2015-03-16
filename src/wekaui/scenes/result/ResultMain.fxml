@@ -14,11 +14,17 @@
       <StackPane>
          <children>
             <Label id="labelTitle" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" text="Results" BorderPane.alignment="CENTER" />
-            <Button fx:id="restartButton" alignment="CENTER" mnemonicParsing="false" onAction="#onRestartButtonClicked" text="Restart" StackPane.alignment="CENTER_RIGHT">
+            <ImageView fx:id="restartButton" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
+               <image>
+                  <Image url="@resources/restart-button.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
                <StackPane.margin>
                   <Insets right="25.0" />
                </StackPane.margin>
-            </Button>
+            </ImageView>            
          </children>
       </StackPane>
    </top>
@@ -51,16 +57,22 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </Label>
-            <Slider fx:id="thresholdSlider" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Slider fx:id="thresholdSlider" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></Slider>
             <Label alignment="TOP_LEFT" text="Probability Threshold" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets bottom="50.0" left="35.0" />
                </GridPane.margin>
             </Label>
-            <ScrollPane fx:id="textScroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefViewportHeight="231.0" prefViewportWidth="182.0" vbarPolicy="ALWAYS" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="3">
+            <ScrollPane fx:id="textScroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefViewportHeight="231.0" prefViewportWidth="182.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="3">
                <content>
                   <TextFlow fx:id="detailTextContainer" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="3" />
                </content>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
             </ScrollPane>
             <TextFlow fx:id="dataInfoText" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" GridPane.rowSpan="3" />
          </children>
@@ -69,7 +81,7 @@
    <bottom>
       <HBox>
          <children>
-            <ImageView fx:id="exportBtn" fitHeight="25.0" fitWidth="172.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+            <ImageView fx:id="exportBtn" fitHeight="35.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                <image>
                   <Image url="@resources/export-button.png" />
                </image>
@@ -77,7 +89,7 @@
                   <Insets bottom="5.0" />
                </BorderPane.margin>
             </ImageView>
-            <ImageView fx:id="exportChartBtn" fitHeight="25.0" fitWidth="172.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="exportChartBtn" fitHeight="35.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@resources/export-chart.png" />
                </image>
