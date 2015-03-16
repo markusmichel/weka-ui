@@ -10,15 +10,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
@@ -47,6 +43,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import wekaui.ArffFile;
@@ -62,6 +59,7 @@ import wekaui.exceptions.ArffFileIncompatibleException;
 import wekaui.exceptions.FileAlreadyAddedException;
 import wekaui.logic.MyInstances;
 import wekaui.logic.Trainer;
+import wekaui.scenes.newarfffile.NewArffFileController;
 import wekaui.scenes.result.ResultMainController;
 
 /**
@@ -108,6 +106,8 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     private TextArea arffFileContentTxtArea;
     @FXML
     private TitledPane arffFileContentTitledPane;
+    @FXML
+    private Button newArffFileButton;
 
     /**
      * Initializes the controller class.
@@ -345,6 +345,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             + this.session.getModel().getEmptyArffFile().getArffFileContent() + "\n");            
         }else{
             modelInfoText.setText("No used arff-file found. \n");
+            arffFileContentTitledPane.setVisible(false);
         }
         
         if (this.session.getUnlabeledData() != null) {
@@ -439,12 +440,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     @FXML
     private void onArffFileContentFileSaveClicked(ActionEvent event) throws IOException {
         
-        SimpleDateFormat dateFormat = new SimpleDateFormat("d_MM_yyyy HH;mm;ss");
-        String dateToSave = dateFormat.format(new Date());
-        
-        String absolutePath = this.session.getModel().getFile().getAbsolutePath();
-        String filePath = absolutePath.substring(0,absolutePath.lastIndexOf(File.separator));        
-        String fileToSave = filePath + "/dataset_" + dateToSave + ".arff";
+        String fileToSave = getNewArffFileSaveLocation("dataset");
         
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave));
         writer.write(this.session.getModel().getEmptyArffFile().getArffFileContent() + arffFileContentTxtArea.getText());
@@ -465,6 +461,59 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     private void resetArffFileContentTxtArea(){
         arffFileContentTxtArea.setText("");
         arffFileContentTitledPane.setExpanded(false);        
+    }
+
+    @FXML
+    private void onNewArffFileCButtonClicked(ActionEvent event) {
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wekaui/scenes/newarfffile/NewArffFile.fxml"));            
+            StackPane page = (StackPane) loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Create new Arff-File");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(((Node)event.getTarget()).getScene().getWindow());
+            Scene scene = new Scene(page);            
+            dialogStage.setScene(scene);
+            
+            NewArffFileController ctrl = loader.getController();
+            ctrl.setDialogStage(dialogStage);
+            dialogStage.showAndWait();
+                        
+            ArffFile f = generateNewArffFile(ctrl.getNewArffFileContent());
+                
+            List<File> tmp = new ArrayList<>();
+            tmp.add(f);
+            createInstancesFromFiles(tmp);            
+            session.setUnlabeledData(dataList);
+            checkIfDatalistIsEmptyAndSetVisibility();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(NewArffFileController.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }
+
+    private ArffFile generateNewArffFile(String content) throws IOException{
+        
+        String filePath = getNewArffFileSaveLocation("new_arff");        
+        
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+        writer.write(content);
+        writer.flush();
+        writer.close();       
+        
+        return new ArffFile(filePath);
+    }
+    
+    private String getNewArffFileSaveLocation(String fileName){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d_MM_yyyy HH;mm;ss");
+        String dateToSave = dateFormat.format(new Date());
+        
+        String absolutePath = this.session.getModel().getFile().getAbsolutePath();
+        String filePath = absolutePath.substring(0,absolutePath.lastIndexOf(File.separator));
+        String fileToSave = filePath + "/" + fileName + "_" + dateToSave + ".arff";
+        
+        return fileToSave;
     }
 
 }

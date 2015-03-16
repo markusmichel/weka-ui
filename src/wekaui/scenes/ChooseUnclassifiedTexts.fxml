@@ -12,7 +12,16 @@
    <children>
       <VBox minHeight="-Infinity" minWidth="-Infinity" stylesheets="@stylesheets/main.css">
          <children>
-            <Label id="labelTitle" maxWidth="1.7976931348623157E308" text="Choose unclassified data" />
+            <StackPane>
+               <children>
+                  <Label id="labelTitle" maxWidth="1.7976931348623157E308" text="Choose unclassified data" />
+                  <Button fx:id="newArffFileButton" mnemonicParsing="false" onAction="#onNewArffFileCButtonClicked" text="Create new arff file" StackPane.alignment="CENTER_RIGHT">
+                     <StackPane.margin>
+                        <Insets right="10.0" />
+                     </StackPane.margin>
+                  </Button>
+               </children>
+            </StackPane>
             <VBox alignment="CENTER_LEFT">
                <children>
                   <Label fx:id="modelInfoLabel" maxWidth="1.7976931348623157E308" styleClass="subheader" text="Information">
