@@ -20,11 +20,20 @@
             <!-- last opened model list -->
             <VBox>
                 <children>
-                  <Label id="labelLastUsed" fx:id="labelLastUsed" maxWidth="1.7976931348623157E308" styleClass="subheader" text="Last used models">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Label>
+                  <StackPane>
+                     <children>
+                        <Label id="labelLastUsed" fx:id="labelLastUsed" maxWidth="1.7976931348623157E308" styleClass="subheader" text="Last used models">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Label>
+                        <Button fx:id="addArffStrucButton" mnemonicParsing="false" onAction="#onAddArffStrucButtonClicked" text="Add arff structure to model" StackPane.alignment="CENTER_RIGHT">
+                           <StackPane.margin>
+                              <Insets right="10.0" />
+                           </StackPane.margin>
+                        </Button>
+                     </children>
+                  </StackPane>
                   <FlowPane fx:id="lastUsedModelsContainer" prefHeight="200.0" prefWidth="200.0">
                      <VBox.margin>
                         <Insets bottom="5.0" top="5.0" />

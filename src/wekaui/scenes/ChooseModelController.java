@@ -9,11 +9,13 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -66,6 +68,8 @@ public class ChooseModelController implements Initializable {
     private FlowPane lastUsedModelsContainer;
     @FXML
     private StackPane container;
+    @FXML
+    private Button addArffStrucButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -325,5 +329,28 @@ public class ChooseModelController implements Initializable {
         
         // Called when session model gets a weka training model file
         session.addModelChangeListener(onModelChangeListener);
+    }
+
+    @FXML
+    private void onAddArffStrucButtonClicked(ActionEvent event){
+        
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Add arff-file structure to model");
+        Window window = ((Node)event.getTarget()).getScene().getWindow();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Arff File", "*.arff"));
+        File arff = fileChooser.showOpenDialog(window);
+        if(arff != null) {                
+            
+            if(session.getModel().getEmptyArffFile() == null) {
+                try {
+                    ArffFile f = new ArffFile(arff.getAbsolutePath());
+                    f = f.saveEmptyArffFile(f, session.getModel().getFile().getName());                    
+                    session.getModel().setEmptyArffFile(f);
+                } catch (IOException ex) {
+                    Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
+                    InfoDialog info = new InfoDialog("Error saving arff file", container, "warning");
+                }
+            }   
+        }
     }
 }
