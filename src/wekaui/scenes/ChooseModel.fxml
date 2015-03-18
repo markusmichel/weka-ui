@@ -27,7 +27,7 @@
                               <Insets />
                            </VBox.margin>
                         </Label>
-                        <Button fx:id="addArffStrucButton" mnemonicParsing="false" onAction="#onAddArffStrucButtonClicked" text="Add arff structure to model" StackPane.alignment="CENTER_RIGHT">
+                        <Button fx:id="addArffStrucButton" mnemonicParsing="false" onAction="#onAddArffStrucButtonClicked" text="Add arff structure to model" visible="false" StackPane.alignment="CENTER_RIGHT">
                            <StackPane.margin>
                               <Insets right="10.0" />
                            </StackPane.margin>

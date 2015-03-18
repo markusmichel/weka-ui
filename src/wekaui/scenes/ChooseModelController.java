@@ -287,6 +287,7 @@ public class ChooseModelController implements Initializable {
                 System.out.println("model file exists");
                 // @todo: check if valid model file
                 nextButton.show();
+                addArffStrucButton.setVisible(true);
                 currentSelectedModel = model;
                 
                 // highlight the according button
@@ -323,6 +324,7 @@ public class ChooseModelController implements Initializable {
                 
             } else {
                 System.out.println("model file does not exist");
+                addArffStrucButton.setVisible(false);
                 nextButton.hide();                
             }
         };
