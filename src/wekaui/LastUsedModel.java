@@ -9,12 +9,9 @@ import com.thoughtworks.xstream.XStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
-import weka.classifiers.Classifier;
 
 /**
  *

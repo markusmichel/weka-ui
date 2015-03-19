@@ -5,15 +5,9 @@
  */
 package wekaui;
 
-import java.io.FileWriter;
-import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 

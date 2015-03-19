@@ -8,7 +8,6 @@ package wekaui.logic;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import weka.classifiers.Classifier;
-import weka.core.Instances;
 import wekaui.LastUsedModel;
 import wekaui.exceptions.ArffFileIncompatibleException;
 
