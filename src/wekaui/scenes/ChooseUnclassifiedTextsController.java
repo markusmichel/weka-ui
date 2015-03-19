@@ -27,6 +27,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -36,6 +37,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
@@ -76,7 +79,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     @FXML
     private Label modelInfoLabel;
     @FXML
-    private Label modelInfoText;
+    private TextArea modelInfoText;
     @FXML
     private NextButton nextButton;
     @FXML
@@ -107,7 +110,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     @FXML
     private TitledPane arffFileContentTitledPane;
     @FXML
-    private Button newArffFileButton;
+    private ImageView newArffFileButton;
 
     /**
      * Initializes the controller class.
@@ -117,6 +120,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         filepaths = new HashSet<>();
         initDataDropzone();
         initListView();
+        initializeNewArffFileButton();
     }
     
     /**
@@ -437,6 +441,12 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         checkIfDatalistIsEmptyAndSetVisibility();        
     }
 
+    /**
+     * Is called when the user clicks on the arffFileContentFileSaveButton.
+     * Collects the data from the textarea and saves it as new a arff file.
+     * @param event
+     * @throws IOException 
+     */
     @FXML
     private void onArffFileContentFileSaveClicked(ActionEvent event) throws IOException {
         
@@ -458,13 +468,19 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         resetArffFileContentTxtArea();        
     }
     
+    /**
+     * Resets and empties the arffFileContentTxtArea
+     */
     private void resetArffFileContentTxtArea(){
         arffFileContentTxtArea.setText("");
         arffFileContentTitledPane.setExpanded(false);        
     }
-
-    @FXML
-    private void onNewArffFileCButtonClicked(ActionEvent event) {
+    
+    /**
+     * Is called when the user clicks on the newArffFileButton. Opens the new arff file dialog.
+     * @param event 
+     */
+    private void onNewArffFileButtonClicked(MouseEvent event) {
         
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/wekaui/scenes/newarfffile/NewArffFile.fxml"));            
@@ -493,6 +509,12 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         }        
     }
 
+    /**
+     * Generates new Arff File from given content
+     * @param content
+     * @return
+     * @throws IOException 
+     */
     private ArffFile generateNewArffFile(String content) throws IOException{
         
         String filePath = getNewArffFileSaveLocation("new_arff");        
@@ -505,6 +527,11 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         return new ArffFile(filePath);
     }
     
+    /**
+     * Gets the filepath according to the model location
+     * @param fileName Name for the file to save
+     * @return filepath as string
+     */
     private String getNewArffFileSaveLocation(String fileName){
         SimpleDateFormat dateFormat = new SimpleDateFormat("d_MM_yyyy HH;mm;ss");
         String dateToSave = dateFormat.format(new Date());
@@ -514,6 +541,27 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         String fileToSave = filePath + "/" + fileName + "_" + dateToSave + ".arff";
         
         return fileToSave;
+    }
+    
+    /**
+     * Initializes the NewArffFile button and adds event listener to it     
+     */
+    private void initializeNewArffFileButton(){
+        newArffFileButton.setCursor(Cursor.HAND);
+        
+        newArffFileButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {                
+                onNewArffFileButtonClicked(event);
+        });
+        
+        newArffFileButton.addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {                
+                newArffFileButton.setImage(new Image(getClass().getResourceAsStream("/wekaui/customcontrols/create-new-arff-hover.png")));
+                Tooltip t = new Tooltip("Create new arff file");
+                Tooltip.install(newArffFileButton, t);
+        });
+        
+        newArffFileButton.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
+                newArffFileButton.setImage(new Image(getClass().getResourceAsStream("/wekaui/customcontrols/create-new-arff.png")));
+        });
     }
 
 }

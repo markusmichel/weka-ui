@@ -21,7 +21,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +30,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
@@ -47,8 +45,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javax.imageio.ImageIO;
-import weka.core.Attribute;
-import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
 import wekaui.Session;
@@ -135,13 +131,14 @@ public class ResultMainController implements Initializable {
     private TextFlow dataInfoText;
     @FXML
     private ImageView restartButton;
+    
+    private double avgProbability;
         
     /**
      * Initializes the controller class.
      */    
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        intitializeThresholdSlider();
+    public void initialize(URL url, ResourceBundle rb) {        
         mergedOrderedThresholdList = new ArrayList<>();
         initializeRestartAppButton();
     }    
@@ -161,6 +158,8 @@ public class ResultMainController implements Initializable {
         initializeExportChartButton(s);
         
         setInfoText();
+        
+        intitializeThresholdSlider();
     }
     
     /**
@@ -268,7 +267,7 @@ public class ResultMainController implements Initializable {
                         for(MyInstance ins: l){                            
                             Text text = new Text(ins.getInstance().toString());
                             detailTextContainer.getChildren().add(text);
-                            Text seperator = new Text("\n\n----------------------\n\n");
+                            Text seperator = new Text("\n\n-----------------------------------\n\n");
                             detailTextContainer.getChildren().add(seperator);
                         }
                      }
@@ -339,12 +338,23 @@ public class ResultMainController implements Initializable {
         // Listenener for slider changes
         thresholdSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {                    
+                Number old_val, Number new_val) {
+                    System.out.println(new_val);
                     mergedOrderedThresholdList = updateThresholdList(new_val);
                     initializePieChart(mergedOrderedThresholdList);
                     setInfoText();
             }
         });
+        
+        double thresholdOffset = 20;
+        double thresholdSliderMin = (avgProbability - thresholdOffset < 0) ? 0 : avgProbability - thresholdOffset ;        
+        double thresholdSliderMax = (avgProbability + thresholdOffset > 100) ? 100 : avgProbability + thresholdOffset;
+        
+        thresholdSlider.setMin(thresholdSliderMin);
+        thresholdSlider.setMax(thresholdSliderMax);
+        thresholdSlider.setMajorTickUnit(1);
+        //thresholdSlider.setMinorTickCount(1);
+        //thresholdSlider.setValue(avgProbability);
     }
     
     /**
@@ -471,7 +481,7 @@ public class ResultMainController implements Initializable {
         for(MyInstance ins: mergedOrderedThresholdList){
             probSum += ins.maxProbability;
         }
-        double avgProbability = (probSum / mergedOrderedThresholdList.size()) * 100;
+        avgProbability = (probSum / mergedOrderedThresholdList.size()) * 100;
         avgProbability = Math.floor(avgProbability * 100)/100.0;
         Text probAccuracyText = new Text("Average classify accuracy: " + avgProbability + "\n\n");
         
@@ -491,7 +501,12 @@ public class ResultMainController implements Initializable {
         }   
         dataInfoText.getChildren().add(relFreqText);
     }
-
+    
+    /**
+     * Is called when the user clicks on the restart application button.
+     * Resets all relevant variables and renders the first screen.
+     * @param event 
+     */
     private void onRestartButtonClicked(MouseEvent event) {
         
         session.resetSession();

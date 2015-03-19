@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -44,6 +45,14 @@ public class NewArffFileController implements Initializable {
     private Stage dialogStage;
     @FXML
     private StackPane newArffContainer;    
+    @FXML
+    private Label relationInfoText;
+    @FXML
+    private Label attributeInfoText;
+    @FXML
+    private Label classInfoText;
+    @FXML
+    private Label dataInfoText;
 
     /**
      * Initializes the controller class.
@@ -51,8 +60,29 @@ public class NewArffFileController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {        
         addNewAttributeInput();
+        setInfoTexts();
     }
     
+    /**
+     * Sets the texts for info fields.
+     */
+    private void setInfoTexts(){
+        
+        relationInfoText.setText("Info: The internal title of your ARFF-file.\n"
+                + "Spaces has to be quoted and no special characters allowed!");
+        
+        attributeInfoText.setText("Info: The different attributes with the types of the data.\n"                
+                + "Type: NUMERIC - Simple numbers, can be real or integer numbers.\n"
+                + "Type: STRING - Plain text.\n"                
+                + "Type: DATE - Date Format.\n"
+                + "Type: NOMINAL - Option for listing the possible values: {<nominal-name1>, <nominal-name2>, ...}");
+        
+        classInfoText.setText("Info: the classes into which the data are categorized.\n"
+                + "Important: has to be comma-seperated, e.g.: neg,pos !");
+        
+        dataInfoText.setText("Info: the actual data which has to be classified.\n"
+                + "Important: has to match the specified attributes from above!");
+    }
     /**
      * Adds a new Attribute Input Group to attributeVbox
      */

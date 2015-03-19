@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="container" prefHeight="400.0" prefWidth="547.0" stylesheets="@../stylesheets/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wekaui.scenes.result.ResultMainController">
+<BorderPane fx:id="container" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" stylesheets="@../stylesheets/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wekaui.scenes.result.ResultMainController">
    <top>
       <StackPane>
          <children>
@@ -61,20 +61,37 @@
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin></Slider>
-            <Label alignment="TOP_LEFT" text="Probability Threshold" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <Label alignment="CENTER" styleClass="infotext" text="Probability Threshold" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
-                  <Insets bottom="50.0" left="35.0" />
+                  <Insets bottom="60.0" />
                </GridPane.margin>
+               <font>
+                  <Font name="Calibri" size="14.0" />
+               </font>
             </Label>
             <ScrollPane fx:id="textScroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefViewportHeight="231.0" prefViewportWidth="182.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="3">
                <content>
-                  <TextFlow fx:id="detailTextContainer" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="3" />
+                  <TextFlow fx:id="detailTextContainer" styleClass="infotext" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="3" />
                </content>
                <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
             </ScrollPane>
-            <TextFlow fx:id="dataInfoText" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" GridPane.rowSpan="3" />
+            <ScrollPane hbarPolicy="NEVER" prefViewportHeight="373.0" prefViewportWidth="214.0" GridPane.rowIndex="1" GridPane.rowSpan="3">
+               <content>
+                  <TextFlow fx:id="dataInfoText" styleClass="infotext" GridPane.rowIndex="1" GridPane.rowSpan="3">
+                     <GridPane.margin>
+                        <Insets bottom="15.0" left="10.0" right="10.0" top="15.0" />
+                     </GridPane.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </TextFlow>
+               </content>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </ScrollPane>
          </children>
       </GridPane>
    </center>
@@ -88,13 +105,22 @@
                <BorderPane.margin>
                   <Insets bottom="5.0" />
                </BorderPane.margin>
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
             </ImageView>
             <ImageView fx:id="exportChartBtn" fitHeight="35.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@resources/export-chart.png" />
                </image>
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
             </ImageView>
          </children>
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" />
+         </BorderPane.margin>
       </HBox>
    </bottom>
 </BorderPane>

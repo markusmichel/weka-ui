@@ -7,7 +7,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <StackPane fx:id="newArffContainer" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wekaui.scenes.newarfffile.NewArffFileController">
    <children>
       <VBox stylesheets="@../stylesheets/main.css">
@@ -16,7 +15,10 @@
             <VBox>
                <children>
                   <Label maxWidth="1.7976931348623157E308" styleClass="subheader" text="Add a relation" />
-                  <Label text="Info: TODO" />
+                  <Label fx:id="relationInfoText" styleClass="infotext" text="Info: TODO">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin></Label>
                   <TextField fx:id="relationText" />            
                </children>
                <VBox.margin>
@@ -35,7 +37,10 @@
                         </Button>
                      </children>
                   </StackPane>
-                  <Label text="Info: TODO" />
+                  <Label fx:id="attributeInfoText" styleClass="infotext" text="Info: TODO">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin></Label>
                   <VBox fx:id="attributeVbox" />
                </children>
                <VBox.margin>
@@ -44,18 +49,24 @@
             </VBox>
             <VBox>
                <children>
-                  <Label maxWidth="1.7976931348623157E308" styleClass="subheader" text="Add a class Attribute: e.g. {neg,pos}" />            
-                  <Label text="Info: only comma-seperated etc. TODO" />
+                  <Label maxWidth="1.7976931348623157E308" styleClass="subheader" text="Add a class Attribute: " />            
+                  <Label fx:id="classInfoText" styleClass="infotext" text="Info: TODO">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin></Label>
                   <TextField fx:id="classText" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
             </VBox>
-            <VBox>
+            <VBox styleClass="infotext">
                <children>
                   <Label maxWidth="1.7976931348623157E308" styleClass="subheader" text="Add Data" />            
-                  <Label text="Info: TODO" />
+                  <Label fx:id="dataInfoText" text="Info: TODO">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin></Label>
                   <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
                      <content>
                         <TextArea fx:id="dataTextArea" wrapText="true" />

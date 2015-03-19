@@ -1,7 +1,6 @@
 package wekaui.scenes;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -9,21 +8,25 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.apache.commons.io.FilenameUtils;
@@ -34,6 +37,11 @@ import wekaui.Session;
 import wekaui.customcontrols.InfoDialog;
 import wekaui.customcontrols.LastOpenedModelButton;
 import wekaui.customcontrols.NextButton;
+import wekaui.exceptions.ArffFileIncompatibleException;
+import wekaui.logic.MyInstances;
+import wekaui.logic.Trainer;
+import wekaui.scenes.helpwindow.HelpDialogController;
+import wekaui.scenes.newarfffile.NewArffFileController;
 
 /**
  *
@@ -69,15 +77,17 @@ public class ChooseModelController implements Initializable {
     @FXML
     private StackPane container;
     @FXML
-    private Button addArffStrucButton;
+    private ImageView addArffStrucButton;
+    @FXML
+    private ImageView helpButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initSession();
         initModelDropzone();
-        initLastUsedModels();
-        
-        //nextButton.show();
+        initLastUsedModels();  
+        initializeHelpButton();
+        initializeNewArffFileButton();
     }
     
     public void setSession(Session session) {
@@ -99,11 +109,53 @@ public class ChooseModelController implements Initializable {
                     selectedModelButton = last;
                 }
             }       
-        }            
+        }
         
         initSession(session);
     }
-
+    
+    /**
+     * Initializes the help button and adds event listener to it     
+     */
+    private void initializeHelpButton(){
+        helpButton.setCursor(Cursor.HAND);
+        
+        helpButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {                
+                onHelpButtonClicked(event);
+        });
+        
+        helpButton.addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {                
+                helpButton.setImage(new Image(getClass().getResourceAsStream("/wekaui/customcontrols/help-button-hover.png")));
+                Tooltip t = new Tooltip("Show help");
+                Tooltip.install(helpButton, t);
+        });
+        
+        helpButton.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
+                helpButton.setImage(new Image(getClass().getResourceAsStream("/wekaui/customcontrols/help-button.png")));
+        });
+    }
+    
+    /**
+     * Initializes the NewArffFile button and adds event listener to it     
+     */
+    private void initializeNewArffFileButton(){
+        addArffStrucButton.setCursor(Cursor.HAND);
+        
+        addArffStrucButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {                
+                onAddArffStrucButtonClicked(event);
+        });
+        
+        addArffStrucButton.addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {                
+                addArffStrucButton.setImage(new Image(getClass().getResourceAsStream("/wekaui/customcontrols/add-arff-structure-to-model-hover.png")));
+                Tooltip t = new Tooltip("Create new arff file");
+                Tooltip.install(addArffStrucButton, t);
+        });
+        
+        addArffStrucButton.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
+                addArffStrucButton.setImage(new Image(getClass().getResourceAsStream("/wekaui/customcontrols/add-arff-structure-to-model.png")));
+        });
+    }
+    
     private void initLastUsedModels() {
         lastUsedModelsContainer.setVgap(5);
         lastUsedModelsContainer.setHgap(5);
@@ -202,7 +254,8 @@ public class ChooseModelController implements Initializable {
                 // No valid model file selected
                 System.err.println("only .model files are supported");
                 
-                nextButton.hide();               
+                nextButton.hide();
+                addArffStrucButton.setVisible(false);
                 
                 InfoDialog info = new InfoDialog("Wrong fileformat", container, "warning");                
             }
@@ -287,7 +340,8 @@ public class ChooseModelController implements Initializable {
                 System.out.println("model file exists");
                 // @todo: check if valid model file
                 nextButton.show();
-                addArffStrucButton.setVisible(true);
+                if(model.getEmptyArffFile() == null) 
+                    addArffStrucButton.setVisible(true);
                 currentSelectedModel = model;
                 
                 // highlight the according button
@@ -332,27 +386,74 @@ public class ChooseModelController implements Initializable {
         // Called when session model gets a weka training model file
         session.addModelChangeListener(onModelChangeListener);
     }
-
-    @FXML
-    private void onAddArffStrucButtonClicked(ActionEvent event){
+    
+    /**
+     * Is called when the user clicks on the addArffStrucButton.
+     * Open the FileChoser and sets the empty arff file of the model.
+     * @param event 
+     */
+    private void onAddArffStrucButtonClicked(MouseEvent event){
         
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Add arff-file structure to model");
         Window window = ((Node)event.getTarget()).getScene().getWindow();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Arff File", "*.arff"));
-        File arff = fileChooser.showOpenDialog(window);
+        File arff = null;
+        try {
+            arff = fileChooser.showOpenDialog(window);
+        } catch (Exception ex) {            
+            Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
+            InfoDialog info = new InfoDialog("Error saving arff file\nWrong fileformat", container, "warning");
+        }        
+        
         if(arff != null) {                
             
-            if(session.getModel().getEmptyArffFile() == null) {
-                try {
+            if(session.getModel().getEmptyArffFile() == null) {                
                     ArffFile f = new ArffFile(arff.getAbsolutePath());
-                    f = f.saveEmptyArffFile(f, session.getModel().getFile().getName());                    
-                    session.getModel().setEmptyArffFile(f);
-                } catch (IOException ex) {
-                    Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
-                    InfoDialog info = new InfoDialog("Error saving arff file", container, "warning");
-                }
+                    setEmptyArffFileToModel(f);
             }   
         }
+    }
+    
+    /**
+     * Sets the empty arfffile
+     * @param f the arfffile
+     */
+    private void setEmptyArffFileToModel(ArffFile f){
+         try{
+            MyInstances instances = f.getInstances();                     
+            Trainer.classifyData(session.getModel(), instances);
+            f = f.saveEmptyArffFile(f, session.getModel().getFile().getName());                    
+            session.getModel().setEmptyArffFile(f);
+            addArffStrucButton.setVisible(false);
+
+        } catch (ArffFile.ArffFileInvalidException | ArffFileIncompatibleException | IOException ex){
+            InfoDialog info = new InfoDialog("Error saving arff file", container, "warning");
+            Logger.getLogger(ChooseModelController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Is called when the user clicks on the helpButton.
+     * Opens a new window with information for the user.
+     * @param event 
+     */
+    private void onHelpButtonClicked(MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wekaui/scenes/helpwindow/HelpDialog.fxml"));            
+            VBox page = (VBox) loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Weka Help");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(((Node)event.getTarget()).getScene().getWindow());
+            Scene scene = new Scene(page);            
+            dialogStage.setScene(scene);
+            
+            HelpDialogController ctrl = loader.getController();
+            ctrl.setDialogStage(dialogStage);
+            dialogStage.showAndWait();            
+        } catch (IOException ex) {
+            Logger.getLogger(NewArffFileController.class.getName()).log(Level.SEVERE, null, ex);
+        }        
     }
 }

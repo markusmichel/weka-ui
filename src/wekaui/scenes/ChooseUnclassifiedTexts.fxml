@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
@@ -8,18 +10,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane fx:id="container" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wekaui.scenes.ChooseUnclassifiedTextsController">
+<StackPane fx:id="container" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="547.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wekaui.scenes.ChooseUnclassifiedTextsController">
    <children>
-      <VBox minHeight="-Infinity" minWidth="-Infinity" stylesheets="@stylesheets/main.css">
+      <VBox stylesheets="@stylesheets/main.css">
          <children>
             <StackPane>
                <children>
                   <Label id="labelTitle" maxWidth="1.7976931348623157E308" text="Choose unclassified data" />
-                  <Button fx:id="newArffFileButton" mnemonicParsing="false" onAction="#onNewArffFileCButtonClicked" text="Create new arff file" StackPane.alignment="CENTER_RIGHT">
+                  <ImageView fx:id="newArffFileButton" fitHeight="60.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
+                     <image>
+                        <Image url="@../customcontrols/create-new-arff.png" />
+                     </image>
                      <StackPane.margin>
-                        <Insets right="10.0" />
+                        <Insets bottom="10.0" right="10.0" />
                      </StackPane.margin>
-                  </Button>
+                  </ImageView>
                </children>
             </StackPane>
             <VBox alignment="CENTER_LEFT">
@@ -32,10 +37,14 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="modelInfoText" focusTraversable="false" text="No used arff-file found!">
+                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefViewportHeight="100.0" prefViewportWidth="527.0">
+                     <content>
+                        <TextArea fx:id="modelInfoText" editable="false" styleClass="infotext" text="No used arff-file found!" wrapText="true" />
+                     </content>
                      <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin></Label>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </ScrollPane>
                   <TitledPane fx:id="arffFileContentTitledPane" expanded="false" text="Add arff-file content here">
                      <content>
                         <VBox>
@@ -54,12 +63,15 @@
                         </VBox>
                      </content>
                      <VBox.margin>
-                        <Insets bottom="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                      </VBox.margin>
+                     <font>
+                        <Font name="Calibri" size="14.0" />
+                     </font>
                   </TitledPane>
-                  <Label fx:id="dataSetCountLabel" text="Data set amount: 0">
+                  <Label fx:id="dataSetCountLabel" styleClass="infotext" text="Data set amount: 0">
                      <VBox.margin>
-                        <Insets bottom="5.0" top="10.0" />
+                        <Insets bottom="5.0" left="10.0" top="10.0" />
                      </VBox.margin></Label>
                </children>
                <VBox.margin>
