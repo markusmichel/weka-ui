@@ -77,6 +77,9 @@
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="-10.0" />
                </VBox.margin>
+               <padding>
+                  <Insets left="30.0" right="30.0" />
+               </padding>
             </VBox>
             <VBox>
                <children>
@@ -111,8 +114,11 @@
                   </StackPane>
                </children>
                <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
+                  <Insets left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
+               <padding>
+                  <Insets left="30.0" right="30.0" />
+               </padding>
             </VBox>
          </children>
       </VBox>
