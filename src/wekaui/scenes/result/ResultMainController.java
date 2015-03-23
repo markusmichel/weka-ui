@@ -133,6 +133,8 @@ public class ResultMainController implements Initializable {
     private ImageView restartButton;
     
     private double avgProbability;
+    @FXML
+    private Slider detailSlider;
         
     /**
      * Initializes the controller class.
@@ -264,7 +266,7 @@ public class ResultMainController implements Initializable {
                         detailTextContainer.getChildren().clear();                        
                         List<MyInstance> l = getPieData(data.getName());
                         
-                        for(MyInstance ins: l){                            
+                        for(MyInstance ins: l){
                             Text text = new Text(ins.getInstance().toString());
                             detailTextContainer.getChildren().add(text);
                             Text seperator = new Text("\n\n-----------------------------------\n\n");
@@ -332,7 +334,7 @@ public class ResultMainController implements Initializable {
     }
     
     /**
-     * Initializes the threshold slider and adds change listener to it
+     * Initializes the thresholdSlider and detailSlider and adds change listener to it
      */
     private void intitializeThresholdSlider(){
         // Listenener for slider changes
@@ -343,18 +345,37 @@ public class ResultMainController implements Initializable {
                     mergedOrderedThresholdList = updateThresholdList(new_val);
                     initializePieChart(mergedOrderedThresholdList);
                     setInfoText();
+                    updateDetailSlider((double)new_val);
             }
         });
         
-        double thresholdOffset = 20;
-        double thresholdSliderMin = (avgProbability - thresholdOffset < 0) ? 0 : avgProbability - thresholdOffset ;        
-        double thresholdSliderMax = (avgProbability + thresholdOffset > 100) ? 100 : avgProbability + thresholdOffset;
+        detailSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val) {
+                    System.out.println(new_val);
+                    mergedOrderedThresholdList = updateThresholdList(new_val);
+                    initializePieChart(mergedOrderedThresholdList);
+                    setInfoText();
+            }
+        });
         
-        thresholdSlider.setMin(thresholdSliderMin);
-        thresholdSlider.setMax(thresholdSliderMax);
-        thresholdSlider.setMajorTickUnit(1);
-        //thresholdSlider.setMinorTickCount(1);
-        //thresholdSlider.setValue(avgProbability);
+        updateDetailSlider(thresholdSlider.getValue());
+    }
+    
+    /**
+     * Updates the detailSlider according to the new value of the thresholdSlider
+     * @param newValueToSet The new value of the thresholdSlider. It is used to set the detailSlider.
+     */
+    private void updateDetailSlider(double newValueToSet){
+        double thresholdOffset = 20;
+        double thresholdSliderMin = (newValueToSet - thresholdOffset < 0) ? 0 : newValueToSet - thresholdOffset ;        
+        double thresholdSliderMax = (newValueToSet + thresholdOffset > 100) ? 100 : newValueToSet + thresholdOffset;        
+        
+        detailSlider.setMin((int)thresholdSliderMin);
+        detailSlider.setMax((int)thresholdSliderMax);
+        detailSlider.setMajorTickUnit(5);
+        detailSlider.setMinorTickCount(5);
+        detailSlider.setValue(newValueToSet);
     }
     
     /**
@@ -377,6 +398,11 @@ public class ResultMainController implements Initializable {
         return mergedOrderedThresholdList;
     }
     
+    /**
+     * Gets all the relevant data from the threshhold list and converts them to instances.
+     * @param originalDataset
+     * @return instances from thresholdlist
+     */
     private Instances getInstancesFromThresholdlist(Instances originalDataset) {
         Instances newInstances = new Instances(originalDataset);
         newInstances.delete();
