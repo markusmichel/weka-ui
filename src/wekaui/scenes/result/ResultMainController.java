@@ -39,6 +39,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
@@ -266,11 +267,30 @@ public class ResultMainController implements Initializable {
                         detailTextContainer.getChildren().clear();                        
                         List<MyInstance> l = getPieData(data.getName());
                         
+                        int instanceCounter = 1;
+                        
                         for(MyInstance ins: l){
-                            Text text = new Text(ins.getInstance().toString());
-                            detailTextContainer.getChildren().add(text);
-                            Text seperator = new Text("\n\n-----------------------------------\n\n");
+                            Text instance = new Text("Instance No. " + instanceCounter +"\n\n");
+                            instance.setStyle("-fx-font-weight: bold;");
+                            detailTextContainer.getChildren().add(instance);    
+                            
+                            for(int i = 0; i < ins.getInstance().numAttributes(); i++){
+                                
+                                
+                                String[] attributes = ins.getInstance().attribute(i).toString().split("\\s+");                                
+                                String attrString = (attributes.length != 3) ? ins.getInstance().attribute(i).toString() : attributes[1];        
+                                Text attr = new Text( attrString + ":\n\n");
+                                attr.setUnderline(true);
+                                
+                                String contentString = ins.getInstance().stringValue(i).replace("\\", "");
+                                Text content = new Text(contentString + "\n\n");
+                                
+                                detailTextContainer.getChildren().addAll(attr, content);
+                            }
+                            
+                            Text seperator = new Text("\n\n-------------------------------------\n\n");
                             detailTextContainer.getChildren().add(seperator);
+                            instanceCounter++;
                         }
                      }
                 //returns the associated data of the pie slice
@@ -340,8 +360,7 @@ public class ResultMainController implements Initializable {
         // Listenener for slider changes
         thresholdSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-                    System.out.println(new_val);
+                Number old_val, Number new_val) {                    
                     mergedOrderedThresholdList = updateThresholdList(new_val);
                     initializePieChart(mergedOrderedThresholdList);
                     setInfoText();
@@ -351,8 +370,7 @@ public class ResultMainController implements Initializable {
         
         detailSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-                    System.out.println(new_val);
+                Number old_val, Number new_val) {                    
                     mergedOrderedThresholdList = updateThresholdList(new_val);
                     initializePieChart(mergedOrderedThresholdList);
                     setInfoText();
