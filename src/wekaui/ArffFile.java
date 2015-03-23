@@ -78,7 +78,7 @@ public class ArffFile extends File {
             Logger.getLogger(ArffFile.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        //@TODO: alternative filepath?!
+
         String modelNameWithOutExt = FilenameUtils.removeExtension(modelName);
         ArffFile fileToSave = new ArffFile("empty_arff_file_for_" + modelNameWithOutExt + "_model.arff");
         
@@ -88,7 +88,6 @@ public class ArffFile extends File {
         writer.close();
         
         return fileToSave;
-        //FileUtils.writeStringToFile(fileToSave, builder.toString());
     }
     
     /**

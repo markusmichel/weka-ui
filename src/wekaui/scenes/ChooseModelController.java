@@ -275,11 +275,9 @@ public class ChooseModelController implements Initializable {
             fileChooser.setTitle("Open model");
             Window window = ((Node)event.getTarget()).getScene().getWindow();
             
-            // @todo: extension of model file??
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Weka Model File", "*.model"));
             File modelFile = fileChooser.showOpenDialog(window);
             
-            // @todo: replace placeholder text withcurrent selected file
             if(modelFile != null) {
                 session.setModel(new LastUsedModel(modelFile, new Date()));
             }

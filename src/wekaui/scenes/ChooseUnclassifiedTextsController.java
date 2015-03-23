@@ -494,7 +494,9 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             
             NewArffFileController ctrl = loader.getController();
             ctrl.setDialogStage(dialogStage);
-            dialogStage.showAndWait();
+            dialogStage.showAndWait();            
+            if(ctrl.getNewArffFileContent() == null || ctrl.getNewArffFileContent() == "")
+                return;
                         
             ArffFile f = generateNewArffFile(ctrl.getNewArffFileContent());
                 
@@ -503,6 +505,8 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             createInstancesFromFiles(tmp);            
             session.setUnlabeledData(dataList);
             checkIfDatalistIsEmptyAndSetVisibility();
+            
+            InfoDialog infoAdded = new InfoDialog("Arff file created", container, "info");
             
         } catch (IOException ex) {
             Logger.getLogger(NewArffFileController.class.getName()).log(Level.SEVERE, null, ex);

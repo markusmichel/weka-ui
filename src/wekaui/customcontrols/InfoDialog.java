@@ -39,7 +39,7 @@ public class InfoDialog extends VBox {
     
     StackPane parent;
     double removeDuration = 2;
-    // @TODO get dynamic property
+    
     // problem: value is only known after the node is shown
     double nodeHeight = 38;
     
