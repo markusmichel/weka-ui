@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
@@ -78,9 +80,11 @@ public class ArffFile extends File {
             Logger.getLogger(ArffFile.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d-MM-yyyy HH-mm-ss");
+        String dateToSave = dateFormat.format(new Date());
 
         String modelNameWithOutExt = FilenameUtils.removeExtension(modelName);
-        ArffFile fileToSave = new ArffFile("empty_arff_file_for_" + modelNameWithOutExt + "_model.arff");
+        ArffFile fileToSave = new ArffFile("empty_arff_for_" + modelNameWithOutExt + "_model_" + dateToSave + ".arff");
         
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave));
         writer.write(builder.toString());

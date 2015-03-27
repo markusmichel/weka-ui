@@ -537,7 +537,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
      * @return filepath as string
      */
     private String getNewArffFileSaveLocation(String fileName){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("d_MM_yyyy HH;mm;ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d-MM-yyyy HH-mm-ss");
         String dateToSave = dateFormat.format(new Date());
         
         String absolutePath = this.session.getModel().getFile().getAbsolutePath();
