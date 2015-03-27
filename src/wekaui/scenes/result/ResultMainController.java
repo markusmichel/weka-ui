@@ -30,6 +30,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
@@ -135,6 +136,8 @@ public class ResultMainController implements Initializable {
     private double avgProbability;
     @FXML
     private Slider detailSlider;
+    @FXML
+    private Label probThresholdLabel;
         
     /**
      * Initializes the controller class.
@@ -373,6 +376,7 @@ public class ResultMainController implements Initializable {
                     mergedOrderedThresholdList = updateThresholdList(new_val);
                     initializePieChart(mergedOrderedThresholdList);
                     setInfoText();
+                    probThresholdLabel.setText(Double.toString(Math.floor((double)new_val * 100)/100.0));
             }
         });
         
@@ -393,6 +397,9 @@ public class ResultMainController implements Initializable {
         detailSlider.setMajorTickUnit(5);
         detailSlider.setMinorTickCount(5);
         detailSlider.setValue(newValueToSet);
+                        
+        probThresholdLabel.setText(Double.toString(Math.floor(newValueToSet * 100)/100.0));
+                
     }
     
     /**
@@ -514,6 +521,12 @@ public class ResultMainController implements Initializable {
      */
     private void setInfoText() {        
         dataInfoText.getChildren().clear();
+        
+        if(mergedOrderedThresholdList.size() == 0){
+            Text noDataToShow = new Text("No data to show.\n\nAdjust the probability threshold slider.\n ");
+            dataInfoText.getChildren().add(noDataToShow);
+            return;
+        }
         
         //set dataset amount text
         Text amountText = new Text("Dataset amount: " + mergedOrderedThresholdList.size()+"\n\n");
