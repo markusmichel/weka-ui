@@ -147,7 +147,7 @@ public class ChooseModelController implements Initializable {
         
         addArffStrucButton.addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent event) -> {                
                 addArffStrucButton.setImage(new Image(getClass().getResourceAsStream("/wekaui/customcontrols/add-arff-structure-to-model-hover.png")));
-                Tooltip t = new Tooltip("Create new arff file");
+                Tooltip t = new Tooltip("Add arff-structure to model.");
                 Tooltip.install(addArffStrucButton, t);
         });
         
@@ -178,7 +178,9 @@ public class ChooseModelController implements Initializable {
             button.addOnClickListener((LastUsedModel model) -> {
                 session.setModel(model);                
                 button.getStyleClass().add("active");
-                if(selectedModelButton != null) selectedModelButton.getStyleClass().remove("active");
+                if(selectedModelButton != null) selectedModelButton.getStyleClass().remove("active");                
+                if(session.getModel().getEmptyArffFile() == null) addArffStrucButton.setVisible(true);
+                else addArffStrucButton.setVisible(false);
                 selectedModelButton = button;
             });
         }   
@@ -424,6 +426,7 @@ public class ChooseModelController implements Initializable {
             f = f.saveEmptyArffFile(f, session.getModel().getFile().getName());                    
             session.getModel().setEmptyArffFile(f);
             addArffStrucButton.setVisible(false);
+            InfoDialog info = new InfoDialog("Arff file added to model", container, "info");
 
         } catch (ArffFile.ArffFileInvalidException | ArffFileIncompatibleException | IOException ex){
             InfoDialog info = new InfoDialog("Error saving arff file", container, "warning");

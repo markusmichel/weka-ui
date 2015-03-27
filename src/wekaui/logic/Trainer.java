@@ -39,7 +39,8 @@ public class Trainer {
                 }          
             }    
         } catch (Exception ex) {
-            Logger.getLogger(LastUsedModel.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(LastUsedModel.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ArffFileIncompatibleException();
         }
     }    
 }
