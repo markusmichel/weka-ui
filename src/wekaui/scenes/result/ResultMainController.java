@@ -146,6 +146,8 @@ public class ResultMainController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {        
         mergedOrderedThresholdList = new ArrayList<>();
         initializeRestartAppButton();
+        
+        probThresholdLabel.setStyle("-fx-font-weight: bold;");
     }    
     
     /**
@@ -276,7 +278,7 @@ public class ResultMainController implements Initializable {
                             instance.setStyle("-fx-font-weight: bold;");
                             detailTextContainer.getChildren().add(instance);    
                             
-                            for(int i = 0; i < ins.getInstance().numAttributes(); i++){
+                            for(int i = 0; i < ins.getInstance().numAttributes(); i++){                              
                                 
                                 
                                 String[] attributes = ins.getInstance().attribute(i).toString().split("\\s+");                                
