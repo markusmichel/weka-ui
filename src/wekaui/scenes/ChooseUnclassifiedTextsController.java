@@ -248,9 +248,9 @@ public class ChooseUnclassifiedTextsController implements Initializable {
                 String filePath = null;
 
                 createInstancesFromFiles(db.getFiles());
-
-                //session.setUnlabeledData(dataList);
-                //checkIfDatalistIsEmptyAndSetVisibility();
+                
+                updateArffList();
+                
                 success = true;
             }
             event.setDropCompleted(success);
@@ -295,9 +295,8 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         if (dataFile != null) {
 
             createInstancesFromFiles(dataFile);
-
-            //session.setUnlabeledData(dataList);
-            //changeDataButtonsVisibility(true);
+            
+            updateArffList();
         }
     }
 
@@ -492,8 +491,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         tmp.add(new File(fileToSave));                
         createInstancesFromFiles(tmp);
         
-        //session.setUnlabeledData(dataList);
-        //checkIfDatalistIsEmptyAndSetVisibility();
+        updateArffList();
         
         //@TODO: what should be done if no valid data was added?!
         resetArffFileContentTxtArea();        
@@ -534,8 +532,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             List<File> tmp = new ArrayList<>();
             tmp.add(f);
             createInstancesFromFiles(tmp);            
-            //session.setUnlabeledData(dataList);
-            //checkIfDatalistIsEmptyAndSetVisibility();
+            updateArffList();
             
             InfoDialog infoAdded = new InfoDialog("Arff file created", container, "info");
             
