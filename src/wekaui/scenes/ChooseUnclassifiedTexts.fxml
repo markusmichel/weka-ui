@@ -125,7 +125,8 @@
             
       <!-- Button for goint to next step. Only visible when the user has choosen a trining model. Hidden at start -->      
       <wekaui.customcontrols.NextButton fx:id="nextButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onNextClicked" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT" />
-      <wekaui.customcontrols.PrevButton fx:id="prevButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onPrevClicked" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_LEFT" />      
+      <wekaui.customcontrols.PrevButton fx:id="prevButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onPrevClicked" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_LEFT" />
+      <ProgressIndicator fx:id="loadingIndicator" maxHeight="80.0" maxWidth="80.0" visible="false" StackPane.alignment="CENTER" />      
       
    </children>
 </StackPane>

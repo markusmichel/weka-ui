@@ -19,9 +19,12 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -34,6 +37,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
@@ -111,6 +115,8 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     private TitledPane arffFileContentTitledPane;
     @FXML
     private ImageView newArffFileButton;
+    @FXML
+    private ProgressIndicator loadingIndicator;
 
     /**
      * Initializes the controller class.
@@ -133,12 +139,16 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         dataList.addListener(new ListChangeListener() {
             @Override
             public void onChanged(Change c) {                
-                if (dataList.size() != 0) {
-                    nextButton.show();
-                    setDataSetAmountLabel();
+                if (dataList.size() != 0) {                    
+                    Platform.runLater(() -> {
+                        nextButton.show();
+                        setDataSetAmountLabel();
+                    });
                 } else {
-                    nextButton.hide();      
-                    dataSetCountLabel.setText("Data set amount: 0");
+                    Platform.runLater(() -> {
+                        nextButton.hide();      
+                        dataSetCountLabel.setText("Data set amount: 0");
+                    });
                 }
             }
         });
@@ -158,8 +168,10 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         final ListCell cell = new ListCell<MyInstances>() {
                 @Override
                 public void updateItem(MyInstances item, boolean empty) {
-                    super.updateItem(item, empty);
-                    setText(empty ? null : getString());
+                    Platform.runLater(() -> {
+                        super.updateItem(item, empty);
+                        setText(empty ? null : getString());
+                    });
                 }
 
                 private String getString() {
@@ -237,8 +249,8 @@ public class ChooseUnclassifiedTextsController implements Initializable {
 
                 createInstancesFromFiles(db.getFiles());
 
-                session.setUnlabeledData(dataList);
-                checkIfDatalistIsEmptyAndSetVisibility();
+                //session.setUnlabeledData(dataList);
+                //checkIfDatalistIsEmptyAndSetVisibility();
                 success = true;
             }
             event.setDropCompleted(success);
@@ -284,8 +296,8 @@ public class ChooseUnclassifiedTextsController implements Initializable {
 
             createInstancesFromFiles(dataFile);
 
-            session.setUnlabeledData(dataList);
-            changeDataButtonsVisibility(true);
+            //session.setUnlabeledData(dataList);
+            //changeDataButtonsVisibility(true);
         }
     }
 
@@ -298,30 +310,49 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             dropzoneLabel.setVisible(false);
         }
         
-        ArffFile arff;
-        MyInstances instances;
-        for (File file : files) {
-            
-            try {
-                if (!filepaths.add(file.getPath())) throw new FileAlreadyAddedException();
-                arff = new ArffFile(file.getPath());
-                try {                    
-                    instances = arff.getInstances();
-                    session.setOriginalDataset(instances);
-                    Trainer.classifyData(session.getModel(), instances);
-                    dataList.add(instances);
-                } catch (ArffFile.ArffFileInvalidException | ArffFileIncompatibleException ex) {                    
-                    System.err.println("invalid arff file");
-                    if(filepaths.contains(file.getPath()))
-                        filepaths.remove(file.getPath());
-                    InfoDialog info = new InfoDialog("Invalid .arff-file!", container, "warning");
-                    checkIfDatalistIsEmptyAndSetVisibility();
-                }                
-            } catch (FileAlreadyAddedException ex) {
-                System.out.println("File already added!");
-                InfoDialog info = new InfoDialog("File already added!", container, "info");
+        loadingIndicator.setVisible(true);
+        
+        Service<Void> service = new Service<Void>() {
+            @Override
+            protected Task<Void> createTask() {
+                return new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        ArffFile arff;
+                        MyInstances instances;
+
+                        for (File file : files) {
+                            try {
+                                if (!filepaths.add(file.getPath())) throw new FileAlreadyAddedException();
+                                arff = new ArffFile(file.getPath());
+                                try {                    
+                                    instances = arff.getInstances();
+                                    session.setOriginalDataset(instances);
+                                    Trainer.classifyData(session.getModel(), instances);
+                                    dataList.add(instances);
+                                } catch (ArffFile.ArffFileInvalidException | ArffFileIncompatibleException ex) {                    
+                                    System.err.println("invalid arff file");
+                                    if(filepaths.contains(file.getPath()))
+                                        filepaths.remove(file.getPath());
+                                    InfoDialog info = new InfoDialog("Invalid .arff-file!", container, "warning");
+                                    checkIfDatalistIsEmptyAndSetVisibility();
+                                }                
+                            } catch (FileAlreadyAddedException ex) {
+                                System.out.println("File already added!");
+                                InfoDialog info = new InfoDialog("File already added!", container, "info");
+                            }
+                        }
+                        return null;
+                    }
+                };
             }
-        }
+            @Override
+            protected void succeeded() {
+                 loadingIndicator.setVisible(false);
+                 updateArffList();                 
+            }
+        };
+        service.start(); // starts Thread
     }
     
     /**
@@ -461,8 +492,8 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         tmp.add(new File(fileToSave));                
         createInstancesFromFiles(tmp);
         
-        session.setUnlabeledData(dataList);
-        checkIfDatalistIsEmptyAndSetVisibility();
+        //session.setUnlabeledData(dataList);
+        //checkIfDatalistIsEmptyAndSetVisibility();
         
         //@TODO: what should be done if no valid data was added?!
         resetArffFileContentTxtArea();        
@@ -503,8 +534,8 @@ public class ChooseUnclassifiedTextsController implements Initializable {
             List<File> tmp = new ArrayList<>();
             tmp.add(f);
             createInstancesFromFiles(tmp);            
-            session.setUnlabeledData(dataList);
-            checkIfDatalistIsEmptyAndSetVisibility();
+            //session.setUnlabeledData(dataList);
+            //checkIfDatalistIsEmptyAndSetVisibility();
             
             InfoDialog infoAdded = new InfoDialog("Arff file created", container, "info");
             
@@ -566,6 +597,14 @@ public class ChooseUnclassifiedTextsController implements Initializable {
         newArffFileButton.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent event) -> {
                 newArffFileButton.setImage(new Image(getClass().getResourceAsStream("/wekaui/customcontrols/create-new-arff.png")));
         });
+    }
+    
+    /**
+     * 
+     */
+    private void updateArffList(){
+        session.setUnlabeledData(dataList);
+        checkIfDatalistIsEmptyAndSetVisibility();
     }
 
 }
