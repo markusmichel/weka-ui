@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox minHeight="600.0" minWidth="550.0" stylesheets="@./stylesheets/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wekaui.scenes.HelpDialogController">
+   <children>
+      <Label id="labelTitle" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Help" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="subheader" text="General">
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" top="-10.0" />
+         </VBox.margin>
+      </Label>
+      <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="300.0" minHeight="200.0" prefViewportHeight="17.0" prefViewportWidth="24.541015625">
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <content>
+            <TextArea fx:id="generalText" editable="false" styleClass="infotext" wrapText="true" />
+         </content>
+      </ScrollPane>
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="subheader" text="ARFF-File">
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" />
+         </VBox.margin>
+      </Label>
+      <Text fx:id="arffFileText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infotext" text="Information taken from the official weka site.">
+         <VBox.margin>
+            <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+         </VBox.margin>
+      </Text>
+      <Text fx:id="arffFileText1" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="infotext" text="It is important the ARFF syntax is correct! Otherwise the data cannot be classified!">
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" />
+         </VBox.margin>
+      </Text>
+      <VBox fx:id="arffWebsiteContainer">
+         <VBox.margin>
+            <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+         </VBox.margin>
+      </VBox>
+   </children>
+</VBox>

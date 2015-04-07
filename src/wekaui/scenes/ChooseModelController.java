@@ -40,8 +40,6 @@ import wekaui.customcontrols.NextButton;
 import wekaui.exceptions.ArffFileIncompatibleException;
 import wekaui.logic.MyInstances;
 import wekaui.logic.Trainer;
-import wekaui.scenes.helpwindow.HelpDialogController;
-import wekaui.scenes.newarfffile.NewArffFileController;
 
 /**
  *
@@ -441,7 +439,7 @@ public class ChooseModelController implements Initializable {
      */
     private void onHelpButtonClicked(MouseEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wekaui/scenes/helpwindow/HelpDialog.fxml"));            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wekaui/scenes/HelpDialog.fxml"));            
             VBox page = (VBox) loader.load();
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Weka Help");

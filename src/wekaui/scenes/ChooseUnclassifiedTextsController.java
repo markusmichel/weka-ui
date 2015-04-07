@@ -66,8 +66,6 @@ import wekaui.exceptions.ArffFileIncompatibleException;
 import wekaui.exceptions.FileAlreadyAddedException;
 import wekaui.logic.MyInstances;
 import wekaui.logic.Trainer;
-import wekaui.scenes.newarfffile.NewArffFileController;
-import wekaui.scenes.result.ResultMainController;
 
 /**
  * FXML Controller class
@@ -409,7 +407,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wekaui/scenes/result/ResultMain.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wekaui/scenes/ResultMain.fxml"));
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);            
             
@@ -512,7 +510,7 @@ public class ChooseUnclassifiedTextsController implements Initializable {
     private void onNewArffFileButtonClicked(MouseEvent event) {
         
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wekaui/scenes/newarfffile/NewArffFile.fxml"));            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wekaui/scenes/NewArffFile.fxml"));            
             StackPane page = (StackPane) loader.load();
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Create new Arff-File");
