@@ -20,7 +20,7 @@
                   <Label id="labelTitle" fx:id="labelTitle" maxWidth="1.7976931348623157E308" text="Choose trainingsmodel" textFill="#444444" />
                   <ImageView fx:id="helpButton" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_RIGHT">
                      <StackPane.margin>
-                        <Insets right="15.0" top="10.0" />
+                        <Insets right="15.0" top="15.0" />
                      </StackPane.margin>
                      <image>
                         <Image url="@../customcontrols/help-button.png" />
@@ -39,7 +39,7 @@
                               <Insets />
                            </VBox.margin>
                         </Label>
-                        <ImageView fx:id="addArffStrucButton" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" visible="false" StackPane.alignment="CENTER_RIGHT">
+                        <ImageView fx:id="addArffStrucButton" fitHeight="26.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" visible="false" StackPane.alignment="CENTER_RIGHT">
                            <image>
                               <Image url="@../customcontrols/add-arff-structure-to-model.png" />
                            </image>

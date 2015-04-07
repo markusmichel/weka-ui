@@ -17,7 +17,7 @@
             <StackPane>
                <children>
                   <Label id="labelTitle" maxWidth="1.7976931348623157E308" text="Choose unclassified data" />
-                  <ImageView fx:id="newArffFileButton" fitHeight="60.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
+                  <ImageView fx:id="newArffFileButton" fitHeight="41.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
                      <image>
                         <Image url="@../customcontrols/create-new-arff.png" />
                      </image>
