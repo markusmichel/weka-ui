@@ -94,7 +94,7 @@ public class ChooseModelController implements Initializable {
      */
     private Session.OnModelChangeListener onModelChangeListener;
     /**
-     * Array which contains the allowed file types for the drag&drop area.
+     * Array which contains the allowed file types for the drag-and-drop area.
      */
     public static final String[] ALLOWED_FILE_TYPES = {"model"};
     /**
@@ -341,7 +341,7 @@ public class ChooseModelController implements Initializable {
     /**
      * User has selected a weka training model and wants to proceed.
      * Go to next step (select unclassified data).
-     * @param event
+     * @param event The MouseEvent
      */
     @FXML
     public void onNextClicked(MouseEvent event) {

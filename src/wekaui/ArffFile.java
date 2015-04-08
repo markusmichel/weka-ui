@@ -37,8 +37,8 @@ public class ArffFile extends File {
 
     /**
      * Constructor
-     * @param parent
-     * @param child 
+     * @param parent String
+     * @param child String
      */
     public ArffFile(String parent, String child) {
         super(parent, child);
@@ -46,8 +46,8 @@ public class ArffFile extends File {
     
     /**
      * Constructor
-     * @param parent
-     * @param child 
+     * @param parent File
+     * @param child String
      */
     public ArffFile(File parent, String child) {
         super(parent, child);
@@ -55,7 +55,7 @@ public class ArffFile extends File {
 
     /**
      * Constructor
-     * @param uri 
+     * @param uri URI
      */
     public ArffFile(URI uri) {
         super(uri);
@@ -72,7 +72,7 @@ public class ArffFile extends File {
     /**
      * Returns the instances.
      * @return MyInstances
-     * @throws wekaui.ArffFile.ArffFileInvalidException 
+     * @throws wekaui.ArffFile.ArffFileInvalidException  CustomExceptions if ArffFile is invalid
      */
     public MyInstances getInstances() throws ArffFileInvalidException {
         MyInstances instances = null;
@@ -85,13 +85,15 @@ public class ArffFile extends File {
         }
         
         return instances;
-    }
+    }    
     
     /**
      * If the Arff file exists and is valid,
      * saves a new Arff file to the files system with the same class
      * and attribute annotaions, but with no content.
      * @param location Location of the new empty arff file.
+     * @param modelName the name of the model
+     * @return the filepath to save the file
      * @throws IOException If failed to write file on disk.
      */
     public ArffFile saveEmptyArffFile(File location, String modelName) throws IOException {
@@ -146,6 +148,9 @@ public class ArffFile extends File {
         return content;
     }
 
+    /**
+     * The ArffFileInvalidException
+     */
     public static class ArffFileInvalidException extends Exception {
 
         public ArffFileInvalidException() {

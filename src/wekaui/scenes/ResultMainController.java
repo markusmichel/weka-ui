@@ -59,7 +59,7 @@ import wekaui.logic.MyInstances;
 /**
  * FXML Controller class
  *
- * @author FreshXL
+ * Visualizes the classified data.
  */
 public class ResultMainController implements Initializable {
     

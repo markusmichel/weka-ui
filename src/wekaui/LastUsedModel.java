@@ -43,7 +43,7 @@ public class LastUsedModel {
      * Stores a list of LastUsedModel objects to a XML file
      * in the same directory as the running JAR file.
      * @param models List of models to serialize.
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException Exception if the xml file is not found
      */
     public static void saveLastUsedModels(LastUsedModelsList models) throws FileNotFoundException {
         XStream stream = new XStream();
@@ -59,7 +59,7 @@ public class LastUsedModel {
      * Returns a list of LastUsedModels objects.
      * The list is restored from a "models.xml" file in the JAR directory.
      * If the File is not present, an empty list will be returned.
-     * @return 
+     * @return the LastUsedModelsList which contains the LastUsedModels.
      */
     public static LastUsedModelsList getLastUsedModels() {
         LastUsedModelsList lastUsedModels;
@@ -125,7 +125,7 @@ public class LastUsedModel {
 
     /**
      * Sets the lastOpened date object.
-     * @param lastOpened 
+     * @param lastOpened Date
      */
     public void setLastOpened(Date lastOpened) {
         this.lastOpened = lastOpened;

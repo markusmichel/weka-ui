@@ -17,9 +17,10 @@ public class Trainer {
     /**
      * Classifies unlabeled instances and calculates class probabilites
      * labeled instances are saved  MyInstances Class
-     * @param lum
-     * @param unlabeled
-     */
+     * @param lum weka model
+     * @param unlabeled the data to classify
+     * @throws ArffFileIncompatibleException CustomException if arfffile is incompatible
+     */    
     public static void classifyData(LastUsedModel lum, MyInstances unlabeled) throws ArffFileIncompatibleException {
         try {
             Classifier model = (Classifier) weka.core.SerializationHelper.read(lum.getFile().getAbsolutePath());

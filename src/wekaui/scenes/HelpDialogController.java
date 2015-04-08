@@ -109,7 +109,7 @@ public class HelpDialogController implements Initializable {
     
     /**
      * Sets the stage context to close the pop up window
-     * @param stage 
+     * @param stage The stage which represents the current window.
      */
     public void setDialogStage(Stage stage){
         this.dialogStage = stage;        

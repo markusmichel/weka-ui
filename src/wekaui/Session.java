@@ -83,16 +83,18 @@ public class Session {
     public void removeModelChangeListener(OnModelChangeListener listener) {
         modelChangeListeners.remove(listener);
     }
-
+    
     /**
-     * @return the text
+     * Returns the MyInstances
+     * @return the list of MyInstances
      */
     public List<MyInstances> getUnlabeledData() {
         return unlabeledData;
     }
-
+    
     /**
-     * @param text the text to set
+     * Sets the unlabeled data
+     * @param data List of MyInstances
      */
     public void setUnlabeledData(List<MyInstances> data) {
         this.unlabeledData = data;

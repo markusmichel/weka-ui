@@ -204,7 +204,7 @@ public class NewArffFileController implements Initializable {
     
     /**
      * Sets the stage context to close the pop up window
-     * @param dialogStage 
+     * @param dialogStage The stage which represents the current window.
      */
     public void setDialogStage(Stage dialogStage){
         this.dialogStage = dialogStage;        
