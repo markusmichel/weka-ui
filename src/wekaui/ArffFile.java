@@ -18,31 +18,62 @@ import wekaui.logic.MyInstances;
 
 /**
  *
- * @author markus
+ * ArffFile class which extends the file class.
+ * Represents an weka ArffFile.
  */
 public class ArffFile extends File {
+    /**
+     * File which represents an arffFile
+     */
     private File file;
-
+    
+    /**
+     * Constructor
+     * @param pathname the pathname of the file
+     */
     public ArffFile(String pathname) {
         super(pathname);
     }
 
+    /**
+     * Constructor
+     * @param parent
+     * @param child 
+     */
     public ArffFile(String parent, String child) {
         super(parent, child);
     }
-
+    
+    /**
+     * Constructor
+     * @param parent
+     * @param child 
+     */
     public ArffFile(File parent, String child) {
         super(parent, child);
     }
 
+    /**
+     * Constructor
+     * @param uri 
+     */
     public ArffFile(URI uri) {
         super(uri);
     }
 
+    /**
+     * Sets the file object
+     * @param file File
+     */
     public void setFile(File file) {
         this.file = file;
     }
     
+    /**
+     * Returns the instances.
+     * @return MyInstances
+     * @throws wekaui.ArffFile.ArffFileInvalidException 
+     */
     public MyInstances getInstances() throws ArffFileInvalidException {
         MyInstances instances = null;
         try {

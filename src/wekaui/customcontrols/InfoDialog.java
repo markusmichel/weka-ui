@@ -27,22 +27,39 @@ import javafx.util.Duration;
  * FXML Controller class
  * InfoDialog - Shows a short notification for the user. 
  * Works only if parent is StackPane
- *
- * @author FreshXL
+ * 
  */
 public class InfoDialog extends VBox {
+    /**
+     * Label for the Infotext of the control.
+     */
     @FXML
     Label infoText;
     
+    /**
+     * Container for the different controls.
+     */
     @FXML
     VBox container;
     
+    /**
+     * The parent control, to which the InfoDialo is added.
+     */
     StackPane parent;
+    /**
+     * The removeduration of the control.
+     */
     double removeDuration = 2;
     
-    // problem: value is only known after the node is shown
+    /**
+     * The control height.
+     * problem: value is only known after the node is shown
+     */    
     double nodeHeight = 38;
     
+    /**
+     * List which contains the clicklisteners.
+     */
     private List<InfoDialogClickListener> listeners = new ArrayList<>();
     
     /**
@@ -75,7 +92,10 @@ public class InfoDialog extends VBox {
         initializeInfoNode(textToSet, this.parent);        
         startRemoveCounter();        
     }
-    
+    /**
+     * Adds InfoDialogClickListener to the list.
+     * @param listener InfoDialogClickListener
+     */
     public void addOnClickListener(InfoDialogClickListener listener) {
         listeners.add(listener);
     }

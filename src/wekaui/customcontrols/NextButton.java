@@ -9,10 +9,14 @@ import javafx.scene.image.Image;
 
 /**
  *
+ * The Button to switch to the next scene.
  * @author markus
  */
 public class NextButton extends AbstractPrevNextButton {
         
+    /**
+     * Contructor
+     */
     public NextButton() {
         HIDDEN_IMAGE = null;
         NORMAL_IMAGE = new Image(getClass().getResourceAsStream("next-button.png"));

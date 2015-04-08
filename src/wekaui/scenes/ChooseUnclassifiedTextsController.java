@@ -70,49 +70,110 @@ import wekaui.logic.Trainer;
 /**
  * FXML Controller class
  *
- * @author markus
+ * Handles the unclassified datasets. The added files are verified.
  */
 public class ChooseUnclassifiedTextsController implements Initializable {
-
+    
+    /**
+     * 
+     */
     @FXML
     private Label labelOpenData;
+    /**
+     * PrevButton to navigate to the previous scene.
+     */
     @FXML
     private PrevButton prevButton;
+    /**
+     * InfoLabel
+     */
     @FXML
     private Label modelInfoLabel;
+    /**
+     * Infotext to show if structure data is available.
+     */
     @FXML
     private TextArea modelInfoText;
+    /**
+     * NextButton to navigate to the next scene.
+     */
     @FXML
     private NextButton nextButton;
+    /**
+     * Pane which is the drag&drop area.
+     */
     @FXML
     private Pane dropzoneArea;
+    /**
+     * Label for the drag&drop area.
+     */
     @FXML
     private Label dropzoneLabel;
+    /**
+     * ListView which contains the MyInstances.
+     */
     @FXML
     private ListView<MyInstances> dropzoneListView;
+    /**
+     * Clears the data from the listview.
+     */
     @FXML
     private ClearUncheckedDataButton clearButton;
+    /**
+     * Data can be added to the listview via filechoser.
+     */
     @FXML
     private AddUncheckedDataButton addButton;
-
+    /**
+     * The dataList for the Listview.
+     */
     private static final ObservableList<MyInstances> dataList
             = FXCollections.observableArrayList();
-
+    
+    /**
+     * Session object which contains the whole data 
+     * like the model and the unclassified data.
+     */
     private Session session;
-
+    
+    /**
+     * Set which contains the filepaths of the different datasets.
+     */
     private Set<String> filepaths;
+    /**
+     * Label which shows the amount of datasets, which are currently loaded.
+     */
     @FXML
     private Label dataSetCountLabel;
+    /**
+     * Parent container of the controls.
+     */
     @FXML
     private StackPane container;
+    /**
+     * 
+     */
     @FXML
     private Button arrfFileContentTxtBtn;
+    /**
+     * Textarea which contains info of the arff file structure.
+     */
     @FXML
     private TextArea arffFileContentTxtArea;
+    /**
+     * TitledPane which contains arffFileContentTxtArea.
+     */
     @FXML
     private TitledPane arffFileContentTitledPane;
+    /**
+     * Imageview which used as a Button. 
+     * If it's clicked the scene to create a new arff file is shown.
+     */
     @FXML
     private ImageView newArffFileButton;
+    /**
+     * Loading indicator, which is shown if data is loading.
+     */
     @FXML
     private ProgressIndicator loadingIndicator;
 

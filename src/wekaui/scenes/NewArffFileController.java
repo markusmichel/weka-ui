@@ -28,29 +28,68 @@ import wekaui.customcontrols.InfoDialog;
  */
 public class NewArffFileController implements Initializable {
     
+    /**
+     * VBox container for the attribute input fields.
+     */
     @FXML
     private VBox attributeVbox;
+    /**
+     * Button to add a new attribute input field.
+     */
     @FXML
     private Button addNewAttributeButton;
+    /**
+     * Button to create new arff file and send the content to the other scene.
+     */
     @FXML
     private Button createNewArffFileButton;
+    /**
+     * Textfield for the relation attribute of the arff file.
+     */
     @FXML
     private TextField relationText;
+    /**
+     * Textfield for the class attribute of the arff file.
+     */
     @FXML
     private TextField classText;
+    /**
+     * Textarea for the data part of the arff file.
+     */
     @FXML
     private TextArea dataTextArea;
-    
+    /**
+     * String which contains the whole content for the new arff.
+     */
     private String newArffFileContent = "";
+    /**
+     * Stage object to handle the visibility of the window.
+     */
     private Stage dialogStage;
+    /**
+     * Stackpane container for the controls.
+     * Is needed, to show the InfoDialog properly.
+     */
     @FXML
     private StackPane newArffContainer;    
+    /**
+     * InfoText for the relation input field.
+     */
     @FXML
     private Label relationInfoText;
+    /**
+     * InfoText for the attribute input field.
+     */
     @FXML
     private Label attributeInfoText;
+    /**
+     * InfoText for the class input field.
+     */
     @FXML
     private Label classInfoText;
+    /**
+     * InfoText for the data input field.
+     */
     @FXML
     private Label dataInfoText;
 
@@ -214,6 +253,10 @@ public class NewArffFileController implements Initializable {
         return isValid;
     }
     
+    /**
+     * Checks if the form is valid.
+     * @return true if the form is valid, false otherwise.
+     */
     private boolean dataIsValid() {
         boolean isValid = true;
         String validateErrorMsg = "";

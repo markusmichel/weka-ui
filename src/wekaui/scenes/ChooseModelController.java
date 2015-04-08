@@ -42,43 +42,87 @@ import wekaui.logic.MyInstances;
 import wekaui.logic.Trainer;
 
 /**
+ * FXML Controller class
  *
- * @author markus
+ * Handles the weka models.
  */
 public class ChooseModelController implements Initializable {
     
+    /**
+     * The title.
+     */
     @FXML
     private Label labelTitle;
+    /**
+     * Label for the LastUsedModels.
+     */
     @FXML
     private Label labelLastUsed;
+    /**
+     * The label for the drag&drop area.
+     */
     @FXML
-    private Label dropzoneModel;
+    private Label dropzoneModel;    
     @FXML
     private Label labelOpenModel;
+    /**
+     * NextButton to navigate to the next scene.
+     */
     @FXML
     private NextButton nextButton;
     @FXML
     private Label labelCurrentSelectedModelFile;
-    
+    /**
+     * Session object which contains the whole data 
+     * like the model and the unclassified data.
+     */
     private Session session;
-    
+    /**
+     * CustomControl: Button for the LastOpenedModels-
+     */
     private LastOpenedModelButton selectedModelButton;
+    /**
+     * The current select model in the list.
+     */
     private LastUsedModel currentSelectedModel;
+    /**
+     * CustomControl: The list which contains the LastUsedModels.
+     */
     private LastUsedModelsList lastUsedModels;
-    
+    /**
+     * The ModelChangeListener of the session object.
+     */
     private Session.OnModelChangeListener onModelChangeListener;
-    
+    /**
+     * Array which contains the allowed file types for the drag&drop area.
+     */
     public static final String[] ALLOWED_FILE_TYPES = {"model"};
-    
+    /**
+     * FlowPane for the LastUsedModels.
+     */
     @FXML
     private FlowPane lastUsedModelsContainer;
+    /**
+     * Parent container of the controls.
+     */
     @FXML
     private StackPane container;
+    /**
+     * Imageview which used as a Button. 
+     * If it's clicked an Arff file structure can be added to the model.
+     */
     @FXML
     private ImageView addArffStrucButton;
+    /**
+     * Imageview which used as a Button. 
+     * If it's clicked the help scene is shown.
+     */
     @FXML
     private ImageView helpButton;
     
+    /**
+     * Initializes the controller class.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initSession();
@@ -88,6 +132,10 @@ public class ChooseModelController implements Initializable {
         initializeNewArffFileButton();
     }
     
+    /**
+     * Sets the session
+     * @param session Session object which contains the data
+     */
     public void setSession(Session session) {
         this.session = null;
         this.session = session;
@@ -154,6 +202,9 @@ public class ChooseModelController implements Initializable {
         });
     }
     
+    /**
+     * Initializes the LastUsedModels.
+     */
     private void initLastUsedModels() {
         lastUsedModelsContainer.setVgap(5);
         lastUsedModelsContainer.setHgap(5);
@@ -208,7 +259,10 @@ public class ChooseModelController implements Initializable {
         
         return false;
     }
-
+    
+    /**
+     * Initializes dropzone
+     */
     private void initModelDropzone() {        
         dropzoneModel.setOnDragEntered((DragEvent event) -> {
             Dragboard db = event.getDragboard();
@@ -321,12 +375,19 @@ public class ChooseModelController implements Initializable {
         }
 
     }
-
+    
+    /**
+     * Initializes the Session object.
+     */
     private void initSession() {
         session = new Session();
         initSession(session);
     }
     
+    /**
+     * Initializes the session and checks if a session is already initiated.
+     * @param session Session object which contains the data
+     */
     private void initSession(Session session) {
         if(onModelChangeListener != null) {
             // remove old onModelChangeListener to prevent zombie objects

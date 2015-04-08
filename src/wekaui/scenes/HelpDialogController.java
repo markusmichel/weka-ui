@@ -22,15 +22,26 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author FreshXL
+ * Contains the information shown in the Help scene.
  */
 public class HelpDialogController implements Initializable {
-
+    /**
+     * Stage object to handle the visibility of the window.
+     */
     private Stage dialogStage;
+    /**
+     * TextArea which contains the general information text.
+     */
     @FXML
     private TextArea generalText;
+    /**
+     * Infotext for the arffile section.
+     */
     @FXML
     private Text arffFileText;
+    /**
+     * Container for the Arff Website.
+     */
     @FXML
     private VBox arffWebsiteContainer;
     
@@ -43,6 +54,9 @@ public class HelpDialogController implements Initializable {
         setArffHelpText();
     }
     
+    /**
+     * Sets the general information text.
+     */
     private void setGeneralHelpText(){
         String generalHelpText = "First Step:\n"
                 + "After a model was trained with the weka tool, it can be added on the 'Choose model' Screen. "

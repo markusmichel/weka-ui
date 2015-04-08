@@ -8,11 +8,14 @@ package wekaui.customcontrols;
 import javafx.scene.image.Image;
 
 /**
- *
+ * The Button to switch to the previous scene.
  * @author markus
  */
 public class PrevButton extends AbstractPrevNextButton {
     
+    /**
+     * Contructor
+     */
     public PrevButton() {
         NORMAL_IMAGE = new Image(getClass().getResourceAsStream("prev-button.png"));
         HOVERED_IMAGE = new Image(getClass().getResourceAsStream("prev-button-hover.png"));

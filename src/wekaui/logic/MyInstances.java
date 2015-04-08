@@ -15,23 +15,42 @@ import weka.core.Instances;
 
 /**
  *
- * @author Noodlewood
+ * Helper class for the weka isntances.
  */
 public class MyInstances extends Instances {
     
+    /**
+     * The source file
+     */
     private File source;
+    /**
+     * List which contains MyInstances.
+     */
     private List<MyInstance> instances;
 
+    /**
+     * Constructor
+     * @param dataset Weka instances
+     * @param source Source files
+     */
     public MyInstances(Instances dataset, File source) {        
         super(dataset);
         this.source = source;
         instances = new ArrayList();
     }
        
+    /**
+     * Returns the source file
+     * @return File 
+     */
     public File getSource() {
         return this.source;
     }           
     
+    /**
+     * Returns the list which contains the MyInstances.
+     * @return List with MyInstance
+     */
     public List<MyInstance> getMyInstances() {
         return this.instances;
     }

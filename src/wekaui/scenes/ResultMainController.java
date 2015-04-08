@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -53,16 +52,9 @@ import javafx.stage.Window;
 import javax.imageio.ImageIO;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
-import wekaui.ArffFile;
 import wekaui.Session;
-import wekaui.customcontrols.InfoDialog;
-import wekaui.exceptions.ArffFileIncompatibleException;
-import wekaui.exceptions.FileAlreadyAddedException;
 import wekaui.logic.MyInstance;
 import wekaui.logic.MyInstances;
-import wekaui.logic.Trainer;
-import wekaui.scenes.ChooseModelController;
-import wekaui.scenes.ChooseUnclassifiedTextsController;
 
 /**
  * FXML Controller class
@@ -138,16 +130,34 @@ public class ResultMainController implements Initializable {
      */
     @FXML
     private ScrollPane textScroll;
+    /**
+     * Text container for the information of the dataset
+     */
     @FXML
     private TextFlow dataInfoText;
+    /**
+     * Imageview which used as a Button. 
+     * If it's clicked the tool is restarted.
+     */
     @FXML
-    private ImageView restartButton;
-    
-    private double avgProbability;
+    private ImageView restartButton;    
+    /**
+     * The average probability of the classifier.
+     */
+    private double avgProbability;    
+    /**
+     * The detail slider for the threshold.
+     */
     @FXML
     private Slider detailSlider;
+    /**
+     * The label to show the current threshold.
+     */
     @FXML
     private Label probThresholdLabel;
+    /**
+     * Loading indicator, which is shown if data is loading.
+     */
     @FXML
     private ProgressIndicator loadingIndicator;
         

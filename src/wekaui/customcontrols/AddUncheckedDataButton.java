@@ -15,6 +15,9 @@ import javafx.scene.input.MouseEvent;
  */
 public class AddUncheckedDataButton extends AbstractPrevNextButton{
     
+    /**
+     * Contructor
+     */
     public AddUncheckedDataButton(){
         HIDDEN_IMAGE = null;
         NORMAL_IMAGE = new Image(getClass().getResourceAsStream("add-button.png"));

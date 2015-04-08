@@ -15,6 +15,9 @@ import javafx.scene.input.MouseEvent;
  */
 public class ClearUncheckedDataButton extends AbstractPrevNextButton{
     
+    /**
+     * Contructor
+     */
     public ClearUncheckedDataButton(){
         HIDDEN_IMAGE = null;
         NORMAL_IMAGE = new Image(getClass().getResourceAsStream("clear-button.png"));

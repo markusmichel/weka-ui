@@ -5,15 +5,13 @@
  */
 package wekaui.logic;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import weka.classifiers.Classifier;
 import wekaui.LastUsedModel;
 import wekaui.exceptions.ArffFileIncompatibleException;
 
 /**
  *
- * @author Freakalot
+ * Helper class to classify the data.
  */
 public class Trainer {    
     /**

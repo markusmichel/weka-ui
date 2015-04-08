@@ -19,20 +19,39 @@ import wekaui.LastUsedModel;
 /**
  * FXML Controller class
  *
- * @author markus
+ * CustomControl which represents the models as a button with extra information.
  */
 public class LastOpenedModelButton extends VBox  {
 
+    /**
+     * List which contains the LastOpenedModelButtonClickListener.
+     */
     private List<LastOpenedModelButtonClickListener> listeners = new ArrayList<>();
+    /**
+     * The Weka model.
+     */
     private final LastUsedModel model;
     
+    /**
+     * Container for the other controls.
+     */
     @FXML
     VBox container;
+    /**
+     * Title of the model.
+     */
     @FXML
     Label labelLastUsedModelTitle;
+    /**
+     * The date when the model is last used.
+     */
     @FXML
     Label labelLastUsedModelDate;
     
+    /**
+     * Constructor
+     * @param model the weka model
+     */
     public LastOpenedModelButton(LastUsedModel model) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LastOpenedModelButton.fxml"));
         fxmlLoader.setRoot(this);
@@ -48,10 +67,17 @@ public class LastOpenedModelButton extends VBox  {
         initialize();
     }
     
+    /**
+     * Adds onclickListener
+     * @param listener LastOpenedModelButtonClickListener
+     */
     public void addOnClickListener(LastOpenedModelButtonClickListener listener) {
         listeners.add(listener);
     }
 
+    /**
+     * Initializes the controller class.
+     */
     private void initialize() {
         container.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
             

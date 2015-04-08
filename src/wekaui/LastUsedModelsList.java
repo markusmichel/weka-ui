@@ -10,21 +10,38 @@ import java.util.Stack;
  * <ul>
  *  <li>Only adds new items if the model file location is different</li>
  *  <li>If location is identical: move the model to first pace and update lastUsed date</li>
- * </ul>
- * @author markus
+ * </ul> 
  */
 public class LastUsedModelsList extends Stack<LastUsedModel> {
 
+    /**
+     * The static max value for the list.
+     */
     public static final int MAX = 10;
+    /**
+     * The static file name.
+     */
     public static final String MODELS_XML_FILE_NAME = "models.xml";
     
+    /**
+     * The max value for the list.
+     */
     private int max;
     
+    /**
+     * Constructor
+     * @param max sets the max value.
+     */
     public LastUsedModelsList(int max) {
         super();
         this.max = max;
     }
-
+    
+    /**
+     * Overrides the push method of the stack
+     * @param item LastUsedModel
+     * @return the LastUsedModel item
+     */
     @Override
     public LastUsedModel push(LastUsedModel item) {
         

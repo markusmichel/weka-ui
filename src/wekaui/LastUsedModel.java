@@ -14,8 +14,8 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 
 /**
- *
- * @author markus
+ * LastUsedModel
+ * Represents the weka models which has been used before.
  */
 public class LastUsedModel {
     /** Location of the model file */
@@ -24,8 +24,16 @@ public class LastUsedModel {
     /** When was the model last used in the tool */
     private Date lastOpened;
     
+    /**
+     * ArffFile
+     */
     private ArffFile emptyArffFile;
     
+    /**
+     * Constructor
+     * @param file weka model file
+     * @param lastOpened Date
+     */
     public LastUsedModel(File file, Date lastOpened) {
         this.file = file;
         this.lastOpened = lastOpened;
@@ -65,32 +73,60 @@ public class LastUsedModel {
         
         return lastUsedModels;
     }
-
+    
+    /**
+     * Overrides the toString method.
+     * @return String
+     */
     @Override
     public String toString() {
         return "Last opened model";
     }
     
+    /**
+     * Returns the empty ArffFile
+     * @return ArffFile
+     */
     public ArffFile getEmptyArffFile() {
         return emptyArffFile;
     }
 
+    /**
+     * Sets the empty ArffFile
+     * @param emptyArffFile ArffFile
+     */
     public void setEmptyArffFile(ArffFile emptyArffFile) {
         this.emptyArffFile = emptyArffFile;
     }
 
+    /**
+     * Returns the file object.
+     * @return File
+     */
     public File getFile() {
         return file;
     }
 
+    /**
+     * Sets the file object
+     * @param file File
+     */
     public void setFile(File file) {
         this.file = file;
     }
 
+    /**
+     * Gets the lastOpened date object.
+     * @return Date when was is last opened.
+     */
     public Date getLastOpened() {
         return lastOpened;
     }
 
+    /**
+     * Sets the lastOpened date object.
+     * @param lastOpened 
+     */
     public void setLastOpened(Date lastOpened) {
         this.lastOpened = lastOpened;
     }

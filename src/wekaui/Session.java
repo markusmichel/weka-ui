@@ -6,24 +6,46 @@ import weka.core.Instances;
 import wekaui.logic.MyInstances;
 
 /**
- *
- * @author Markus Michel
+ * Session class to handle the data through the different scenes.
  */
 public class Session {
     
+    /**
+     * The current selected model.
+     */
     private LastUsedModel model;
+    /**
+     * List which contains the datasets.
+     */
     private List<MyInstances> unlabeledData;
+    /**
+     * ArffFile 
+     */
     private ArffFile arffFile;
+    /**
+     * Instances object which contains the dataset.
+     */
     private Instances originalDataset;
 
+    /**
+     * Returns the ArffFile.
+     * @return ArffFile
+     */
     public ArffFile getArffFile() {
         return arffFile;
     }
 
+    /**
+     * Sets the ArffFile
+     * @param arffFile ArffFile
+     */
     public void setArffFile(ArffFile arffFile) {
         this.arffFile = arffFile;
     }
     
+    /**
+     * List which contains the OnModelChangeListener.
+     */
     private final List<OnModelChangeListener> modelChangeListeners = new ArrayList<>();
 
     /**
@@ -46,10 +68,18 @@ public class Session {
         }
     }
     
+    /**
+     * Adds a changelistener
+     * @param listener OnModelChangeListener
+     */
     public void addModelChangeListener(OnModelChangeListener listener) {
         modelChangeListeners.add(listener);
     }
     
+    /**
+     * Removes the changelistener
+     * @param listener OnModelChangeListener
+     */
     public void removeModelChangeListener(OnModelChangeListener listener) {
         modelChangeListeners.remove(listener);
     }
@@ -76,6 +106,10 @@ public class Session {
         return originalDataset;
     }
     
+    /**
+     * Sets the original dataset.
+     * @param originalDataset the Instances of the dataset.
+     */
     public void setOriginalDataset(Instances originalDataset) {
         this.originalDataset = originalDataset;
     }
@@ -83,12 +117,22 @@ public class Session {
     public interface OnModelChangeListener {
         public void handle(LastUsedModel model);
     }
-    
+    /**
+     * CustomControl which contains the LastUsedModels.
+     */
     private LastUsedModelsList lum;
+    /**
+     * Sets the LastUsedModelsList
+     * @param l the LastUsedModelsList
+     */
     public void setLastUsedModelsList(LastUsedModelsList l){
         this.lum = l;
     }
     
+    /**
+     * Returns the LastUsedModelList
+     * @return The LastUsedModelList
+     */
     public LastUsedModelsList getLastUsedModelsList(){
         return this.lum;
     }

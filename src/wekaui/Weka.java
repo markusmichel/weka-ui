@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Freakalot
+ * Main Class
  */
 public class Weka extends Application {
     
