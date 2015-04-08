@@ -4,8 +4,9 @@
 }
 
 .last-opened-model-button:hover {
-    -fx-background-color: blue;
-    -fx-cursor: hand;
+    -fx-background-color: #8099E6;
+    -fx-cursor: hand;    
+    -fx-fill: white;
 }
 
 .last-opened-model-button:focused {
@@ -13,9 +14,9 @@
 }
 
 .last-opened-model-button:pressed {
-    -fx-background-color: green;
+    -fx-background-color: #CC99CC;
 }
 
 .last-opened-model-button.active {
-    -fx-background-color: yellow;
+    -fx-background-color: #CC99CC;
 }
