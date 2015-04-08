@@ -16,10 +16,13 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -31,8 +34,10 @@ import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -48,9 +53,14 @@ import javafx.stage.Window;
 import javax.imageio.ImageIO;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
+import wekaui.ArffFile;
 import wekaui.Session;
+import wekaui.customcontrols.InfoDialog;
+import wekaui.exceptions.ArffFileIncompatibleException;
+import wekaui.exceptions.FileAlreadyAddedException;
 import wekaui.logic.MyInstance;
 import wekaui.logic.MyInstances;
+import wekaui.logic.Trainer;
 import wekaui.scenes.ChooseModelController;
 import wekaui.scenes.ChooseUnclassifiedTextsController;
 
@@ -116,7 +126,7 @@ public class ResultMainController implements Initializable {
      * FXML Item which is used as a container to show the detail data.
      */
     @FXML
-    private TextFlow detailTextContainer;
+    private TextArea detailTextContainer;
     /**
      * Imageview which used as a Button. 
      * If it's clicked the PieChart can be exported.
@@ -138,6 +148,8 @@ public class ResultMainController implements Initializable {
     private Slider detailSlider;
     @FXML
     private Label probThresholdLabel;
+    @FXML
+    private ProgressIndicator loadingIndicator;
         
     /**
      * Initializes the controller class.
@@ -268,34 +280,57 @@ public class ResultMainController implements Initializable {
             data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED,
                 new EventHandler<MouseEvent>() {
                     @Override public void handle(MouseEvent e) {
-                        detailTextContainer.getChildren().clear();                        
-                        List<MyInstance> l = getPieData(data.getName());
                         
-                        int instanceCounter = 1;
+                        detailTextContainer.setText("");    
+                        loadingIndicator.setVisible(true);                        
+                        StringBuilder sb = new StringBuilder();
+                        Service<Void> service = new Service<Void>() {
+                            @Override
+                            protected Task<Void> createTask() {
+                                return new Task<Void>() {
+                                    
+                                @Override
+                                protected Void call() throws Exception {
+                                    List<MyInstance> l = getPieData(data.getName());
                         
-                        for(MyInstance ins: l){
-                            Text instance = new Text("Instance No. " + instanceCounter +"\n\n");
-                            instance.setStyle("-fx-font-weight: bold;");
-                            detailTextContainer.getChildren().add(instance);    
-                            
-                            for(int i = 0; i < ins.getInstance().numAttributes(); i++){                              
-                                
-                                
-                                String[] attributes = ins.getInstance().attribute(i).toString().split("\\s+");                                
-                                String attrString = (attributes.length != 3) ? ins.getInstance().attribute(i).toString() : attributes[1];        
-                                Text attr = new Text( attrString + ":\n\n");
-                                attr.setUnderline(true);
-                                
-                                String contentString = ins.getInstance().stringValue(i).replace("\\", "");
-                                Text content = new Text(contentString + "\n\n");
-                                
-                                detailTextContainer.getChildren().addAll(attr, content);
+                                    int instanceCounter = 1;
+                                    
+                                    for(MyInstance ins: l){
+                                        
+                                        sb.append("Instance No. " + instanceCounter +"\n");
+
+                                        double prob = ins.maxProbability * 100;
+                                        prob = Math.floor(prob * 100)/100.0;
+                                        
+                                        sb.append("Classify probability: " + prob + "\n\n");
+
+                                        for(int i = 0; i < ins.getInstance().numAttributes(); i++){  
+                                            String[] attributes = ins.getInstance().attribute(i).toString().split("\\s+");                                
+                                            String attrString = (attributes.length != 3) ? ins.getInstance().attribute(i).toString() : attributes[1];        
+
+                                            sb.append(attrString + ":\n\n");
+
+                                            String contentString = ins.getInstance().stringValue(i).replace("\\", "");
+
+                                            sb.append(contentString + "\n\n");
+                                        }
+
+                                        sb.append("\n\n-------------------------------------\n\n");
+                                        instanceCounter++;
+                                    }                                    
+                                    return null;
+                                    }
+                                };
                             }
-                            
-                            Text seperator = new Text("\n\n-------------------------------------\n\n");
-                            detailTextContainer.getChildren().add(seperator);
-                            instanceCounter++;
-                        }
+                            @Override
+                            protected void succeeded() {
+                                loadingIndicator.setVisible(false);
+                                detailTextContainer.setText(sb.toString());
+                            }
+                        };
+                        service.start(); // starts Thread    
+                                            
+                                        
                      }
                 //returns the associated data of the pie slice
                 private List<MyInstance> getPieData(String name) {
